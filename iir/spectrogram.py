@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram
 
-audioFile = "1363v2.WAV"
+audioFile = "iir/1363v2.WAV"
 
 #samplingFreq: # samples/sec, mySound: array of amplitudes
 samplingFreq, mySound = wavfile.read(audioFile)
