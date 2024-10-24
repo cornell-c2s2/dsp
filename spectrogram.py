@@ -49,21 +49,6 @@ plt.title('Spectrogram')
 plt.colorbar(label='Intensity [dB]')
 plt.show()
 
-# Define the intensity threshold (in dB)
-threshold_dB = -100  # Set your desired threshold in decibels
-
-# Mask values below the threshold by setting them to the minimum dB value
-Sxx_dB_filtered = np.where(intensity > threshold_dB, intensity, np.nan)
-
-# # Plot the filtered spectrogram
-# plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud', cmap='viridis')
-# plt.ylabel('Frequency [Hz]')
-# plt.xlabel('Time [s]')
-# plt.title('Spectrogram (Thresholded)')
-# plt.colorbar(label='Intensity [dB]')
-# plt.show()
-
-
 from scipy.signal import butter, lfilter
 
 # Redefining the band-pass filters
@@ -103,12 +88,16 @@ filtered_signal_bandpass2 = butter_bandpass_filter(mySoundOneChannel, lowcut2, h
 
 filtered_signal_bandpass3 = butter_bandpass_filter(mySoundOneChannel, lowcut3, highcut3, samplingFreq)
 
+# Define the intensity threshold (in dB)
+threshold_dB = -100  # Set your desired threshold in decibels
+
 # Compute the spectrogram for the final filtered signal
 frequencies, times, Sxx = spectrogram(filtered_signal_bandpass, fs=samplingFreq)
+Sxx = 10*np.log10(Sxx)
+Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
 
-# Plot the spectrogram after both band-pass and high-pass filtering
 plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx), shading='gouraud')
+plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [s]')
 plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut})')
@@ -118,10 +107,11 @@ plt.show()
 
 
 frequencies, times, Sxx = spectrogram(filtered_signal_bandpass1, fs=samplingFreq)
+Sxx = 10*np.log10(Sxx)
+Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
 
-# Plot the spectrogram after both band-pass and high-pass filtering
 plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx), shading='gouraud')
+plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [s]')
 plt.title(f'Spectrogram (Band-Pass {lowcut1}-{highcut1})')
@@ -129,10 +119,11 @@ plt.colorbar(label='Intensity [dB]')
 plt.show()
 
 frequencies, times, Sxx = spectrogram(filtered_signal_bandpass2, fs=samplingFreq)
+Sxx = 10*np.log10(Sxx)
+Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
 
-# Plot the spectrogram after both band-pass and high-pass filtering
 plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx), shading='gouraud')
+plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [s]')
 plt.title(f'Spectrogram (Band-Pass {lowcut2}-{highcut2})')
@@ -140,10 +131,11 @@ plt.colorbar(label='Intensity [dB]')
 plt.show()
 
 frequencies, times, Sxx = spectrogram(filtered_signal_bandpass3, fs=samplingFreq)
+Sxx = 10*np.log10(Sxx)
+Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
 
-# Plot the spectrogram after both band-pass and high-pass filtering
 plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx), shading='gouraud')
+plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [s]')
 plt.title(f'Spectrogram (Band-Pass {lowcut3}-{highcut3})')
