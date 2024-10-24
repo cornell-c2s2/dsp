@@ -41,6 +41,7 @@ frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
 intensity = np.log10(intensity) #to dB
 
 # Plot the spectrogram
+plt.figure(figsize=(10, 4))
 plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [s]')
@@ -65,7 +66,7 @@ Sxx_dB_filtered = np.where(intensity > threshold_dB, intensity, np.nan)
 
 from scipy.signal import butter, lfilter
 
-# Redefining the band-pass and high-pass filters
+# Redefining the band-pass filters
 
 # Apply a Butterworth band-pass filter to isolate the peaks
 def butter_bandpass(lowcut, highcut, fs, order=4):
@@ -79,38 +80,48 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
     return lfilter(b, a, data)
 
-# Apply a Butterworth high-pass filter to remove low-frequency noise
-# def butter_highpass(cutoff, fs, order=5):
-#     nyquist = 0.5 * fs  # Nyquist frequency
-#     normal_cutoff = cutoff / nyquist
-#     b, a = butter(order, normal_cutoff, btype='high', analog=False)
-#     return b, a
-
-# def butter_highpass_filter(data, cutoff, fs, order=5):
-#     b, a = butter_highpass(cutoff, fs, order=order)
-#     return lfilter(b, a, data)
-
 # Choose the frequency range for the band-pass filter
 lowcut = 2000  # Lower cutoff frequency for the peaks (adjust as necessary)
 highcut = 5000  # Upper cutoff frequency for the peaks (adjust as necessary)
 
-# # Choose the cutoff frequency for the high-pass filter
-# highpass_cutoff = 300  # Set the high-pass cutoff to remove low-frequency noise (e.g., 300 Hz)
 
 # Step 1: Apply the band-pass filter to focus on the peaks
-filtered_signal_bandpass = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
+filtered_signal_bandpass1 = butter_bandpass_filter(mySoundOneChannel, 2000, 2500, samplingFreq)
 
-# # Step 2: Apply the high-pass filter to remove remaining low-frequency noise
-# final_filtered_signal = butter_highpass_filter(filtered_signal_bandpass, highpass_cutoff, samplingFreq)
+filtered_signal_bandpass2 = butter_bandpass_filter(mySoundOneChannel, 3000, 3500, samplingFreq)
+
+filtered_signal_bandpass3 = butter_bandpass_filter(mySoundOneChannel, 4000, 5000, samplingFreq)
 
 # Compute the spectrogram for the final filtered signal
-frequencies, times, Sxx = spectrogram(filtered_signal_bandpass, fs=samplingFreq)
+frequencies, times, Sxx = spectrogram(filtered_signal_bandpass1, fs=samplingFreq)
 
 # Plot the spectrogram after both band-pass and high-pass filtering
 plt.figure(figsize=(10, 4))
 plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx), shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [s]')
-plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}')
+plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut})')
+plt.colorbar(label='Intensity [dB]')
+plt.show()
+
+frequencies, times, Sxx = spectrogram(filtered_signal_bandpass2, fs=samplingFreq)
+
+# Plot the spectrogram after both band-pass and high-pass filtering
+plt.figure(figsize=(10, 4))
+plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx), shading='gouraud')
+plt.ylabel('Frequency [Hz]')
+plt.xlabel('Time [s]')
+plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut})')
+plt.colorbar(label='Intensity [dB]')
+plt.show()
+
+frequencies, times, Sxx = spectrogram(filtered_signal_bandpass3, fs=samplingFreq)
+
+# Plot the spectrogram after both band-pass and high-pass filtering
+plt.figure(figsize=(10, 4))
+plt.pcolormesh(times, frequencies, 10 * np.log10(Sxx), shading='gouraud')
+plt.ylabel('Frequency [Hz]')
+plt.xlabel('Time [s]')
+plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut})')
 plt.colorbar(label='Intensity [dB]')
 plt.show()
