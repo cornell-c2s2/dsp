@@ -3,59 +3,36 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
-from scipy.signal import spectrogram
+from scipy.signal import spectrogram, butter, lfilter
 
 audioFile = "1809v2.WAV"
 
-#samplingFreq: # samples/sec, mySound: array of amplitudes
+# Load audio file
 samplingFreq, mySound = wavfile.read(audioFile)
 
-
-# mySoundDataType = mySound.dtype #16 or 32 bit (ours are 16)
-# signalDuration =  mySound.shape[0] / samplingFreq
-
-
-#normalize to floats from [-1, 1]
+# Normalize audio signal
 mySound = mySound / (2.**15)
 
-mySoundShape = mySound.shape
-samplePoints = float(mySoundShape[0])
+# If stereo, take one channel
+mySoundOneChannel = mySound[:, 0]
 
-#if dual channel, take one
-mySoundOneChannel = mySound[:,0]
-
-#points in time distributed along sample points
-timeArray = np.arange(0, samplePoints, 1)
-timeArray = timeArray / samplingFreq
-
-# #time domain (amplitude vs time)
-# plt.plot(timeArray, mySoundOneChannel)
-# plt.xlabel('Time (s)')
-# plt.ylabel('Amplitude')
-# plt.show()
-
-
-
-# compute the spectrogram; Sxx: intensity of freq at each time
+# Compute the spectrogram; convert intensity to dB
 frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
-intensity = np.log10(intensity) #to dB
+intensity = np.log10(intensity)
 
-# Plot the spectrogram
+# Plot the spectrogram with frequency limit up to 10,000 Hz
 plt.figure(figsize=(10, 4))
 plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
 plt.ylabel('Frequency [Hz]')
 plt.xlabel('Time [s]')
 plt.title('Spectrogram')
 plt.colorbar(label='Intensity [dB]')
+plt.ylim(0, 15000)  # Set frequency limit to 10,000 Hz
 plt.show()
 
-from scipy.signal import butter, lfilter
-
-# Redefining the band-pass filters
-
-# Apply a Butterworth band-pass filter to isolate the peaks
+# Define Butterworth band-pass filter
 def butter_bandpass(lowcut, highcut, fs, order=4):
-    nyquist = 0.5 * fs  # Nyquist frequency
+    nyquist = 0.5 * fs
     low = lowcut / nyquist
     high = highcut / nyquist
     b, a = butter(order, [low, high], btype='band')
@@ -65,79 +42,21 @@ def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
     return lfilter(b, a, data)
 
-# Choose the frequency range for the band-pass filter
-lowcut = 2750  # Lower cutoff frequency for the peaks (adjust as necessary)
-highcut = 5000  # Upper cutoff frequency for the peaks (adjust as necessary)
+# Frequency ranges for filters
+bands = [(2750, 5000), (2750, 3500), (3500, 4250), (4250, 5000)]
+threshold_dB = -100
 
-lowcut1 = 2750
-highcut1 = 3500
-
-lowcut2 = 3500
-highcut2 = 4250
-
-lowcut3 = 4250
-highcut3 = 5000
-
-
-# Step 1: Apply the band-pass filter to focus on the peaks
-filtered_signal_bandpass = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
-
-filtered_signal_bandpass1 = butter_bandpass_filter(mySoundOneChannel, lowcut1, highcut1, samplingFreq)
-
-filtered_signal_bandpass2 = butter_bandpass_filter(mySoundOneChannel, lowcut2, highcut2, samplingFreq)
-
-filtered_signal_bandpass3 = butter_bandpass_filter(mySoundOneChannel, lowcut3, highcut3, samplingFreq)
-
-# Define the intensity threshold (in dB)
-threshold_dB = -100  # Set your desired threshold in decibels
-
-# Compute the spectrogram for the final filtered signal
-frequencies, times, Sxx = spectrogram(filtered_signal_bandpass, fs=samplingFreq)
-Sxx = 10*np.log10(Sxx)
-Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
-
-plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
-plt.ylabel('Frequency [Hz]')
-plt.xlabel('Time [s]')
-plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut})')
-plt.colorbar(label='Intensity [dB]')
-plt.show()
-
-
-
-frequencies, times, Sxx = spectrogram(filtered_signal_bandpass1, fs=samplingFreq)
-Sxx = 10*np.log10(Sxx)
-Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
-
-plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
-plt.ylabel('Frequency [Hz]')
-plt.xlabel('Time [s]')
-plt.title(f'Spectrogram (Band-Pass {lowcut1}-{highcut1})')
-plt.colorbar(label='Intensity [dB]')
-plt.show()
-
-frequencies, times, Sxx = spectrogram(filtered_signal_bandpass2, fs=samplingFreq)
-Sxx = 10*np.log10(Sxx)
-Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
-
-plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
-plt.ylabel('Frequency [Hz]')
-plt.xlabel('Time [s]')
-plt.title(f'Spectrogram (Band-Pass {lowcut2}-{highcut2})')
-plt.colorbar(label='Intensity [dB]')
-plt.show()
-
-frequencies, times, Sxx = spectrogram(filtered_signal_bandpass3, fs=samplingFreq)
-Sxx = 10*np.log10(Sxx)
-Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
-
-plt.figure(figsize=(10, 4))
-plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
-plt.ylabel('Frequency [Hz]')
-plt.xlabel('Time [s]')
-plt.title(f'Spectrogram (Band-Pass {lowcut3}-{highcut3})')
-plt.colorbar(label='Intensity [dB]')
-plt.show()
+for lowcut, highcut in bands:
+    filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
+    frequencies, times, Sxx = spectrogram(filtered_signal, fs=samplingFreq)
+    Sxx = 10 * np.log10(Sxx)
+    Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
+    
+    plt.figure(figsize=(10, 4))
+    plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
+    plt.ylabel('Frequency [Hz]')
+    plt.xlabel('Time [s]')
+    plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut})')
+    plt.colorbar(label='Intensity [dB]')
+    plt.ylim(0, 15000)  # Set frequency limit to 10,000 Hz
+    plt.show()
