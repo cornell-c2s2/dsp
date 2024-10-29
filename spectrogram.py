@@ -4,9 +4,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-audioFiles = ["1809v2.WAV", "1363v2.WAV"]
+audioFiles = [ "1363v2.WAV"]
 for i in audioFiles:
-    audioFile = i
+    audioFile = "audio/"+i
 
     # Load audio file
     samplingFreq, mySound = wavfile.read(audioFile)
@@ -20,15 +20,14 @@ for i in audioFiles:
     # Compute the spectrogram; convert intensity to dB
     frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
     intensity = np.log10(intensity)
-
     #Plot Spectrogram
     plt.figure(figsize=(10, 4))
     plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
     plt.ylabel('Frequency [Hz]')
     plt.xlabel('Time [s]')
-    plt.title(f'Spectrogram of {audioFile}')
+    plt.title(f'Spectrogram of {i}')
     plt.colorbar(label='Intensity [dB]')
-    plt.ylim(0, 15000)
+    plt.ylim(0, 7000)
     plt.show()
 
     # Define Butterworth band-pass filter
@@ -44,7 +43,7 @@ for i in audioFiles:
         return lfilter(b, a, data)
 
     # Frequency ranges for filters
-    bands = [(2500, 5000), (2750, 3500), (3500, 4250), (4250, 5000)]
+    bands = [(1500, 3750), (1500, 2250), (2250, 3000), (3000, 3750)]
     threshold_dB = -75
 
     for lowcut, highcut in bands:
@@ -57,7 +56,7 @@ for i in audioFiles:
         plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
         plt.ylabel('Frequency [Hz]')
         plt.xlabel('Time [s]')
-        plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {audioFile}')
+        plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
         plt.colorbar(label='Intensity [dB]')
-        plt.ylim(0, 15000)  # Set frequency limit to 15,000 Hz
+        plt.ylim(0, 7000)
         plt.show()
