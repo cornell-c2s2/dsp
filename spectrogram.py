@@ -47,7 +47,7 @@ for i in audioFiles:
 
         # Frequency ranges for filters
         bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
-        threshold_dB = -70
+        threshold_dB = -75
 
         for lowcut, highcut in bands:
             filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
