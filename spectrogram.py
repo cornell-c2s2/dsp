@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-audioFiles = [ "1363v2.WAV", "1809v2.WAV", "2237v2.WAV", "2260_01.WAV", "2281.WAV", "2287.WAV"]
+#audioFiles = [ "1363v2.WAV", "1809v2.WAV", "2237v2.WAV", "2260_01.WAV", "2281.WAV", "2287.WAV"]
 audioFiles = os.listdir("audio")
 doFilter = True 
 for i in audioFiles:
@@ -22,7 +22,7 @@ for i in audioFiles:
 
     # Compute the spectrogram; convert intensity to dB
     frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
-    intensity = np.log10(intensity)
+    intensity = 10*np.log10(intensity)
     #Plot Spectrogram
     plt.figure(figsize=(10, 4))
     plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
@@ -46,8 +46,8 @@ for i in audioFiles:
             return lfilter(b, a, data)
 
         # Frequency ranges for filters
-        bands = [(1500, 3750), (1500, 2250), (2250, 3000), (3000, 3750)]
-        threshold_dB = -75
+        bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
+        threshold_dB = -70
 
         for lowcut, highcut in bands:
             filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
