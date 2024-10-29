@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-audioFiles = [ "1363v2.WAV", "1809v2.WAV", "2237v2.WAV"]
-doFilter = True
+audioFiles = [ "1363v2.WAV", "1809v2.WAV", "2237v2.WAV", "2260_01.WAV", "2281.WAV", "2287.WAV"]
+audioFiles = os.listdir("audio")
+doFilter = True 
 for i in audioFiles:
     audioFile = "audio/"+i
 
