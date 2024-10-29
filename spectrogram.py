@@ -30,7 +30,7 @@ for i in audioFiles:
     plt.xlabel('Time [s]')
     plt.title(f'Spectrogram of {i}')
     plt.colorbar(label='Intensity [dB]')
-    plt.ylim(0, 7000)
+    plt.ylim(0, 15000)
     plt.show()
     if doFilter:
         # Define Butterworth band-pass filter
@@ -47,13 +47,16 @@ for i in audioFiles:
 
         # Frequency ranges for filters
         bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
-        threshold_dB = -75
+        lower_threshold_dB = -90
+        upper_threshold_dB = -75
+
 
         for lowcut, highcut in bands:
             filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
             frequencies, times, Sxx = spectrogram(filtered_signal, fs=samplingFreq)
             Sxx = 10 * np.log10(Sxx)
-            Sxx_dB_filtered = np.where(Sxx > threshold_dB, Sxx, np.nan)
+            Sxx_dB_filtered = np.where(Sxx > lower_threshold_dB, Sxx, np.nan)
+            Sxx_dB_filtered = np.where(Sxx_dB_filtered < upper_threshold_dB, Sxx, np.nan)
             
             plt.figure(figsize=(10, 4))
             plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
@@ -61,5 +64,5 @@ for i in audioFiles:
             plt.xlabel('Time [s]')
             plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
             plt.colorbar(label='Intensity [dB]')
-            plt.ylim(0, 7000)
+            plt.ylim(0, 15000)
             plt.show()
