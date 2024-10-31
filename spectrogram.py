@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-#audioFiles = [ "1363v2.WAV", "1809v2.WAV", "2237v2.WAV", "2260_01.WAV", "2281.WAV", "2287.WAV"]
+audioFiles = [ "1389.WAV"]
 audioFiles = os.listdir("audio")
 doFilter = True 
 for i in audioFiles:
@@ -22,7 +22,7 @@ for i in audioFiles:
 
     # Compute the spectrogram; convert intensity to dB
     frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
-    intensity = 10*np.log10(intensity)
+    intensity = 10*np.log10(intensity/(10**-12))
     #Plot Spectrogram
     plt.figure(figsize=(10, 4))
     plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
@@ -47,14 +47,14 @@ for i in audioFiles:
 
         # Frequency ranges for filters
         bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
-        lower_threshold_dB = -90
-        upper_threshold_dB = -75
+        lower_threshold_dB = 20
+        upper_threshold_dB = 45
 
 
         for lowcut, highcut in bands:
             filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
             frequencies, times, Sxx = spectrogram(filtered_signal, fs=samplingFreq)
-            Sxx = 10 * np.log10(Sxx)
+            Sxx = 10 * np.log10(Sxx/(10**-12))
             Sxx_dB_filtered = np.where(Sxx > lower_threshold_dB, Sxx, np.nan)
             Sxx_dB_filtered = np.where(Sxx_dB_filtered < upper_threshold_dB, Sxx, np.nan)
             
