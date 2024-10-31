@@ -49,6 +49,7 @@ for i in audioFiles:
         bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
         lower_threshold_dB = 20
         upper_threshold_dB = 45
+        peak_freq_threshold = 8000
 
 
         for lowcut, highcut in bands:
@@ -57,9 +58,10 @@ for i in audioFiles:
             Sxx = 10 * np.log10(Sxx/(10**-12))
             Sxx_dB_filtered = np.where(Sxx > lower_threshold_dB, Sxx, np.nan)
             Sxx_dB_filtered = np.where(Sxx_dB_filtered < upper_threshold_dB, Sxx, np.nan)
+            freq_filtered = np.where(frequencies > peak_freq_threshold, frequencies, np.nan)
             
             plt.figure(figsize=(10, 4))
-            plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
+            plt.pcolormesh(times, freq_filtered, Sxx_dB_filtered, shading='gouraud')
             plt.ylabel('Frequency [Hz]')
             plt.xlabel('Time [s]')
             plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
