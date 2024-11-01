@@ -44,6 +44,12 @@ for i in audioFiles:
         def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
             b, a = butter_bandpass(lowcut, highcut, fs, order=order)
             return lfilter(b, a, data)
+        
+        def normalize_intensity(intensity_dB):
+            min_intensity = np.nanmin(intensity_dB)
+            max_intensity = np.nanmax(intensity_dB)
+            # Normalize to a 0-1 scale
+            return (intensity_dB - min_intensity) / (max_intensity - min_intensity)
 
         #Find midpoints START
         def find_midpoints():
@@ -96,14 +102,15 @@ for i in audioFiles:
         midpoints = find_midpoints()
         # Frequency ranges for filters
         bands = [(9000, 20000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
-        lower_threshold_dB = 20
-        upper_threshold_dB = 45
+        lower_threshold_dB = 0.85
+        upper_threshold_dB = 0.9
         for lowcut, highcut in bands:
             filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
             frequencies, times, Sxx = spectrogram(filtered_signal, fs=samplingFreq)
             Sxx = 10 * np.log10(Sxx/(10**-12))
-            Sxx_dB_filtered = np.where(Sxx > lower_threshold_dB, Sxx, np.nan)
-            Sxx_dB_filtered = np.where(Sxx_dB_filtered < upper_threshold_dB, Sxx, np.nan)
+            Sxx_dB_normalized = normalize_intensity(Sxx)
+            Sxx_dB_filtered = np.where(Sxx_dB_normalized > lower_threshold_dB, Sxx_dB_normalized, np.nan)
+            Sxx_dB_filtered = np.where(Sxx_dB_filtered < upper_threshold_dB, Sxx_dB_normalized, np.nan)
             
             plt.figure(figsize=(10, 4))
             plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
@@ -115,8 +122,8 @@ for i in audioFiles:
             plt.show()
 
             for midpoint in midpoints:
-                time_threshold = 0.12
-                times_filtered = np.where((times < midpoint) & (times > midpoint - time_threshold), times, np.nan)
+                time_threshold = 0.18
+                times_filtered = np.where((times < midpoint+time_threshold) & (times > midpoint - time_threshold), times, np.nan)
 
                 finite_indices = np.isfinite(times_filtered)
                 times_finite = times_filtered[finite_indices]  # Only non-NaN times
