@@ -101,7 +101,7 @@ for i in audioFiles:
             return cluster_midpoints
         midpoints = find_midpoints()
         # Frequency ranges for filters
-        bands = [(9000, 20000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
+        bands = [(6000, 15000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
         lower_threshold_dB = 0.85
         upper_threshold_dB = 0.9
         for lowcut, highcut in bands:
