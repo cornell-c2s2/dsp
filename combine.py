@@ -115,9 +115,8 @@ for i in audioFiles:
             plt.show()
 
             for midpoint in midpoints:
-                print(midpoint)
-                time_threshold = 0.1
-                times_filtered = np.where((times < midpoint + time_threshold) & (times > midpoint - time_threshold), times, np.nan)
+                time_threshold = 0.12
+                times_filtered = np.where((times < midpoint) & (times > midpoint - time_threshold), times, np.nan)
 
                 finite_indices = np.isfinite(times_filtered)
                 times_finite = times_filtered[finite_indices]  # Only non-NaN times
