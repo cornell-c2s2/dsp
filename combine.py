@@ -129,6 +129,13 @@ for i in audioFiles:
                 times_finite = times_filtered[finite_indices]  # Only non-NaN times
                 Sxx_dB_filtered_finite = Sxx_dB_filtered[:, finite_indices]  # Match dimensions with times_finite
 
+                # Find indices of the frequency range of interest
+                freq_indices = np.where((frequencies >= 7000) & (frequencies <= 8000))[0]
+
+                # Sum the intensities within the frequency range for each time slice
+                intensity_sums = np.sum(Sxx_dB_filtered_finite[freq_indices, :], axis=0)
+
+
                 # Plot the spectrogram with filtered values
                 plt.figure(figsize=(10, 4))
                 plt.pcolormesh(times_finite, frequencies, Sxx_dB_filtered_finite, shading='gouraud')
@@ -138,4 +145,8 @@ for i in audioFiles:
                 plt.colorbar(label='Intensity [dB]')
                 plt.ylim(0, 20000)
                 plt.show()
+
+                print("Summed intensities in the specified frequency range over time:")
+                for t, intensity in zip(times, intensity_sums):
+                    print(f"Time: {t:.2f} s, Summed Intensity: {intensity:.2f} dB")
 

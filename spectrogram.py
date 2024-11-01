@@ -6,10 +6,10 @@ import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
 # audioFiles = [ "1389.WAV"]
-audioFiles = os.listdir("bit_test")
+audioFiles = os.listdir("audio")
 doFilter = True 
 for i in audioFiles:
-    audioFile = "bit_test/"+i
+    audioFile = "audio/"+i
 
     # Load audio file
     samplingFreq, mySound = wavfile.read(audioFile)
@@ -46,7 +46,8 @@ for i in audioFiles:
             return lfilter(b, a, data)
 
         # Frequency ranges for filters
-        bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
+        # bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
+        bands = [(1000, 2500), (2500, 3500), (3500, 5000)]
         lower_threshold_dB = 20
         upper_threshold_dB = 45
 
