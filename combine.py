@@ -8,6 +8,7 @@ from scipy.signal import spectrogram, butter, lfilter
 # audioFiles = [ "1389.WAV"]
 audioFiles = os.listdir("audio")
 doFilter = True 
+showGraphsAndPrint = False
 for i in audioFiles:
     audioFile = "audio/"+i
 
@@ -24,14 +25,15 @@ for i in audioFiles:
     frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
     intensity = 10*np.log10(intensity/(10**-12))
     #Plot Spectrogram
-    plt.figure(figsize=(10, 4))
-    plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
-    plt.ylabel('Frequency [Hz]')
-    plt.xlabel('Time [s]')
-    plt.title(f'Spectrogram of {i}')
-    plt.colorbar(label='Intensity [dB]')
-    plt.ylim(0, 20000)
-    plt.show()
+    if showGraphsAndPrint: 
+        plt.figure(figsize=(10, 4))
+        plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
+        plt.ylabel('Frequency [Hz]')
+        plt.xlabel('Time [s]')
+        plt.title(f'Spectrogram of {i}')
+        plt.colorbar(label='Intensity [dB]')
+        plt.ylim(0, 20000)
+        plt.show()
     if doFilter:
         # Define Butterworth band-pass filter
         def butter_bandpass(lowcut, highcut, fs, order=4):
@@ -95,9 +97,10 @@ for i in audioFiles:
                 cluster_midpoints.append(midpoint)
 
             # Print the detected cluster midpoints
-            print(f"Detected blob midpoints in {i}:")
-            for midpoint in cluster_midpoints:
-                print(f"  Midpoint time: {midpoint:.2f} s")
+            if showGraphsAndPrint:
+                print(f"Detected blob midpoints in {i}:")
+                for midpoint in cluster_midpoints:
+                    print(f"  Midpoint time: {midpoint:.2f} s")
             return cluster_midpoints
         midpoints = find_midpoints()
         # Frequency ranges for filters
@@ -111,16 +114,17 @@ for i in audioFiles:
             Sxx_dB_normalized = normalize_intensity(Sxx)
             Sxx_dB_filtered = np.where(Sxx_dB_normalized > lower_threshold_dB, Sxx_dB_normalized, np.nan)
             Sxx_dB_filtered = np.where(Sxx_dB_filtered < upper_threshold_dB, Sxx_dB_normalized, np.nan)
-            
-            plt.figure(figsize=(10, 4))
-            plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
-            plt.ylabel('Frequency [Hz]')
-            plt.xlabel('Time [s]')
-            plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
-            plt.colorbar(label='Intensity [dB]')
-            plt.ylim(0, 20000)
-            plt.show()
+            if showGraphsAndPrint:
+                plt.figure(figsize=(10, 4))
+                plt.pcolormesh(times, frequencies, Sxx_dB_filtered, shading='gouraud')
+                plt.ylabel('Frequency [Hz]')
+                plt.xlabel('Time [s]')
+                plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
+                plt.colorbar(label='Intensity [dB]')
+                plt.ylim(0, 20000)
+                plt.show()
 
+            has_a_scrub = False
             for midpoint in midpoints:
                 time_threshold = 0.18
                 times_filtered = np.where((times < midpoint+time_threshold) & (times > midpoint - time_threshold), times, np.nan)
@@ -129,24 +133,41 @@ for i in audioFiles:
                 times_finite = times_filtered[finite_indices]  # Only non-NaN times
                 Sxx_dB_filtered_finite = Sxx_dB_filtered[:, finite_indices]  # Match dimensions with times_finite
 
-                # Find indices of the frequency range of interest
-                freq_indices = np.where((frequencies >= 7000) & (frequencies <= 8000))[0]
+                def sum_intense(lower, upper, half_range):
+                    freq_min_idx = np.searchsorted(frequencies, lower, side='left')
+                    freq_max_idx = np.searchsorted(frequencies, upper, side='right')
 
-                # Sum the intensities within the frequency range for each time slice
-                intensity_sums = np.sum(Sxx_dB_filtered_finite[freq_indices, :], axis=0)
+                    # Find time indices within the specified range
+                    time_min_idx = np.searchsorted(times, midpoint-half_range, side='left')
+                    time_max_idx = np.searchsorted(times, midpoint+half_range, side='right')
 
+                    # Slice the Sxx matrix to get the specified area
+                    area_intensity = Sxx_dB_filtered[freq_min_idx:freq_max_idx, time_min_idx:time_max_idx]
+                    #print(area_intensity)
+                    # Sum the intensities in the specified area, ignoring NaNs
+                    total_intensity = np.nansum(area_intensity)
+                    return total_intensity
+                if showGraphsAndPrint:
+                    print("Above: "+str(sum_intense(9000, 15000, .18)))
+                    print("Middle: "+str(sum_intense(7000, 8000, 0.05)))
+                    print("Below: "+str(sum_intense(1000, 6000, .18)))
+                    print()
+                    # Plot the spectrogram with filtered values
+                    plt.figure(figsize=(10, 4))
+                    plt.pcolormesh(times_finite, frequencies, Sxx_dB_filtered_finite, shading='gouraud')
+                    plt.ylabel('Frequency [Hz]')
+                    plt.xlabel('Time [s]')
+                    plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
+                    plt.colorbar(label='Intensity [dB]')
+                    plt.ylim(0, 20000)
+                    plt.show()
 
-                # Plot the spectrogram with filtered values
-                plt.figure(figsize=(10, 4))
-                plt.pcolormesh(times_finite, frequencies, Sxx_dB_filtered_finite, shading='gouraud')
-                plt.ylabel('Frequency [Hz]')
-                plt.xlabel('Time [s]')
-                plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
-                plt.colorbar(label='Intensity [dB]')
-                plt.ylim(0, 20000)
-                plt.show()
+                if sum_intense(7000, 8000, 0.05) < 50 and sum_intense(9000, 15000, .18) > 200 and sum_intense(1000, 6000, .18) > 200:
+                    has_a_scrub = True
+            if has_a_scrub:
+                print(audioFile+" has a Scrub Jay! :)")
+            else:
+                print(audioFile+" has no Scrub Jay! :(")
 
-                print("Summed intensities in the specified frequency range over time:")
-                for t, intensity in zip(times, intensity_sums):
-                    print(f"Time: {t:.2f} s, Summed Intensity: {intensity:.2f} dB")
+                
 
