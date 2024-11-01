@@ -92,13 +92,11 @@ for i in audioFiles:
             # Add the last cluster's midpoint if it exists and is long enough
             if current_cluster and (current_cluster[-1] - current_cluster[0] >= min_blob_duration):
                 midpoint = sum(current_cluster) / len(current_cluster)
-                max_freq_idx = np.nanargmax(Sxx_dB_normalized[:, midpoint])  # Use nanargmax to ignore NaN values
-                max_frequency = frequencies[max_freq_idx]
-                cluster_midpoints.append((midpoint, max_frequency))
+                cluster_midpoints.append(midpoint)
 
             # Print the detected cluster midpoints
             print(f"Detected blob midpoints in {i}:")
-            for midpoint, _ in cluster_midpoints:
+            for midpoint in cluster_midpoints:
                 print(f"  Midpoint time: {midpoint:.2f} s")
             return cluster_midpoints
         midpoints = find_midpoints()
@@ -123,7 +121,7 @@ for i in audioFiles:
             plt.ylim(0, 20000)
             plt.show()
 
-            for midpoint, max_freq in midpoints:
+            for midpoint in midpoints:
                 time_threshold = 0.18
                 times_filtered = np.where((times < midpoint+time_threshold) & (times > midpoint - time_threshold), times, np.nan)
 
