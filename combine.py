@@ -5,12 +5,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-# audioFiles = [ "1389.WAV"]
-audioFiles = os.listdir("audio")
+folder = "testing" #"audio"
+audioFiles = os.listdir(folder)
 doFilter = True 
 showGraphsAndPrint = False
 for i in audioFiles:
-    audioFile = "audio/"+i
+    audioFile = folder+"/"+i
 
     # Load audio file
     samplingFreq, mySound = wavfile.read(audioFile)
