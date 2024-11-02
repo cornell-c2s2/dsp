@@ -7,7 +7,6 @@ from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
 folder = "testing" #"audio"
 audioFiles = os.listdir(folder)
-doFilter = True 
 showGraphsAndPrint = False
 for i in audioFiles:
     audioFile = folder+"/"+i
