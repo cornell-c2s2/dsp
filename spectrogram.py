@@ -47,7 +47,7 @@ for i in audioFiles:
 
         # Frequency ranges for filters
         # bands = [(1000, 5000)]#, (1000, 2000), (2000, 3500), (3500, 4500)]
-        bands = [(1000, 2500), (2500, 3500), (3500, 5000)]
+        bands = [(1000, 5000), (1000, 2500), (2500, 3500), (3500, 5000)]
         lower_threshold_dB = 45
         upper_threshold_dB = 1000
 
