@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "IIR.C": "cpp"
+    "IIR.C": "cpp",
+    "dirent.h": "c"
   }
 }
