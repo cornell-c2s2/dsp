@@ -96,6 +96,12 @@ for i in audioFiles:
     lower_threshold_dB_normalized = 0.85
     upper_threshold_dB_normalized = 0.9
     filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
+
+    # Save filtered data
+    np.savetxt("filtered_data_python.txt", filtered_signal)
+    print("Filtered data saved to 'filtered_data_python.txt'")
+
+
     frequencies, times, intensity = spectrogram(filtered_signal, fs=samplingFreq)
     intensity = 10 * np.log10(intensity/(10**-12))
     intensity_dB_normalized = normalize_intensity(intensity)
