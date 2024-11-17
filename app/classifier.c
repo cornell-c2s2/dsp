@@ -235,6 +235,13 @@ void spectrogram(const double *signal, int signal_size, double fs, int window_si
             double real = out[k][0];
             double imag = out[k][1];
             double psd = (real * real + imag * imag) / (window_power * fs);
+
+            // Double the PSD values for frequencies except DC and Nyquist (if nfft even)
+            if (k != 0 && (k != *freq_bins - 1 || window_size % 2 != 0))
+            {
+                psd *= 2.0;
+            }
+
             (*intensity)[segment * (*freq_bins) + k] = psd;
         }
 
