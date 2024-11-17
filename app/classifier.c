@@ -104,13 +104,32 @@ int main()
     printf("Spectrogram calculated: Time bins = %d, Frequency bins = %d\n", time_bins, freq_bins);
 
     // Print the spectrogram (example output for debugging)
-    for (int i = 0; i < time_bins; i++)
+    // for (int i = 0; i < time_bins; i++)
+    // {
+    //     printf("Time: %f\n", times[i]);
+    //     for (int j = 0; j < freq_bins; j++)
+    //     {
+    //         printf("Intensity[%d][%d]: %e\n", i, j, intensity[i * freq_bins + j]);
+    //     }
+    // }
+
+    FILE *output_file2 = fopen("filtered_intensity_c.txt", "w");
+    if (output_file2)
     {
-        printf("Time: %f\n", times[i]);
-        for (int j = 0; j < freq_bins; j++)
+        for (int i = 0; i < freq_bins; i++) // Iterate over frequency bins (rows)
         {
-            printf("Intensity[%d][%d]: %e\n", i, j, intensity[i * freq_bins + j]);
+            for (int j = 0; j < time_bins; j++) // Iterate over time bins (columns)
+            {
+                fprintf(output_file2, "%e ", intensity[i * time_bins + j]); // Write value with a space
+            }
+            fprintf(output_file2, "\n"); // Add a newline at the end of each row
         }
+        fclose(output_file2);
+        printf("Filtered data saved to 'filtered_intensity_c.txt'\n");
+    }
+    else
+    {
+        fprintf(stderr, "Failed to open file for writing.\n");
     }
 
     // Free allocated memory
