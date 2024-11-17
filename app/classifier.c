@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <math.h>
 #include <string.h>
+#include <fftw3.h>
 
 #define PI 3.141592653589793
 
@@ -108,7 +109,7 @@ int main()
         printf("Time: %f\n", times[i]);
         for (int j = 0; j < freq_bins; j++)
         {
-            printf("Intensity[%d][%d]: %f\n", i, j, intensity[i * freq_bins + j]);
+            printf("Intensity[%d][%d]: %e\n", i, j, intensity[i * freq_bins + j]);
         }
     }
 
@@ -152,64 +153,82 @@ void butter_bandpass_filter(const double *data, double *filtered, int data_size)
 // Spectrogram calculation
 void spectrogram(const double *signal, int signal_size, double fs, int window_size, int overlap, double **intensity, double **times, int *time_bins, int *freq_bins)
 {
+    // Calculate step size
     int step = window_size - overlap;
-    *time_bins = (signal_size - overlap) / step;
-    *freq_bins = window_size / 2 + 1; // Only half the spectrum (real-valued input)
 
-    *intensity = malloc((*time_bins) * (*freq_bins) * sizeof(double));
-    *times = malloc((*time_bins) * sizeof(double));
+    // Calculate number of segments
+    int num_segments = 0;
+    if (signal_size < window_size)
+        num_segments = 1;
+    else
+        num_segments = 1 + (signal_size - window_size) / step;
 
-    double *window = malloc(window_size * sizeof(double));
-    compute_hamming_window(window, window_size);
+    // Output number of time bins and frequency bins
+    *time_bins = num_segments;
+    *freq_bins = window_size / 2 + 1; // Since we're using real FFT
 
-    double *x_real = malloc(window_size * sizeof(double));
-    double *x_imag = calloc(window_size, sizeof(double)); // Initialize to zero
+    // Allocate memory for intensity matrix (flattened 2D array)
+    *intensity = (double *)malloc(num_segments * (*freq_bins) * sizeof(double));
 
-    for (int t = 0; t < *time_bins; t++)
+    // Allocate memory for times array
+    *times = (double *)malloc(num_segments * sizeof(double));
+
+    // Generate window function (Hann window)
+    double *window = (double *)malloc(window_size * sizeof(double));
+    for (int i = 0; i < window_size; i++)
     {
-        int start = t * step;
-        (*times)[t] = (double)start / fs;
-
-        // Apply window function to segment
-        for (int i = 0; i < window_size; i++)
-        {
-            if (start + i < signal_size)
-            {
-                x_real[i] = signal[start + i] * window[i];
-            }
-            else
-            {
-                x_real[i] = 0.0;
-            }
-        }
-
-        // Perform DFT
-        for (int k = 0; k < *freq_bins; k++)
-        {
-            double sum_real = 0.0;
-            double sum_imag = 0.0;
-            for (int n = 0; n < window_size; n++)
-            {
-                double angle = 2.0 * PI * k * n / window_size;
-                sum_real += x_real[n] * cos(angle);
-                sum_imag -= x_real[n] * sin(angle); // Note the negative sign
-            }
-            // Compute power spectrum
-            double power = sum_real * sum_real + sum_imag * sum_imag;
-            // Avoid log of zero or negative numbers
-            if (power <= 0)
-            {
-                (*intensity)[t * (*freq_bins) + k] = -120.0; // Minimum dB value
-            }
-            else
-            {
-                (*intensity)[t * (*freq_bins) + k] = 10 * log10(power / (1e-12));
-            }
-        }
+        window[i] = 0.5 * (1.0 - cos(2.0 * M_PI * i / (window_size - 1)));
     }
 
-    free(x_real);
-    free(x_imag);
+    // Compute window power (for scaling)
+    double window_power = 0.0;
+    for (int i = 0; i < window_size; i++)
+    {
+        window_power += window[i] * window[i];
+    }
+
+    // For each segment
+    for (int segment = 0; segment < num_segments; segment++)
+    {
+        // Calculate the start index of the segment
+        int start = segment * step;
+
+        // Apply window and get segment data
+        double *segment_data = (double *)calloc(window_size, sizeof(double)); // Zero-padded if necessary
+        for (int i = 0; i < window_size; i++)
+        {
+            if ((start + i) < signal_size)
+                segment_data[i] = signal[start + i] * window[i];
+            else
+                segment_data[i] = 0.0; // Zero-padding
+        }
+
+        // Prepare FFT
+        fftw_complex *out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * (*freq_bins));
+        fftw_plan p = fftw_plan_dft_r2c_1d(window_size, segment_data, out, FFTW_ESTIMATE);
+
+        // Execute FFT
+        fftw_execute(p);
+
+        // Compute power spectral density (PSD)
+        for (int k = 0; k < *freq_bins; k++)
+        {
+            double real = out[k][0];
+            double imag = out[k][1];
+            double psd = (real * real + imag * imag) / (window_power * fs);
+            (*intensity)[segment * (*freq_bins) + k] = psd;
+        }
+
+        // Store time value (center of the segment)
+        (*times)[segment] = (start + window_size / 2.0) / fs;
+
+        // Clean up
+        fftw_destroy_plan(p);
+        fftw_free(out);
+        free(segment_data);
+    }
+
+    // Clean up
     free(window);
 }
 
