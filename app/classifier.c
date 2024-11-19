@@ -18,126 +18,310 @@ const double a[COEFF_SIZE] = {1, -5.22664543, 12.83819436, -19.22549589, 19.1551
 // Function prototypes
 int read_wav_file(const char *filename, int16_t **data, int *sample_rate, int *num_samples, int *num_channels);
 void butter_bandpass_filter(const double *data, double *filtered, int data_size);
-void spectrogram(const double *signal, int signal_size, double fs, int window_size, int overlap, double **intensity, double **times, int *time_bins, int *freq_bins);
-void compute_hamming_window(double *window, int window_size);
+// void spectrogram(const double *signal, int signal_size, double fs, int window_size, int overlap, double **intensity, double **times, int *time_bins, int *freq_bins);
+// void compute_hamming_window(double *window, int window_size);
 
+// int main()
+// {
+//     // Step 1: Read the WAV file
+//     const char *filename = "testing/2287-sj.wav";
+//     int16_t *wav_data = NULL;
+//     int sample_rate, num_samples, num_channels;
+
+//     if (!read_wav_file(filename, &wav_data, &sample_rate, &num_samples, &num_channels))
+//     {
+//         fprintf(stderr, "Failed to load WAV file.\n");
+//         return EXIT_FAILURE;
+//     }
+
+//     printf("Loaded WAV file: %s\n", filename);
+//     printf("Sample Rate: %d Hz\n", sample_rate);
+//     printf("Channels: %d (output as mono)\n", num_channels);
+//     printf("Total Samples: %d\n", num_samples);
+
+//     // Step 2: Normalize and convert WAV data to double
+//     double *data = malloc(num_samples * sizeof(double));
+//     if (!data)
+//     {
+//         fprintf(stderr, "Memory allocation failed for data array.\n");
+//         free(wav_data);
+//         return EXIT_FAILURE;
+//     }
+//     for (int i = 0; i < num_samples; i++)
+//     {
+//         data[i] = wav_data[i] / 32768.0; // Normalize to [-1, 1]
+//     }
+//     for (int i = 0; i < 10; i++)
+//     {
+//         printf("Normalized data[%d]: %f\n", i, data[i]);
+//     }
+
+//     free(wav_data); // No longer needed
+
+//     // Step 3: Apply Butterworth bandpass filter
+//     double *filtered = malloc(num_samples * sizeof(double));
+//     if (!filtered)
+//     {
+//         fprintf(stderr, "Memory allocation failed for filtered array.\n");
+//         free(data);
+//         return EXIT_FAILURE;
+//     }
+//     butter_bandpass_filter(data, filtered, num_samples);
+//     free(data); // No longer needed
+
+//     // // Print the filtered data
+//     // printf("Filtered Data:\n");
+//     // for (int i = 0; i < num_samples; i++) {
+//     //     printf("%f\n", filtered[i]);
+//     // }
+
+//     // After applying Butterworth bandpass filter
+//     FILE *output_file = fopen("filtered_data_c.txt", "w");
+//     if (output_file)
+//     {
+//         for (int i = 0; i < num_samples; i++)
+//         {
+//             fprintf(output_file, "%f\n", filtered[i]);
+//         }
+//         fclose(output_file);
+//         printf("Filtered data saved to 'filtered_data_c.txt'\n");
+//     }
+//     else
+//     {
+//         fprintf(stderr, "Failed to open file for writing.\n");
+//     }
+
+//     // Step 4: Calculate the spectrogram
+//     double *intensity = NULL;
+//     double *times = NULL;
+//     int time_bins, freq_bins;
+
+//     int window_size = 256;
+//     int overlap = 128;
+
+//     spectrogram(filtered, num_samples, sample_rate, window_size, overlap, &intensity, &times, &time_bins, &freq_bins);
+
+//     printf("Spectrogram calculated: Time bins = %d, Frequency bins = %d\n", time_bins, freq_bins);
+
+//     // Print the spectrogram (example output for debugging)
+//     // for (int i = 0; i < time_bins; i++)
+//     // {
+//     //     printf("Time: %f\n", times[i]);
+//     //     for (int j = 0; j < freq_bins; j++)
+//     //     {
+//     //         printf("Intensity[%d][%d]: %e\n", i, j, intensity[i * freq_bins + j]);
+//     //     }
+//     // }
+
+//     FILE *output_file2 = fopen("filtered_intensity_c.txt", "w");
+//     if (output_file2)
+//     {
+//         for (int i = 0; i < freq_bins; i++) // Iterate over frequency bins (rows)
+//         {
+//             for (int j = 0; j < time_bins; j++) // Iterate over time bins (columns)
+//             {
+//                 fprintf(output_file2, "%e ", intensity[i * time_bins + j]); // Write value with a space
+//             }
+//             fprintf(output_file2, "\n"); // Add a newline at the end of each row
+//         }
+//         fclose(output_file2);
+//         printf("Filtered data saved to 'filtered_intensity_c.txt'\n");
+//     }
+//     else
+//     {
+//         fprintf(stderr, "Failed to open file for writing.\n");
+//     }
+
+//     // Free allocated memory
+//     free(filtered);
+//     free(intensity);
+//     free(times);
+
+//     return EXIT_SUCCESS;
+// }
+
+void tukey_window(double *window, int N, double alpha)
+{
+    int n;
+    int edge = (int)(alpha * (N - 1) / 2);
+    for (n = 0; n < N; n++)
+    {
+        if (n < edge)
+        {
+            window[n] = 0.5 * (1 + cos(M_PI * ((2.0 * n) / (alpha * (N - 1)) - 1)));
+        }
+        else if (n > N - edge - 1)
+        {
+            window[n] = 0.5 * (1 + cos(M_PI * ((2.0 * n) / (alpha * (N - 1)) - (2 / alpha) + 1)));
+        }
+        else
+        {
+            window[n] = 1.0;
+        }
+    }
+}
+void detrend(double *data, int N)
+{
+    double sum = 0.0;
+    for (int i = 0; i < N; i++)
+    {
+        sum += data[i];
+    }
+    double mean = sum / N;
+    for (int i = 0; i < N; i++)
+    {
+        data[i] -= mean;
+    }
+}
+void spectrogram(double *x, int x_len, double fs, const char *window_type, int nperseg, int noverlap, int nfft, int detrend_flag, int return_onesided, const char *scaling, const char *mode, double **frequencies, int *freq_len, double **times, int *time_len, double ***spectrogram)
+{
+    int step = nperseg - noverlap;
+    int num_segments = (x_len - noverlap) / step;
+    *time_len = num_segments;
+    *freq_len = nfft / 2 + 1;
+    *frequencies = (double *)malloc((*freq_len) * sizeof(double));
+    *times = (double *)malloc((*time_len) * sizeof(double));
+    *spectrogram = (double **)malloc((*freq_len) * sizeof(double *));
+    for (int i = 0; i < *freq_len; i++)
+    {
+        (*spectrogram)[i] = (double *)malloc((*time_len) * sizeof(double));
+    }
+
+    // Generate frequency vector
+    for (int i = 0; i < *freq_len; i++)
+    {
+        (*frequencies)[i] = i * fs / nfft;
+    }
+
+    // Generate time vector
+    for (int i = 0; i < num_segments; i++)
+    {
+        (*times)[i] = (i * step + nperseg / 2) / fs;
+    }
+
+    // Generate window
+    double *window = (double *)malloc(nperseg * sizeof(double));
+    if (strcmp(window_type, "tukey") == 0)
+    {
+        tukey_window(window, nperseg, 0.25);
+    }
+    else
+    {
+        // Implement other window types as needed
+    }
+
+    // FFTW plan
+    fftw_complex *in = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * nfft);
+    fftw_complex *out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * nfft);
+    fftw_plan plan = fftw_plan_dft_1d(nfft, in, out, FFTW_FORWARD, FFTW_MEASURE);
+
+    // Loop over segments
+    for (int i = 0; i < num_segments; i++)
+    {
+        int start = i * step;
+        // Copy segment and apply window
+        for (int j = 0; j < nperseg; j++)
+        {
+            if (start + j < x_len)
+            {
+                in[j][0] = x[start + j] * window[j]; // Real part
+                in[j][1] = 0.0;                      // Imaginary part
+            }
+            else
+            {
+                in[j][0] = 0.0;
+                in[j][1] = 0.0;
+            }
+        }
+        // Zero-padding if nfft > nperseg
+        for (int j = nperseg; j < nfft; j++)
+        {
+            in[j][0] = 0.0;
+            in[j][1] = 0.0;
+        }
+
+        // Detrend if needed
+        if (detrend_flag)
+        {
+            double segment_mean = 0.0;
+            for (int j = 0; j < nperseg; j++)
+            {
+                segment_mean += in[j][0];
+            }
+            segment_mean /= nperseg;
+            for (int j = 0; j < nperseg; j++)
+            {
+                in[j][0] -= segment_mean;
+            }
+        }
+
+        // Compute FFT
+        fftw_execute(plan);
+
+        // Compute spectrogram column
+        for (int j = 0; j < *freq_len; j++)
+        {
+            double real = out[j][0];
+            double imag = out[j][1];
+            double magnitude = sqrt(real * real + imag * imag);
+
+            if (strcmp(mode, "psd") == 0)
+            {
+                // Power Spectral Density
+                (*spectrogram)[j][i] = (magnitude * magnitude) / (fs * nperseg);
+            }
+            else if (strcmp(mode, "magnitude") == 0)
+            {
+                (*spectrogram)[j][i] = magnitude;
+            }
+            // Add other modes as needed
+        }
+    }
+
+    // Clean up
+    fftw_destroy_plan(plan);
+    fftw_free(in);
+    fftw_free(out);
+    free(window);
+}
 int main()
 {
-    // Step 1: Read the WAV file
-    const char *filename = "testing/2287-sj.wav";
-    int16_t *wav_data = NULL;
-    int sample_rate, num_samples, num_channels;
-
-    if (!read_wav_file(filename, &wav_data, &sample_rate, &num_samples, &num_channels))
+    // Example signal
+    int x_len = 1024;
+    double x[x_len];
+    double fs = 1000.0; // Sampling frequency
+    for (int i = 0; i < x_len; i++)
     {
-        fprintf(stderr, "Failed to load WAV file.\n");
-        return EXIT_FAILURE;
+        x[i] = sin(2 * M_PI * 50 * i / fs); // 50 Hz sine wave
     }
 
-    printf("Loaded WAV file: %s\n", filename);
-    printf("Sample Rate: %d Hz\n", sample_rate);
-    printf("Channels: %d (output as mono)\n", num_channels);
-    printf("Total Samples: %d\n", num_samples);
+    // Spectrogram parameters
+    int nperseg = 256;
+    int noverlap = 128;
+    int nfft = 256;
 
-    // Step 2: Normalize and convert WAV data to double
-    double *data = malloc(num_samples * sizeof(double));
-    if (!data)
+    // Outputs
+    double *frequencies;
+    int freq_len;
+    double *times;
+    int time_len;
+    double **Sxx;
+
+    // Compute spectrogram
+    spectrogram(x, x_len, fs, "tukey", nperseg, noverlap, nfft, 1, 1, "density", "psd", &frequencies, &freq_len, &times, &time_len, &Sxx);
+
+    // Do something with the spectrogram (e.g., print or plot)
+
+    // Clean up
+    for (int i = 0; i < freq_len; i++)
     {
-        fprintf(stderr, "Memory allocation failed for data array.\n");
-        free(wav_data);
-        return EXIT_FAILURE;
+        free(Sxx[i]);
     }
-    for (int i = 0; i < num_samples; i++)
-    {
-        data[i] = wav_data[i] / 32768.0; // Normalize to [-1, 1]
-    }
-    for (int i = 0; i < 10; i++)
-    {
-        printf("Normalized data[%d]: %f\n", i, data[i]);
-    }
-
-    free(wav_data); // No longer needed
-
-    // Step 3: Apply Butterworth bandpass filter
-    double *filtered = malloc(num_samples * sizeof(double));
-    if (!filtered)
-    {
-        fprintf(stderr, "Memory allocation failed for filtered array.\n");
-        free(data);
-        return EXIT_FAILURE;
-    }
-    butter_bandpass_filter(data, filtered, num_samples);
-    free(data); // No longer needed
-
-    // // Print the filtered data
-    // printf("Filtered Data:\n");
-    // for (int i = 0; i < num_samples; i++) {
-    //     printf("%f\n", filtered[i]);
-    // }
-
-    // After applying Butterworth bandpass filter
-    FILE *output_file = fopen("filtered_data_c.txt", "w");
-    if (output_file)
-    {
-        for (int i = 0; i < num_samples; i++)
-        {
-            fprintf(output_file, "%f\n", filtered[i]);
-        }
-        fclose(output_file);
-        printf("Filtered data saved to 'filtered_data_c.txt'\n");
-    }
-    else
-    {
-        fprintf(stderr, "Failed to open file for writing.\n");
-    }
-
-    // Step 4: Calculate the spectrogram
-    double *intensity = NULL;
-    double *times = NULL;
-    int time_bins, freq_bins;
-
-    int window_size = 256;
-    int overlap = 128;
-
-    spectrogram(filtered, num_samples, sample_rate, window_size, overlap, &intensity, &times, &time_bins, &freq_bins);
-
-    printf("Spectrogram calculated: Time bins = %d, Frequency bins = %d\n", time_bins, freq_bins);
-
-    // Print the spectrogram (example output for debugging)
-    // for (int i = 0; i < time_bins; i++)
-    // {
-    //     printf("Time: %f\n", times[i]);
-    //     for (int j = 0; j < freq_bins; j++)
-    //     {
-    //         printf("Intensity[%d][%d]: %e\n", i, j, intensity[i * freq_bins + j]);
-    //     }
-    // }
-
-    FILE *output_file2 = fopen("filtered_intensity_c.txt", "w");
-    if (output_file2)
-    {
-        for (int i = 0; i < freq_bins; i++) // Iterate over frequency bins (rows)
-        {
-            for (int j = 0; j < time_bins; j++) // Iterate over time bins (columns)
-            {
-                fprintf(output_file2, "%e ", intensity[i * time_bins + j]); // Write value with a space
-            }
-            fprintf(output_file2, "\n"); // Add a newline at the end of each row
-        }
-        fclose(output_file2);
-        printf("Filtered data saved to 'filtered_intensity_c.txt'\n");
-    }
-    else
-    {
-        fprintf(stderr, "Failed to open file for writing.\n");
-    }
-
-    // Free allocated memory
-    free(filtered);
-    free(intensity);
+    free(Sxx);
+    free(frequencies);
     free(times);
 
-    return EXIT_SUCCESS;
+    return 0;
 }
 
 // Butterworth bandpass filter implementation
@@ -166,104 +350,6 @@ void butter_bandpass_filter(const double *data, double *filtered, int data_size)
         w[0] = w0;
 
         filtered[i] = y;
-    }
-}
-
-// Spectrogram calculation
-void spectrogram(const double *signal, int signal_size, double fs, int window_size, int overlap, double **intensity, double **times, int *time_bins, int *freq_bins)
-{
-    // Calculate step size
-    int step = window_size - overlap;
-
-    // Calculate number of segments
-    int num_segments = 0;
-    if (signal_size < window_size)
-        num_segments = 1;
-    else
-        num_segments = 1 + (signal_size - window_size) / step;
-
-    // Output number of time bins and frequency bins
-    *time_bins = num_segments;
-    *freq_bins = window_size / 2 + 1; // Since we're using real FFT
-
-    // Allocate memory for intensity matrix (flattened 2D array)
-    *intensity = (double *)malloc(num_segments * (*freq_bins) * sizeof(double));
-
-    // Allocate memory for times array
-    *times = (double *)malloc(num_segments * sizeof(double));
-
-    // Generate window function (Hann window)
-    double *window = (double *)malloc(window_size * sizeof(double));
-    for (int i = 0; i < window_size; i++)
-    {
-        window[i] = 0.5 * (1.0 - cos(2.0 * M_PI * i / (window_size - 1)));
-    }
-
-    // Compute window power (for scaling)
-    double window_power = 0.0;
-    for (int i = 0; i < window_size; i++)
-    {
-        window_power += window[i] * window[i];
-    }
-
-    // For each segment
-    for (int segment = 0; segment < num_segments; segment++)
-    {
-        // Calculate the start index of the segment
-        int start = segment * step;
-
-        // Apply window and get segment data
-        double *segment_data = (double *)calloc(window_size, sizeof(double)); // Zero-padded if necessary
-        for (int i = 0; i < window_size; i++)
-        {
-            if ((start + i) < signal_size)
-                segment_data[i] = signal[start + i] * window[i];
-            else
-                segment_data[i] = 0.0; // Zero-padding
-        }
-
-        // Prepare FFT
-        fftw_complex *out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * (*freq_bins));
-        fftw_plan p = fftw_plan_dft_r2c_1d(window_size, segment_data, out, FFTW_ESTIMATE);
-
-        // Execute FFT
-        fftw_execute(p);
-
-        // Compute power spectral density (PSD)
-        for (int k = 0; k < *freq_bins; k++)
-        {
-            double real = out[k][0];
-            double imag = out[k][1];
-            double psd = (real * real + imag * imag) / (window_power * fs);
-
-            // Double the PSD values for frequencies except DC and Nyquist (if nfft even)
-            if (k != 0 && (k != *freq_bins - 1 || window_size % 2 != 0))
-            {
-                psd *= 2.0;
-            }
-
-            (*intensity)[segment * (*freq_bins) + k] = psd;
-        }
-
-        // Store time value (center of the segment)
-        (*times)[segment] = (start + window_size / 2.0) / fs;
-
-        // Clean up
-        fftw_destroy_plan(p);
-        fftw_free(out);
-        free(segment_data);
-    }
-
-    // Clean up
-    free(window);
-}
-
-// Generate Hamming window
-void compute_hamming_window(double *window, int window_size)
-{
-    for (int i = 0; i < window_size; i++)
-    {
-        window[i] = 0.54 - 0.46 * cos(2 * PI * i / (window_size - 1));
     }
 }
 
