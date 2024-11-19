@@ -1,6 +1,8 @@
 {
   "files.associations": {
     "IIR.C": "cpp",
-    "dirent.h": "c"
+    "dirent.h": "c",
+    "stdlib.h": "c",
+    "stdio.h": "c"
   }
 }
