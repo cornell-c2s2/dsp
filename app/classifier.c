@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
 #include <string.h>
 #include <fftw3.h>
+#include <stdio.h>
 
 #define PI 3.141592653589793
 
@@ -54,10 +54,10 @@ int main()
     {
         data[i] = wav_data[i] / 32768.0; // Normalize to [-1, 1]
     }
-    for (int i = 0; i < 10; i++)
-    {
-        printf("Normalized data[%d]: %f\n", i, data[i]);
-    }
+    // for (int i = 0; i < 10; i++)
+    // {
+    //     printf("Normalized data[%d]: %f\n", i, data[i]);
+    // }
 
     free(wav_data); // No longer needed
 
@@ -112,7 +112,7 @@ int main()
     // (Optional) Process or display the spectrogram data
     // ...
 
-    FILE *output_file = fopen(filename, "w");
+    FILE *output_file = fopen("data/spect_c.txt", "w");
     if (output_file)
     {
         for (int i = 0; i < num_freqs; i++)
@@ -124,11 +124,11 @@ int main()
             fprintf(output_file, "\n"); // Add a newline at the end of each row
         }
         fclose(output_file);
-        printf("Spectrogram data saved to '%s'\n", filename);
+        printf("Spectrogram data saved to '%s'\n", "data/spect_c.txt");
     }
     else
     {
-        fprintf(stderr, "Failed to open file '%s' for writing.\n", filename);
+        fprintf(stderr, "Failed to open file '%s' for writing.\n", "data/spect_c.txt");
     }
 
     // Free allocated memory
@@ -195,42 +195,44 @@ void spectrogram(double *signal, int signal_length, double fs,
 
     // FFT setup
     fftw_complex *in = fftw_malloc(sizeof(fftw_complex) * nfft);
-    fftw_complex *out = fftw_malloc(sizeof(fftw_complex) * nfft);
-    fftw_plan plan = fftw_plan_dft_1d(nfft, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+    // fftw_complex *out = fftw_malloc(sizeof(fftw_complex) * nfft);
+    // fftw_plan plan = fftw_plan_dft_1d(nfft, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
 
-    // Main loop over segments
-    for (int i = 0; i < *num_times; i++)
-    {
-        // Apply window and zero-padding
-        for (int j = 0; j < nperseg; j++)
-        {
-            in[j][0] = signal[i * step + j] * window[j]; // Real part
-            in[j][1] = 0.0;                              // Imaginary part
-        }
-        for (int j = nperseg; j < nfft; j++)
-        {
-            in[j][0] = 0.0;
-            in[j][1] = 0.0;
-        }
+    // // Main loop over segments
+    // for (int i = 0; i < *num_times; i++)
+    // {
+    //     // Apply window and zero-padding
+    //     for (int j = 0; j < nperseg; j++)
+    //     {
+    //         in[j][0] = signal[i * step + j] * window[j]; // Real part
+    //         in[j][1] = 0.0;                              // Imaginary part
+    //     }
+    //     for (int j = nperseg; j < nfft; j++)
+    //     {
+    //         in[j][0] = 0.0;
+    //         in[j][1] = 0.0;
+    //     }
 
-        // Compute FFT
-        fftw_execute(plan);
+    //     // Compute FFT
+    //     fftw_execute(plan);
 
-        // Compute power spectrum
-        for (int j = 0; j < *num_freqs; j++)
-        {
-            double real = out[j][0];
-            double imag = out[j][1];
-            (*intensity)[i][j] = (real * real + imag * imag) / (nperseg * fs);
-        }
-    }
+    //     // Compute power spectrum
+    //     for (int j = 0; j < *num_freqs; j++)
+    //     {
+    //         double real = out[j][0];
+    //         double imag = out[j][1];
+    //         (*intensity)[i][j] = (real * real + imag * imag) / (nperseg * fs);
+    //     }
+    // }
 
-    // Cleanup
-    fftw_destroy_plan(plan);
-    fftw_free(in);
-    fftw_free(out);
-    free(window);
+    // // Cleanup
+    // fftw_destroy_plan(plan);
+    // fftw_free(in);
+    // fftw_free(out);
+    // free(window);
+    printf("hi");
 }
+
 // Butterworth bandpass filter implementation
 void butter_bandpass_filter(const double *data, double *filtered, int data_size)
 {
