@@ -11,7 +11,7 @@
 
 // Define constants
 #define MAX_FILENAME 256
-#define PI 3.14159265358979323846
+#define PI 3.141592653589793
 
 // Function prototypes
 int read_wav_file(const char *filename, int16_t **data, int *sample_rate, int *num_samples, int *num_channels);
@@ -80,20 +80,21 @@ int main()
 
             free(wav_data); // No longer needed
 
-            // checkpt1 passes: 'data' in C is equiv to 'mySoundOneChannel'in python
-            FILE *output_file = fopen("checkpt1.txt", "w");
-            if (output_file)
-            {
-                for (int i = 0; i < num_frames; i++)
-                {
-                    fprintf(output_file, "%e\n", data[i]);
-                }
-                fclose(output_file);
-                printf("Filtered data saved to 'checkpt1.txt'\n");
-            }
-            else
-            {
-                fprintf(stderr, "Failed to open file for writing.\n");
+            { // // checkpt1 passes: 'data' in C is equiv to 'mySoundOneChannel'in python
+              // FILE *output_file = fopen("checkpt1.txt", "w");
+              // if (output_file)
+              // {
+              //     for (int i = 0; i < num_frames; i++)
+              //     {
+              //         fprintf(output_file, "%e\n", data[i]);
+              //     }
+              //     fclose(output_file);
+              //     printf("Filtered data saved to 'checkpt1.txt'\n");
+              // }
+              // else
+              // {
+              //     fprintf(stderr, "Failed to open file for writing.\n");
+              // }
             }
 
             // Step 3: Apply Butterworth bandpass filter
@@ -114,22 +115,22 @@ int main()
             double *filtered_signal = (double *)malloc(num_frames * sizeof(double));
             butter_bandpass_filter(data, num_frames, b, a, filtered_signal);
 
-            // checkpt2 passes: 'filtered_signal' in C is equiv to 'filtered_signal' in python
-            FILE *output_file2 = fopen("checkpt2.txt", "w");
-            if (output_file2)
-            {
-                for (int i = 0; i < num_frames; i++)
-                {
-                    fprintf(output_file2, "%e\n", filtered_signal[i]);
-                }
-                fclose(output_file2);
-                printf("Filtered data saved to 'checkpt2.txt'\n");
+            { // checkpt2 passes: 'filtered_signal' in C is equiv to 'filtered_signal' in python
+              // FILE *output_file2 = fopen("checkpt2.txt", "w");
+              // if (output_file2)
+              // {
+              //     for (int i = 0; i < num_frames; i++)
+              //     {
+              //         fprintf(output_file2, "%e\n", filtered_signal[i]);
+              //     }
+              //     fclose(output_file2);
+              //     printf("Filtered data saved to 'checkpt2.txt'\n");
+              // }
+              // else
+              // {
+              //     fprintf(stderr, "Failed to open file for writing.\n");
+              // }
             }
-            else
-            {
-                fprintf(stderr, "Failed to open file for writing.\n");
-            }
-
             // free(data); // No longer needed
 
             // Compute spectrogram (simplified)
@@ -139,18 +140,6 @@ int main()
             int freq_bins = 0, time_bins = 0;
 
             compute_spectrogram(data, num_frames, samplingFreq, &frequencies, &times, &intensity, &freq_bins, &time_bins);
-
-            // Convert intensity to dB
-            for (int i = 0; i < freq_bins; i++)
-            {
-                for (int j = 0; j < time_bins; j++)
-                {
-                    if (intensity[i][j] > 0)
-                        intensity[i][j] = 10 * log10(intensity[i][j] / 1e-12);
-                    else
-                        intensity[i][j] = -INFINITY;
-                }
-            }
             // Save intensity_bp to a text file
             FILE *f_intensity = fopen("checkpt3.txt", "w");
             for (int i = 0; i < freq_bins; i++)
@@ -163,6 +152,18 @@ int main()
             }
             fclose(f_intensity);
             printf("original intensity saved to 'checkpt3.txt'\n");
+
+            // Convert intensity to dB
+            for (int i = 0; i < freq_bins; i++)
+            {
+                for (int j = 0; j < time_bins; j++)
+                {
+                    if (intensity[i][j] > 0)
+                        intensity[i][j] = 10 * log10(intensity[i][j] / 1e-12);
+                    else
+                        intensity[i][j] = -INFINITY;
+                }
+            }
 
             // Optionally plot the spectrogram
             if (showGraphsAndPrint)
@@ -250,20 +251,8 @@ int main()
             double **intensity_bp = NULL;
             int freq_bins_bp = 0, time_bins_bp = 0;
 
-            compute_spectrogram(filtered_signal_bp, num_frames, samplingFreq, &frequencies_bp, &times_bp, &intensity_bp, &freq_bins_bp, &time_bins_bp);
-
-            // Save intensity_bp to a text file
-            FILE *fp_intensity = fopen("filtered_intensity_c.txt", "w");
-            for (int i = 0; i < freq_bins_bp; i++)
-            {
-                for (int j = 0; j < time_bins_bp; j++)
-                {
-                    fprintf(fp_intensity, "%e ", intensity_bp[i][j]);
-                }
-                fprintf(fp_intensity, "\n");
-            }
-            fclose(fp_intensity);
-            printf("Filtered intensity saved to 'filtered_intensity_c.txt'\n");
+            // compute_spectrogram(filtered_signal_bp, num_frames, samplingFreq, &frequencies_bp, &times_bp, &intensity_bp, &freq_bins_bp, &time_bins_bp);
+            // printf("%d\n", samplingFreq);
 
             // Convert intensity to dB and normalize
             double min_intensity = DBL_MAX;
@@ -611,25 +600,28 @@ void butter_bandpass_filter(double *data, int n, double *b, double *a, double *o
     }
 }
 
-// Function to compute spectrogram (simplified)
-void compute_spectrogram(double *signal, int signal_length, int fs, double **frequencies, double **times, double ***intensity, int *freq_bins, int *time_bins)
+void compute_spectrogram(double *signal, int signal_length, int fs,
+                         double **frequencies, double **times, double ***Sxx,
+                         int *freq_bins, int *time_bins)
 {
-    // Parameters for spectrogram
-    // Update spectrogram parameters in the C code
+    // Parameters matching the default values in the Python function
     int window_size = 256;
-    int hop_size = 128; // 50% overlap
-    int nfft = 256;
+    int noverlap = window_size / 8;        // 32 points overlap
+    int hop_size = window_size - noverlap; // 224 points step size
+    int nfft = window_size;
+    double alpha = 0.25; // Tukey window parameter
 
-    *freq_bins = nfft / 2 + 1;
+    // Compute the number of frequency bins and time bins
+    *freq_bins = nfft / 2 + 1; // One-sided spectrum
     *time_bins = (signal_length - window_size) / hop_size + 1;
 
-    // Allocate memory
+    // Allocate memory for frequencies, times, and the spectrogram matrix
     *frequencies = (double *)malloc((*freq_bins) * sizeof(double));
     *times = (double *)malloc((*time_bins) * sizeof(double));
-    *intensity = (double **)malloc((*freq_bins) * sizeof(double *));
+    *Sxx = (double **)malloc((*freq_bins) * sizeof(double *));
     for (int i = 0; i < *freq_bins; i++)
     {
-        (*intensity)[i] = (double *)calloc(*time_bins, sizeof(double));
+        (*Sxx)[i] = (double *)malloc((*time_bins) * sizeof(double));
     }
 
     // Compute frequency values
@@ -637,61 +629,173 @@ void compute_spectrogram(double *signal, int signal_length, int fs, double **fre
     {
         (*frequencies)[i] = (double)i * fs / nfft;
     }
-
-    // Initialize FFTW
-    fftw_complex *out;
-    fftw_plan p;
-    out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * nfft);
-    double *window = (double *)malloc(window_size * sizeof(double));
-    // Simple Hanning window
-    // In C code, use Hann window
-    for (int i = 0; i < window_size; i++)
+    FILE *freqs = fopen("freqs.txt", "w");
+    for (int i = 0; i < *freq_bins; i++)
     {
-        window[i] = 0.5 * (1 - cos(2 * PI * i / (window_size - 1)));
+        fprintf(freqs, "%e\n", (*frequencies)[i]);
     }
+    fclose(freqs);
+    printf("freqs data saved to 'freqs.txt'\n");
 
-    // Zero-padding to nfft
-    double *window_padded = (double *)calloc(nfft, sizeof(double));
-
-    p = fftw_plan_dft_r2c_1d(nfft, window_padded, out, FFTW_ESTIMATE);
-
-    // Iterate over windows
+    // Compute time values
     for (int t = 0; t < *time_bins; t++)
     {
         int start = t * hop_size;
-        // Apply window and zero-padding
+        (*times)[t] = ((double)(start + window_size / 2)) / fs;
+    }
+    FILE *timz = fopen("timz.txt", "w");
+    for (int i = 0; i < *time_bins; i++)
+    {
+        fprintf(timz, "%e\n", (*times)[i]);
+    }
+    fclose(timz);
+    printf("timz data saved to 'timz.txt'\n");
+
+    // Create the Tukey window
+    double *window = (double *)malloc(window_size * sizeof(double));
+    double N_minus_1 = (double)(window_size - 1);
+    int M = window_size + 1; // Total number of points + 1 bc symmetric idk the python did this
+
+    if (alpha <= 0)
+    {
+        // Rectangular window
+        for (int i = 0; i < M; i++)
+        {
+            window[i] = 1.0;
+        }
+    }
+    else if (alpha >= 1.0)
+    {
+        // Hann window
+        for (int i = 0; i < M; i++)
+        {
+            window[i] = 0.5 * (1 - cos(2 * PI * i / (M - 1)));
+        }
+    }
+    else
+    {
+        int width = (int)floor(alpha * (M - 1) / 2.0);
+        for (int n = 0; n <= width; n++)
+        {
+            window[n] = 0.5 * (1 + cos(PI * (-1 + 2.0 * n / (alpha * (M - 1)))));
+        }
+
+        for (int n = width + 1; n <= M - width - 2; n++)
+        {
+            window[n] = 1.0;
+        }
+
+        for (int n = M - width - 1; n < M; n++)
+        {
+            window[n] = 0.5 * (1 + cos(PI * (-2.0 / alpha + 1 + 2.0 * n / (alpha * (M - 1)))));
+        }
+    }
+    // // this is correct now the M was weird asf and throwing stuff off
+    // FILE *winds = fopen("winds.txt", "w");
+    // for (int i = 0; i < window_size; i++)
+    // {
+    //     fprintf(winds, "%e\n", window[i]);
+    // }
+    // fclose(winds);
+    // printf("winds data saved to 'winds.txt'\n");
+
+    // Compute the window power (sum of squares)
+    // this U is equal to 1/scale in the python implementation
+    double U = 0.0;
+    for (int i = 0; i < window_size; i++)
+    {
+        U += window[i] * window[i];
+    }
+    U *= fs; // Include sampling frequency in scaling
+    // printf("%f\n", U);
+
+    // Allocate memory for FFT input and output
+    double *segment = (double *)malloc(nfft * sizeof(double));
+    fftw_complex *out = (fftw_complex *)fftw_malloc((*freq_bins) * sizeof(fftw_complex));
+
+    // Create FFTW plan
+    fftw_plan p = fftw_plan_dft_r2c_1d(nfft, segment, out, FFTW_ESTIMATE);
+
+    // Process each segment
+    //*time_bins is equal to n_segments in python
+    // printf("%d\n", *time_bins);
+
+    for (int t = 0; t < *time_bins; t++)
+    {
+        int start = t * hop_size;
+
+        // Extract the segment and apply zero-padding if necessary
         for (int i = 0; i < window_size; i++)
         {
+            // printf("%d hastart index \n", start + i);
+
             if (start + i < signal_length)
-                window_padded[i] = signal[start + i] * window[i];
+                segment[i] = signal[start + i];
             else
-                window_padded[i] = 0.0;
+                segment[i] = 0.0;
         }
-        for (int i = window_size; i < nfft; i++)
+        printf("%e \n", segment[0]);
+
+        // Apply the window to the segment
+        for (int i = 0; i < window_size; i++)
         {
-            window_padded[i] = 0.0;
+            segment[i] *= window[i];
         }
 
-        // Execute FFT
+        // Detrend the segment (remove mean)
+        double sum = 0.0;
+        for (int i = 0; i < window_size; i++)
+        {
+            sum += segment[i];
+        }
+        double mean = sum / window_size;
+        for (int i = 0; i < window_size; i++)
+        {
+            segment[i] -= mean;
+        }
+        // // idkrn
+        // FILE *segs = fopen("segs.txt", "w");
+        // for (int i = 0; i < window_size; i++)
+        // {
+        //     fprintf(segs, "%e\n", segment[i]);
+        // }
+        // fclose(segs);
+        // printf("segs data saved to 'segs.txt'\n");
+
+        // Execute the FFT
         fftw_execute(p);
 
-        // Compute magnitude squared
-        // After FFT
+        // Compute the power spectral density and apply scaling
         for (int f = 0; f < *freq_bins; f++)
         {
             double real = out[f][0];
             double imag = out[f][1];
-            (*intensity)[f][t] = real * real + imag * imag; // Magnitude squared
+            double mag_squared = real * real + imag * imag;
+            (*Sxx)[f][t] = mag_squared / U;
         }
 
-        // Compute time
-        (*times)[t] = (double)(start + window_size / 2) / fs;
+        // Adjust scaling for one-sided spectrum
+        if (nfft % 2 == 0) // Even nfft
+        {
+            for (int f = 1; f < *freq_bins - 1; f++)
+            {
+                (*Sxx)[f][t] *= 2.0;
+            }
+        }
+        else // Odd nfft
+        {
+            for (int f = 1; f < *freq_bins; f++)
+            {
+                (*Sxx)[f][t] *= 2.0;
+            }
+        }
     }
 
+    // Clean up
     fftw_destroy_plan(p);
     fftw_free(out);
+    free(segment);
     free(window);
-    free(window_padded);
 }
 
 // Function to find midpoints (simplified)
