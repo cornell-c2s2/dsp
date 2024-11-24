@@ -306,6 +306,7 @@ int main()
 
                 if (true)
                 {
+                    printf("\n", audioFile);
                     printf("Above: %f\n", sum_above);
                     printf("Middle: %f\n", sum_middle);
                     printf("Below: %f\n\n", sum_below);
