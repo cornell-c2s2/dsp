@@ -21,27 +21,6 @@ mySound = mySound / (2.**15)
 # If stereo, take one channel
 mySoundOneChannel = mySound[:, 0]
 
-
-# np.savetxt("checkpt1.txt", mySoundOneChannel)
-# print("Filtered data saved to 'checkpt1.txt'")
-
-# frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
-
-# np.savetxt("original_intensities.txt", intensity)
-# print("Filtered data saved to 'original_intensities.txt'")
-
-# # Intensity to dB
-# intensity = 10*np.log10(intensity/(10**-12))
-
-# if showGraphsAndPrint: 
-#     plt.figure(figsize=(10, 4))
-#     plt.pcolormesh(times, frequencies, intensity, shading='gouraud')
-#     plt.ylabel('Frequency [Hz]')
-#     plt.xlabel('Time [s]')
-#     plt.title(f'Spectrogram of {i}')
-#     plt.colorbar(label='Intensity [dB]')
-#     plt.ylim(0, 20000)
-#     plt.show()
     
 def butter_bandpass(lowcut, highcut, fs, order=4):
     nyquist = 0.5 * fs
@@ -95,10 +74,6 @@ def find_midpoints():
         midpoint = sum(current_cluster) / len(current_cluster)
         cluster_midpoints.append(midpoint)
 
-    # if showGraphsAndPrint:
-    #     print(f"Detected blob midpoints in {i}:")
-    #     for midpoint in cluster_midpoints:
-    #         print(f"  Midpoint time: {midpoint:.2f} s")
     return cluster_midpoints
 
 
@@ -109,19 +84,7 @@ lower_threshold_dB_normalized = 0.85
 upper_threshold_dB_normalized = 0.9
 filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
 
-# Save filtered data
-np.savetxt("checkpt2.txt", filtered_signal)
-print("Filtered data saved to 'checkpt2.txt'")
-
-
-frequencies, times, intensity = spectrogram(filtered_signal, fs=samplingFreq)
-# Save filtered data
-np.savetxt("intensities.txt", intensity)
-print("intensities data saved to 'intensities.txt'")
-
-np.savetxt("freqs.txt", frequencies)
-print("freqs data saved to 'freqs.txt'")
-
+import numpy as np
 from scipy import signal
 
 def spect2(x, fs):
@@ -150,17 +113,13 @@ def spect2(x, fs):
     nfft = nperseg  # FFT length
     nstep = nperseg - noverlap  # Step size between segments
     window = ('tukey', 0.25)  # Tukey window with alpha=0.25
+    return_onesided = True  # Return one-sided spectrum for real data
 
     # Generate the window function
     win = signal.get_window(window, nperseg).astype(np.float64)
 
-    # # Save filtered data
-    # np.savetxt("winds.txt", win)
-    # print("winds data saved to 'winds.txt'")
-
     # Compute the scale factor
     scale = 1.0 / (fs * np.sum(win ** 2))
-    # print(fs * np.sum(win ** 2))
 
     # Determine the number of segments
     n_segments = (len(x) - nperseg) // nstep + 1
@@ -168,73 +127,46 @@ def spect2(x, fs):
     # Prepare frequency and time arrays
     freqs = np.fft.rfftfreq(nfft, 1 / fs)
     num_freqs = nfft // 2 + 1
+
+
     times = np.arange(n_segments) * nstep / fs + (nperseg / 2) / fs
 
     # Initialize the spectrogram array
     Sxx = np.zeros((num_freqs, n_segments), dtype=np.float64)
-    # print(n_segments)
-    # Loop over each segment
-    # for i in range(n_segments):
-    for i in range(1):
 
+    # Loop over each segment
+    for i in range(n_segments):
         start = i * nstep
         segment = x[start:start + nperseg]
-
-     
-        if(i == 0):
-            np.savetxt("segs1.txt", segment)
-            print("segs1 data saved to 'segs1.txt'")
-
-
 
         # Detrend the segment (remove the mean)
         segment = segment - np.mean(segment)
 
-       # Save filtered data
-        if(i == 0):
-            np.savetxt("segs2.txt", segment)
-            print("mean data saved to 'segs2.txt'")
-            np.savetxt("window.txt", win)
-            print("window data saved to 'window.txt'")
-           
-
-
         # Apply the window to the segment
         segment = segment * win
 
-
-        # Save filtered data
-        if(i == 0):
-            np.savetxt("win.txt", segment)
-            print("win data saved to 'win.txt'")
-
         # Compute the FFT of the segment
-        fft_segment = np.fft.rfft(segment, n=nfft)
-         # Save filtered data
-        # np.savetxt("fftseg.txt", fft_segment)
-        # print("fftseg data saved to 'fftseg.txt'")
+        if return_onesided:
+            fft_segment = np.fft.rfft(segment, n=nfft)
+        else:
+            fft_segment = np.fft.fft(segment, n=nfft)
 
         # Compute the power spectral density
         Sxx[:, i] = np.abs(fft_segment) ** 2 * scale
 
     # Adjust scaling for one-sided spectrum
-    if nfft % 2 == 0:
-        Sxx[1:-1, :] *= 2
-    else:
-        Sxx[1:, :] *= 2
+    if return_onesided:
+        if nfft % 2 == 0:
+            Sxx[1:-1, :] *= 2
+        else:
+            Sxx[1:, :] *= 2
 
     return freqs, times, Sxx
 
-f2, t2, i2 = spect2(filtered_signal, fs=samplingFreq)
+
+frequencies, times, intensity = spect2(filtered_signal, fs=samplingFreq)
+
 print(filtered_signal)
-# Save filtered data
-np.savetxt("i2.txt", i2)
-print("i2 data saved to 'i2.txt'")
-
-np.savetxt("f2.txt", f2)
-print("f2 data saved to 'f2.txt'")
-
-
 
 
 intensity = 10 * np.log10(intensity/(10**-12))
