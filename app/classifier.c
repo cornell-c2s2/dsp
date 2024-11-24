@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <fftw3.h>
+#include <complex.h>
 #include <stdio.h>
 
 #define PI 3.141592653589793
@@ -18,11 +19,10 @@ const double a[COEFF_SIZE] = {1, -5.22664543, 12.83819436, -19.22549589, 19.1551
 // Function prototypes
 int read_wav_file(const char *filename, int16_t **data, int *sample_rate, int *num_samples, int *num_channels);
 void butter_bandpass_filter(const double *data, double *filtered, int data_size);
-void spectrogram(double *signal, int signal_length, double fs,
-                 int nperseg, int noverlap, int nfft,
-                 double **frequencies, int *num_freqs,
-                 double **times, int *num_times,
-                 double ***intensity);
+void spectrogram(double *x, int x_len, double fs,
+                 double **freqs_out, int *freqs_len,
+                 double **times_out, int *times_len,
+                 double ***Sxx_out, int *Sxx_rows, int *Sxx_cols);
 
 int main()
 {
@@ -90,24 +90,16 @@ int main()
         signal[i] = sin(2 * PI * 50 * t) + 0.5 * sin(2 * PI * 80 * t);
     }
 
-    // Spectrogram parameters
-    int nperseg = 256;
-    int noverlap = 128;
-    int nfft = 256;
-
     // Output variables
-    double *frequencies;
+    double *freqs;
     int num_freqs;
     double *times;
     int num_times;
-    double **intensity;
+    double **Sxx;
+    int Sxx_rows, Sxx_cols;
 
     // Compute spectrogram
-    spectrogram(signal, signal_length, fs,
-                nperseg, noverlap, nfft,
-                &frequencies, &num_freqs,
-                &times, &num_times,
-                &intensity);
+    spectrogram(signal, signal_length, fs, &freqs, &num_freqs, &times, &num_times, &Sxx, &Sxx_rows, &Sxx_cols);
 
     // (Optional) Process or display the spectrogram data
     // ...
@@ -115,11 +107,11 @@ int main()
     FILE *output_file = fopen("data/spect_c.txt", "w");
     if (output_file)
     {
-        for (int i = 0; i < num_freqs; i++)
+        for (int i = 0; i < Sxx_rows; i++)
         { // Iterate over frequency bins (rows)
-            for (int j = 0; j < num_times; j++)
-            {                                                 // Iterate over time bins (columns)
-                fprintf(output_file, "%e ", intensity[i][j]); // Write value with a space
+            for (int j = 0; j < Sxx_cols; j++)
+            {                                           // Iterate over time bins (columns)
+                fprintf(output_file, "%e ", Sxx[i][j]); // Write value with a space
             }
             fprintf(output_file, "\n"); // Add a newline at the end of each row
         }
@@ -132,105 +124,207 @@ int main()
     }
 
     // Free allocated memory
-    for (int i = 0; i < num_times; i++)
-    {
-        free(intensity[i]);
-    }
-    free(intensity);
-    free(frequencies);
-    free(times);
     free(signal);
+    free(freqs);
+    free(times);
+    for (int i = 0; i < Sxx_rows; i++)
+    {
+        free(Sxx[i]);
+    }
+    free(Sxx);
 
     return EXIT_SUCCESS;
 }
 
-void create_hann_window(double *window, int nperseg)
+// Function to generate Tukey window
+void tukey_window(double *win, int N, double alpha)
 {
+    int i;
+    double M = N - 1;
+    double n;
+
+    for (i = 0; i < N; i++)
+    {
+        n = (double)i;
+        if (n < alpha * M / 2)
+        {
+            win[i] = 0.5 * (1 + cos(M_PI * (2 * n / (alpha * M) - 1)));
+        }
+        else if (n <= M * (1 - alpha / 2))
+        {
+            win[i] = 1.0;
+        }
+        else
+        {
+            win[i] = 0.5 * (1 + cos(M_PI * (2 * n / (alpha * M) - 2 / alpha + 1)));
+        }
+    }
+}
+
+// Function to compute mean of an array
+double compute_mean(double *array, int N)
+{
+    double sum = 0.0;
+    for (int i = 0; i < N; i++)
+    {
+        sum += array[i];
+    }
+    return sum / N;
+}
+
+// Function to compute FFT and power spectral density
+void compute_fft(double *segment, int nfft, int return_onesided, double scale, int num_freqs, double *Sxx_column)
+{
+    fftw_complex *out;
+    fftw_plan p;
+
+    if (return_onesided)
+    {
+        int n_out = nfft / 2 + 1;
+        out = (fftw_complex *)fftw_malloc(sizeof(fftw_complex) * n_out);
+        p = fftw_plan_dft_r2c_1d(nfft, segment, out, FFTW_ESTIMATE);
+        fftw_execute(p);
+
+        // Compute power spectral density
+        for (int i = 0; i < num_freqs; i++)
+        {
+            double re = out[i][0];
+            double im = out[i][1];
+            Sxx_column[i] = (re * re + im * im) * scale;
+        }
+
+        fftw_destroy_plan(p);
+        fftw_free(out);
+    }
+    else
+    {
+        // Two-sided spectrum not implemented
+        fprintf(stderr, "Two-sided spectrum not implemented.\n");
+        exit(1);
+    }
+}
+
+void spectrogram(double *x, int x_len, double fs,
+                 double **freqs_out, int *freqs_len,
+                 double **times_out, int *times_len,
+                 double ***Sxx_out, int *Sxx_rows, int *Sxx_cols)
+{
+    // Default parameters
+    int nperseg = 256;              // Length of each segment
+    int noverlap = nperseg / 8;     // 32 points overlap
+    int nfft = nperseg;             // FFT length
+    int nstep = nperseg - noverlap; // Step size between segments
+    double alpha = 0.25;            // Tukey window alpha
+    int return_onesided = 1;        // Return one-sided spectrum for real data
+
+    // Generate the window function
+    double *win = (double *)malloc(nperseg * sizeof(double));
+    tukey_window(win, nperseg, alpha);
+
+    // Compute the scale factor
+    double win_sum_sq = 0.0;
     for (int i = 0; i < nperseg; i++)
     {
-        window[i] = 0.5 * (1 - cos(2 * PI * i / (nperseg - 1)));
+        win_sum_sq += win[i] * win[i];
     }
-}
-int calculate_num_segments(int signal_length, int nperseg, int noverlap)
-{
-    int step = nperseg - noverlap;
-    return (signal_length - noverlap) / step;
-}
-void spectrogram(double *signal, int signal_length, double fs,
-                 int nperseg, int noverlap, int nfft,
-                 double **frequencies, int *num_freqs,
-                 double **times, int *num_times,
-                 double ***intensity)
-{
+    double scale = 1.0 / (fs * win_sum_sq);
 
-    // Calculate the number of segments
-    int step = nperseg - noverlap;
-    *num_times = calculate_num_segments(signal_length, nperseg, noverlap);
-    *num_freqs = nfft / 2 + 1;
+    // Determine the number of segments
+    int n_segments = (x_len - nperseg) / nstep + 1;
 
-    // Allocate memory for output arrays
-    *frequencies = malloc(sizeof(double) * (*num_freqs));
-    *times = malloc(sizeof(double) * (*num_times));
-    *intensity = malloc(sizeof(double *) * (*num_times));
-    for (int i = 0; i < *num_times; i++)
+    // Prepare frequency and time arrays
+    int num_freqs = nfft / 2 + 1;
+    *freqs_len = num_freqs;
+    *freqs_out = (double *)malloc(num_freqs * sizeof(double));
+    for (int i = 0; i < num_freqs; i++)
     {
-        (*intensity)[i] = malloc(sizeof(double) * (*num_freqs));
+        (*freqs_out)[i] = (double)i * fs / nfft;
     }
 
-    // Create window function
-    double *window = malloc(sizeof(double) * nperseg);
-    create_hann_window(window, nperseg);
-
-    // Frequency vector
-    for (int i = 0; i < *num_freqs; i++)
+    *times_len = n_segments;
+    *times_out = (double *)malloc(n_segments * sizeof(double));
+    for (int i = 0; i < n_segments; i++)
     {
-        (*frequencies)[i] = i * fs / nfft;
+        (*times_out)[i] = (i * nstep) / fs + (nperseg / 2) / fs;
     }
 
-    // Time vector
-    for (int i = 0; i < *num_times; i++)
+    // Initialize the spectrogram array
+    *Sxx_rows = num_freqs;
+    *Sxx_cols = n_segments;
+    double **Sxx = (double **)malloc(num_freqs * sizeof(double *));
+    for (int i = 0; i < num_freqs; i++)
     {
-        (*times)[i] = (i * step + nperseg / 2) / fs;
+        Sxx[i] = (double *)calloc(n_segments, sizeof(double));
     }
 
-    // FFT setup
-    fftw_complex *in = fftw_malloc(sizeof(fftw_complex) * nfft);
-    // fftw_complex *out = fftw_malloc(sizeof(fftw_complex) * nfft);
-    // fftw_plan plan = fftw_plan_dft_1d(nfft, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+    // Loop over each segment
+    for (int i = 0; i < n_segments; i++)
+    {
+        int start = i * nstep;
+        // Extract the segment
+        double *segment = (double *)malloc(nperseg * sizeof(double));
+        for (int j = 0; j < nperseg; j++)
+        {
+            segment[j] = x[start + j];
+        }
 
-    // // Main loop over segments
-    // for (int i = 0; i < *num_times; i++)
-    // {
-    //     // Apply window and zero-padding
-    //     for (int j = 0; j < nperseg; j++)
-    //     {
-    //         in[j][0] = signal[i * step + j] * window[j]; // Real part
-    //         in[j][1] = 0.0;                              // Imaginary part
-    //     }
-    //     for (int j = nperseg; j < nfft; j++)
-    //     {
-    //         in[j][0] = 0.0;
-    //         in[j][1] = 0.0;
-    //     }
+        // Detrend the segment (remove the mean)
+        double mean = compute_mean(segment, nperseg);
+        for (int j = 0; j < nperseg; j++)
+        {
+            segment[j] -= mean;
+        }
 
-    //     // Compute FFT
-    //     fftw_execute(plan);
+        // Apply the window to the segment
+        for (int j = 0; j < nperseg; j++)
+        {
+            segment[j] *= win[j];
+        }
 
-    //     // Compute power spectrum
-    //     for (int j = 0; j < *num_freqs; j++)
-    //     {
-    //         double real = out[j][0];
-    //         double imag = out[j][1];
-    //         (*intensity)[i][j] = (real * real + imag * imag) / (nperseg * fs);
-    //     }
-    // }
+        // Compute the FFT and power spectral density
+        double *Sxx_column = (double *)malloc(num_freqs * sizeof(double));
+        compute_fft(segment, nfft, return_onesided, scale, num_freqs, Sxx_column);
 
-    // // Cleanup
-    // fftw_destroy_plan(plan);
-    // fftw_free(in);
-    // fftw_free(out);
-    // free(window);
-    printf("hi");
+        // Store the result in Sxx
+        for (int k = 0; k < num_freqs; k++)
+        {
+            Sxx[k][i] = Sxx_column[k];
+        }
+
+        free(segment);
+        free(Sxx_column);
+    }
+
+    // Adjust scaling for one-sided spectrum
+    if (return_onesided)
+    {
+        if (nfft % 2 == 0)
+        {
+            for (int i = 1; i < num_freqs - 1; i++)
+            {
+                for (int j = 0; j < n_segments; j++)
+                {
+                    Sxx[i][j] *= 2.0;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 1; i < num_freqs; i++)
+            {
+                for (int j = 0; j < n_segments; j++)
+                {
+                    Sxx[i][j] *= 2.0;
+                }
+            }
+        }
+    }
+
+    // Assign output
+    *Sxx_out = Sxx;
+
+    // Free window
+    free(win);
 }
 
 // Butterworth bandpass filter implementation
