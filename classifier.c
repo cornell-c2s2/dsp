@@ -25,7 +25,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 int main()
 {
 
-    char folder[] = "isolatedtest";
+    char folder[] = "testing";
 
     struct dirent *entry;
     DIR *directory = opendir(folder);
@@ -35,18 +35,18 @@ int main()
         {
 
             char audioFile[MAX_FILENAME];
-            snprintf(audioFile, sizeof(audioFile), "isolatedtest/%s", entry->d_name);
+            snprintf(audioFile, sizeof(audioFile), "%s/%s", folder, entry->d_name);
 
             bool showGraphsAndPrint = true;
 
             // Step 1: Read the WAV file
-            const char *filename = "testing/2287-sj.wav";
+            // const char *filename = "testing/2287-sj.wav";
             int16_t *wav_data = NULL;
             int samplingFreq, num_frames, num_channels;
 
-            read_wav_file(filename, &wav_data, &samplingFreq, &num_frames, &num_channels);
+            read_wav_file(audioFile, &wav_data, &samplingFreq, &num_frames, &num_channels);
 
-            printf("Loaded WAV file: %s\n", filename);
+            printf("Loaded WAV file: %s\n", audioFile);
             printf("Sample Rate: %d Hz\n", samplingFreq);
             printf("Channels: %d (output as mono)\n", num_channels);
             printf("Total Samples: %d\n", num_frames);
