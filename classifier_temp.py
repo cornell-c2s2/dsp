@@ -10,7 +10,7 @@ audioFiles = os.listdir(folder)
 showGraphsAndPrint = True
 # for i in audioFiles:
 #     audioFile = folder+"/"+i
-audioFile = "testing/2287-sj.wav"
+audioFile = "audio/1346.wav"
 
 samplingFreq, mySound = wavfile.read(audioFile)
 
@@ -27,8 +27,6 @@ def butter_bandpass(lowcut, highcut, fs, order=4):
     low = lowcut / nyquist
     high = highcut / nyquist
     b, a = butter(order, [low, high], btype='band')
-    # print("b: ", lowcut , ", " , highcut , ": " , b)
-    # print("a: ", lowcut , ", " , highcut , ": " , a)
     return b, a
 
 def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
@@ -88,32 +86,12 @@ import numpy as np
 from scipy import signal
 
 def spect2(x, fs):
-    """
-    Compute the spectrogram of a signal using default parameters.
-
-    Parameters
-    ----------
-    x : array_like
-        Time series of measurement values.
-    fs : float
-        Sampling frequency of the `x` time series.
-
-    Returns
-    -------
-    freqs : ndarray
-        Array of sample frequencies.
-    times : ndarray
-        Array of segment times.
-    Sxx : ndarray
-        Spectrogram of x.
-    """
     # Default parameters
     nperseg = 256  # Length of each segment
     noverlap = nperseg // 8  # 32 points overlap
     nfft = nperseg  # FFT length
     nstep = nperseg - noverlap  # Step size between segments
     window = ('tukey', 0.25)  # Tukey window with alpha=0.25
-    return_onesided = True  # Return one-sided spectrum for real data
 
     # Generate the window function
     win = signal.get_window(window, nperseg).astype(np.float64)
@@ -127,8 +105,6 @@ def spect2(x, fs):
     # Prepare frequency and time arrays
     freqs = np.fft.rfftfreq(nfft, 1 / fs)
     num_freqs = nfft // 2 + 1
-
-
     times = np.arange(n_segments) * nstep / fs + (nperseg / 2) / fs
 
     # Initialize the spectrogram array
@@ -136,6 +112,8 @@ def spect2(x, fs):
 
     # Loop over each segment
     for i in range(n_segments):
+    # for i in range(1):
+
         start = i * nstep
         segment = x[start:start + nperseg]
 
@@ -146,28 +124,19 @@ def spect2(x, fs):
         segment = segment * win
 
         # Compute the FFT of the segment
-        if return_onesided:
-            fft_segment = np.fft.rfft(segment, n=nfft)
-        else:
-            fft_segment = np.fft.fft(segment, n=nfft)
+        fft_segment = np.fft.rfft(segment, n=nfft)
+        # print(fft_segment)
 
         # Compute the power spectral density
         Sxx[:, i] = np.abs(fft_segment) ** 2 * scale
-
+    
     # Adjust scaling for one-sided spectrum
-    if return_onesided:
-        if nfft % 2 == 0:
-            Sxx[1:-1, :] *= 2
-        else:
-            Sxx[1:, :] *= 2
+    Sxx[1:-1, :] *= 2
 
     return freqs, times, Sxx
 
 
 frequencies, times, intensity = spect2(filtered_signal, fs=samplingFreq)
-
-print(filtered_signal)
-
 
 intensity = 10 * np.log10(intensity/(10**-12))
 intensity_dB_normalized = normalize_intensity(intensity)
@@ -175,20 +144,8 @@ intensity_dB_normalized = normalize_intensity(intensity)
 
 intensity_dB_filtered = np.where(intensity_dB_normalized > lower_threshold_dB_normalized, intensity_dB_normalized, np.nan)
 intensity_dB_filtered = np.where(intensity_dB_filtered < upper_threshold_dB_normalized, intensity_dB_normalized, np.nan)
-
-
-
-
-
-# if showGraphsAndPrint:
-#     plt.figure(figsize=(10, 4))
-#     plt.pcolormesh(times, frequencies, intensity_dB_filtered, shading='gouraud')
-#     plt.ylabel('Frequency [Hz]')
-#     plt.xlabel('Time [s]')
-#     plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
-#     plt.colorbar(label='Intensity (Normalized) [dB]')
-#     plt.ylim(0, 20000)
-#     plt.show()
+np.savetxt("intensity_f.txt", intensity_dB_filtered )
+print("filtered intensity data saved to 'intensity_f.txt'")
 
 # Scrub Jay Classify
 midpoints = find_midpoints()
@@ -209,24 +166,21 @@ for midpoint in midpoints:
         time_min_idx = np.searchsorted(times, midpoint-half_range, side='left')
         time_max_idx = np.searchsorted(times, midpoint+half_range, side='right')
 
+        # print("fmin" + str(freq_min_idx))
+        # print("fmax" + str(freq_max_idx))
+        # print("tmin" + str(time_min_idx))
+        # print("tmax" + str(time_max_idx))
+
         area_intensity = intensity_dB_filtered[freq_min_idx:freq_max_idx, time_min_idx:time_max_idx]
         total_intensity = np.nansum(area_intensity)
         return total_intensity
     
     if showGraphsAndPrint:
-        # print(i)
         print("Above: "+str(sum_intense(9000, 15000, .18)))
         print("Middle: "+str(sum_intense(7000, 8000, 0.05)))
         print("Below: "+str(sum_intense(1000, 6000, .18)))
         print()
-        # plt.figure(figsize=(10, 4))
-        # plt.pcolormesh(times_finite, frequencies, intensity_dB_filtered_finite, shading='gouraud')
-        # plt.ylabel('Frequency [Hz]')
-        # plt.xlabel('Time [s]')
-        # plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
-        # plt.colorbar(label='Intensity (Normalized) [dB]')
-        # plt.ylim(0, 20000)
-        # plt.show()
+      
 
     if sum_intense(7000, 8000, 0.05) < 50 and sum_intense(9000, 15000, 0.18) > 200 and sum_intense(1000, 6000, 0.18) > 200:
         has_a_scrub = True
