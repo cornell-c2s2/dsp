@@ -3,6 +3,7 @@
     "IIR.C": "cpp",
     "dirent.h": "c",
     "stdlib.h": "c",
-    "stdio.h": "c"
+    "stdio.h": "c",
+    "string.h": "c"
   }
 }

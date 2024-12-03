@@ -375,13 +375,13 @@ void butter_bandpass_filter(double *data, int n, double *b, double *a, double *o
     for (int i = 0; i < n; i++)
     {
         double w0 = data[i];
-        for (int j = 1; j <= 9; j++)
+        for (int j = 1; j < 9; j++)
         {
             w0 -= a[j] * w[j - 1];
         }
 
         double y = b[0] * w0;
-        for (int j = 1; j <= 9; j++)
+        for (int j = 1; j < 9; j++)
         {
             y += b[j] * w[j - 1];
         }
@@ -440,7 +440,7 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
     if (alpha <= 0)
     {
         // Rectangular window
-        for (int i = 0; i < M; i++)
+        for (int i = 0; i < window_size; i++)
         {
             window[i] = 1.0;
         }
@@ -448,7 +448,7 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
     else if (alpha >= 1.0)
     {
         // Hann window
-        for (int i = 0; i < M; i++)
+        for (int i = 0; i < window_size; i++)
         {
             window[i] = 0.5 * (1 - cos(2 * PI * i / (M - 1)));
         }
