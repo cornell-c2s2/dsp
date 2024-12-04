@@ -9,6 +9,8 @@ PlainFFT FFT;
 #define HOP_SIZE 128
 #define MAX_FREQ_BINS (NFFT / 2)
 #define MAX_TIME_BINS ((NUM_SAMPLES - WINDOW_SIZE) / HOP_SIZE + 1)
+#define MAX_BLOB_TIMES 7100
+#define MAX_MIDPOINTS 100 // Adjust as needed based on expected number of midpoints
 #define PI 3.141592653589793
 
 // Function prototypes
@@ -20,7 +22,7 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
 double sum_intense(double lower, double upper, double half_range, double *frequencies, int freq_bins,
                    double *times, int time_bins, double intensity_dB_filtered[MAX_FREQ_BINS][MAX_TIME_BINS],
                    double midpoint);
-double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_midpoints);
+int find_midpoints(double *data, int num_frames, int samplingFreq, double *midpoints);
 
 void setup()
 {
@@ -60,7 +62,25 @@ void loop()
   compute_spectrogram(filtered_signal, num_frames, samplingFreq, frequencies, times, Sxx, &freq_bins, &time_bins);
 
   // Continue with the rest of your processing...
-  // Due to memory constraints, further processing may need to be simplified or adjusted
+
+  // Find midpoints
+  double midpoints[MAX_MIDPOINTS];
+  int num_midpoints = find_midpoints(data, num_frames, samplingFreq, midpoints);
+
+  // Output the midpoints
+  for (int i = 0; i < num_midpoints; i++)
+  {
+    Serial.print("Midpoint ");
+    Serial.print(i);
+    Serial.print(": ");
+    Serial.println(midpoints[i]);
+  }
+
+  // Add the rest of your code here...
+
+  // Since loop() runs repeatedly, you may want to add a delay or condition to prevent continuous execution
+  while (1)
+    ;
 }
 
 // Butterworth bandpass filter coefficients
@@ -277,17 +297,128 @@ double sum_intense(double lower, double upper, double half_range, double *freque
   {
     for (int j = time_min_idx; j <= time_max_idx; j++)
     {
-      total_intensity += intensity_dB_filtered[i][j];
+      if (!isnan(intensity_dB_filtered[i][j]))
+      {
+        total_intensity += intensity_dB_filtered[i][j];
+      }
     }
   }
   return total_intensity;
 }
 
 // Find midpoints in the signal
-double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_midpoints)
+int find_midpoints(double *data, int num_frames, int samplingFreq, double *midpoints)
 {
-  // Implement according to your needs
-  // Due to memory constraints, dynamic allocation is not recommended
-  // You may need to define static arrays with maximum expected sizes
-  return NULL;
+  const double lower_threshold_dB = 45.0;
+
+  double lowcut = 2000.0;
+  double highcut = 6000.0;
+  double b[9];
+  double a[9];
+  if (!butter_bandpass(lowcut, highcut, b, a))
+  {
+    // Handle error
+    return 0;
+  }
+
+  // Apply Butterworth bandpass filter
+  double filtered_signal[NUM_SAMPLES];
+  butter_bandpass_filter(data, num_frames, b, a, filtered_signal);
+
+  // Compute spectrogram
+  double frequencies[MAX_FREQ_BINS];
+  double times[MAX_TIME_BINS];
+  double Sxx[MAX_FREQ_BINS][MAX_TIME_BINS];
+  int freq_bins = 0, time_bins = 0;
+
+  compute_spectrogram(filtered_signal, num_frames, samplingFreq, frequencies, times, Sxx, &freq_bins, &time_bins);
+
+  // Convert intensity to dB and apply threshold
+  double intensity_dB_filtered[MAX_FREQ_BINS][MAX_TIME_BINS];
+  bool valid_time_bins[MAX_TIME_BINS] = {false};
+
+  for (int i = 0; i < freq_bins; i++)
+  {
+    for (int j = 0; j < time_bins; j++)
+    {
+      if (Sxx[i][j] > 0)
+      {
+        double intensity_dB = 10 * log10(Sxx[i][j] / 1e-12);
+        if (intensity_dB > lower_threshold_dB)
+        {
+          intensity_dB_filtered[i][j] = intensity_dB;
+          valid_time_bins[j] = true;
+        }
+        else
+        {
+          intensity_dB_filtered[i][j] = NAN;
+        }
+      }
+      else
+      {
+        intensity_dB_filtered[i][j] = NAN;
+      }
+    }
+  }
+
+  // Collect blob_times where there is valid intensity
+  double blob_times[MAX_BLOB_TIMES];
+  int num_blob_times = 0;
+  for (int j = 0; j < time_bins; j++)
+  {
+    if (valid_time_bins[j])
+    {
+      if (num_blob_times < MAX_BLOB_TIMES)
+      {
+        blob_times[num_blob_times++] = times[j];
+      }
+      else
+      {
+        // Exceeded maximum blob times
+        break;
+      }
+    }
+  }
+
+  // Cluster blob_times
+  const double time_tolerance = 0.05;    // seconds
+  const double min_blob_duration = 0.15; // seconds
+
+  int num_midpoints = 0;
+  int cluster_start_idx = 0;
+  while (cluster_start_idx < num_blob_times)
+  {
+    int cluster_end_idx = cluster_start_idx;
+    while (cluster_end_idx + 1 < num_blob_times &&
+           (blob_times[cluster_end_idx + 1] - blob_times[cluster_end_idx]) <= time_tolerance)
+    {
+      cluster_end_idx++;
+    }
+
+    double cluster_duration = blob_times[cluster_end_idx] - blob_times[cluster_start_idx];
+    if (cluster_duration >= min_blob_duration)
+    {
+      // Calculate midpoint
+      int cluster_size = cluster_end_idx - cluster_start_idx + 1;
+      double sum_times = 0.0;
+      for (int i = cluster_start_idx; i <= cluster_end_idx; i++)
+      {
+        sum_times += blob_times[i];
+      }
+      double midpoint = sum_times / cluster_size;
+      if (num_midpoints < MAX_MIDPOINTS)
+      {
+        midpoints[num_midpoints++] = midpoint;
+      }
+      else
+      {
+        // Exceeded maximum midpoints
+        break;
+      }
+    }
+
+    cluster_start_idx = cluster_end_idx + 1;
+  }
+
+  return num_midpoints;
 }
