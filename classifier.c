@@ -57,9 +57,18 @@ int main()
             {
                 data[i] = wav_data[i] / 32768.0; // Normalize to [-1, 1]
             }
-
             free(wav_data); // No longer needed
 
+            // Save Data to files
+            char dataName[MAX_FILENAME];
+            snprintf(dataName, sizeof(dataName), "data/%s.txt", entry->d_name);
+            FILE *_data = fopen(dataName, "w");
+            for (int t = 0; t < num_frames; t++)
+            {
+                fprintf(_data, "%f,", (data[t]));
+            }
+            fclose(_data);
+            printf("_data saved to '%s'\n", dataName);
             // Step 3: Apply Butterworth bandpass filter
             double *filtered = malloc(num_frames * sizeof(double));
             double lowcut = 6000.0;
