@@ -7,7 +7,7 @@ from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
 folder = "isolatedtest" #"audio"
 audioFiles = os.listdir(folder)
-showGraphsAndPrint = True
+showGraphsAndPrint = False
 for i in audioFiles:
     audioFile = folder+"/"+i
 
@@ -40,6 +40,9 @@ for i in audioFiles:
         low = lowcut / nyquist
         high = highcut / nyquist
         b, a = butter(order, [low, high], btype='band')
+        print(lowcut)
+        print(b)
+        print(a)
         return b, a
 
     def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
