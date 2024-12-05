@@ -25,7 +25,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 int main()
 {
 
-    char folder[] = "testing";
+    char folder[] = "isolatedtest";
 
     struct dirent *entry;
     DIR *directory = opendir(folder);
@@ -57,18 +57,9 @@ int main()
             {
                 data[i] = wav_data[i] / 32768.0; // Normalize to [-1, 1]
             }
+
             free(wav_data); // No longer needed
 
-            // Save Data to files
-            char dataName[MAX_FILENAME];
-            snprintf(dataName, sizeof(dataName), "data/%s.txt", entry->d_name);
-            FILE *_data = fopen(dataName, "w");
-            for (int t = 0; t < num_frames; t++)
-            {
-                fprintf(_data, "%f,", (data[t]));
-            }
-            fclose(_data);
-            printf("_data saved to '%s'\n", dataName);
             // Step 3: Apply Butterworth bandpass filter
             double *filtered = malloc(num_frames * sizeof(double));
             double lowcut = 6000.0;
@@ -632,17 +623,6 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
     double *filtered_signal_mp = (double *)malloc(num_frames * sizeof(double));
     butter_bandpass_filter(data, num_frames, b, a, filtered_signal_mp);
 
-    FILE *_postbutter = fopen("_postbutter.txt", "w");
-    if (_postbutter)
-    {
-        for (int i = 0; i < num_frames; i++)
-        {
-            fprintf(_postbutter, "%e\n", filtered_signal_mp[i]);
-        }
-        fclose(_postbutter);
-        printf("post butter data saved to '_postbutter.txt'\n");
-    }
-
     // Compute spectrogram of filtered_signal_bp
     double *frequencies_mp_bp = NULL;
     double *times_mp_bp = NULL;
@@ -709,7 +689,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
         if (valid_time_bins[j])
             num_blob_times++;
     }
-
+    printf("%d", num_blob_times);
     double *blob_times = (double *)malloc(num_blob_times * sizeof(double));
     int idx = 0;
     for (int j = 0; j < time_bins_mp_bp; j++)
@@ -721,16 +701,16 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
         }
     }
 
-    FILE *_blobtimes = fopen("_blobtimes.txt", "w");
-    for (int t = 0; t < num_blob_times; t++)
-    {
-        fprintf(_blobtimes, " %f", (blob_times[t]));
-    }
-    fclose(_blobtimes);
-    printf("_blobtimes data saved to '_blobtimes.txt'\n");
+    // FILE *_blobtimes = fopen("_blobtimes.txt", "w");
+    // for (int t = 0; t < num_blob_times; t++)
+    // {
+    //     fprintf(_blobtimes, " %f", (blob_times[t]));
+    // }
+    // fclose(_blobtimes);
+    // printf("_blobtimes data saved to '_blobtimes.txt'\n");
 
     // Cluster the blob_times
-    double time_tolerance = 0.05;    // seconds
+    double time_tolerance = 0.15;    // seconds
     double min_blob_duration = 0.15; // seconds
 
     int max_clusters = num_blob_times;
