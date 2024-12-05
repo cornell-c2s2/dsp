@@ -5,9 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-folder = "testing" #"audio"
+folder = "isolatedtest" #"audio"
 audioFiles = os.listdir(folder)
-showGraphsAndPrint = False
+showGraphsAndPrint = True
 for i in audioFiles:
     audioFile = folder+"/"+i
 
