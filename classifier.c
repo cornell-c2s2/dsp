@@ -748,7 +748,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
     // printf("_blobtimes data saved to '_blobtimes.txt'\n");
 
     // Cluster the blob_times
-    double time_tolerance = 0.15;    // seconds
+    double time_tolerance = 0.05;    // seconds
     double min_blob_duration = 0.15; // seconds
 
     int max_clusters = num_blob_times;
