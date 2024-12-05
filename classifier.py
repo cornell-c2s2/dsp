@@ -40,9 +40,6 @@ for i in audioFiles:
         low = lowcut / nyquist
         high = highcut / nyquist
         b, a = butter(order, [low, high], btype='band')
-        print(lowcut)
-        print(b)
-        print(a)
         return b, a
 
     def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
@@ -165,11 +162,11 @@ for i in audioFiles:
             total_intensity = np.nansum(area_intensity)
             return total_intensity
         
+        print("Above: "+str(sum_intense(9000, 15000, .18)))
+        print("Middle: "+str(sum_intense(7000, 8000, 0.05)))
+        print("Below: "+str(sum_intense(1000, 6000, .18)))
+        print()
         if showGraphsAndPrint:
-            print("Above: "+str(sum_intense(9000, 15000, .18)))
-            print("Middle: "+str(sum_intense(7000, 8000, 0.05)))
-            print("Below: "+str(sum_intense(1000, 6000, .18)))
-            print()
             plt.figure(figsize=(10, 4))
             plt.pcolormesh(times_finite, frequencies, intensity_dB_filtered_finite, shading='gouraud')
             plt.ylabel('Frequency [Hz]')
@@ -179,7 +176,7 @@ for i in audioFiles:
             plt.ylim(0, 20000)
             plt.show()
 
-        if sum_intense(7000, 8000, 0.05) < 50 and sum_intense(9000, 15000, 0.18) > 200 and sum_intense(1000, 6000, 0.18) > 200:
+        if sum_intense(7000, 8000, 0.05) < 75 and sum_intense(9000, 15000, 0.18) > 215 and sum_intense(1000, 6000, 0.18) > 215:
             has_a_scrub = True
     if has_a_scrub:
         print(audioFile + " has a Scrub Jay! :)")
