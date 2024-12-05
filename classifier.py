@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-folder = "testing" #"audio"
+folder = "isolatedtest" #"audio"
 audioFiles = os.listdir(folder)
 showGraphsAndPrint = True
 for i in audioFiles:
@@ -95,7 +95,7 @@ for i in audioFiles:
     # Calculate Spectrogram 
     lowcut = 6000
     highcut = 15000
-    lower_threshold_dB_normalized = 0.85
+    lower_threshold_dB_normalized = 0.8
     upper_threshold_dB_normalized = 0.9
     filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
 
