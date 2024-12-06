@@ -81,8 +81,8 @@ int main()
 
             // Step 3: Apply Butterworth bandpass filter
             double *filtered = malloc(num_frames * sizeof(double));
-            double lowcut = 6000.0;
-            double highcut = 15000.0;
+            double lowcut = 3000.0;
+            double highcut = 7500.0;
             int order = 4;
             double b[9] = {0.0};
             double a[9] = {0.0};
@@ -142,8 +142,8 @@ int main()
                 }
             }
 
-            double lower_threshold_dB_normalized = 0.80;
-            double upper_threshold_dB_normalized = 0.9;
+            double lower_threshold_dB_normalized = 0.70;
+            double upper_threshold_dB_normalized = 0.85;
 
             // Apply normalized dB thresholds
             double **intensity_dB_filtered = (double **)malloc(freq_bins_bp * sizeof(double *));
@@ -177,9 +177,9 @@ int main()
 
                 double time_threshold = 0.18;
 
-                double sum_above = sum_intense(9000, 15000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
-                double sum_middle = sum_intense(7000, 8000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
-                double sum_below = sum_intense(1000, 6000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
+                double sum_above = sum_intense(4500, 7500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
+                double sum_middle = sum_intense(3500, 4000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
+                double sum_below = sum_intense(500, 3000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
 
                 if (showGraphsAndPrint)
                 {
@@ -188,7 +188,7 @@ int main()
                     printf("Below: %f\n\n", sum_below);
                 }
 
-                if (sum_middle < 75 && sum_above > 215 && sum_below > 215)
+                if (sum_middle < 75 && sum_above > 300 && sum_below > 100)
                 {
                     has_a_scrub = true;
                     break; // We can stop after finding a Scrub Jay
@@ -329,7 +329,7 @@ int read_wav_file(const char *filename, int16_t **data, int *sample_rate, int *n
  */
 bool butter_bandpass(double lowcut, double highcut, double *b, double *a)
 {
-    if (lowcut == 2000 && highcut == 6000)
+    if (lowcut == 1000 && highcut == 3000)
     {
         // b[0] = 0.00021314;
         // b[1] = 0.;
@@ -370,7 +370,7 @@ bool butter_bandpass(double lowcut, double highcut, double *b, double *a)
         a[7] = -0.92305481;
         a[8] = 0.1203896;
     }
-    else if (lowcut == 6000 && highcut == 15000)
+    else if (lowcut == 3000 && highcut == 7500)
     {
         // b[0] = 0.00386952;
         // b[1] = 0.;
@@ -673,8 +673,8 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 
     double lower_threshold_dB = 45.0;
 
-    double lowcut = 2000.0;
-    double highcut = 6000.0;
+    double lowcut = 1000.0;
+    double highcut = 3000.0;
     double b[9] = {0.0};
     double a[9] = {0.0};
     butter_bandpass(lowcut, highcut, b, a);
