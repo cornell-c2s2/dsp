@@ -51,8 +51,6 @@ for i in audioFiles:
     def normalize_intensity(intensity_dB):
         min_intensity = np.nanmin(intensity_dB)
         max_intensity = np.nanmax(intensity_dB)
-        if audioFile == "particle/1809v2-31k.wav":
-            min_intensity = np.nanmin([-70])
             
         print(min_intensity)
         print(max_intensity)
@@ -183,7 +181,7 @@ for i in audioFiles:
             plt.ylim(0, 10000)
             plt.show()
 
-        if sum_intense(3500, 4000, 0.05) < 75 and sum_intense(4500, 7500, 0.18) > 215 and sum_intense(500, 3000, 0.18) > 215:
+        if sum_intense(3500, 4000, 0.05) < 75 and sum_intense(4500, 7500, 0.18) > 300 and sum_intense(500, 3000, 0.18) > 100:
             has_a_scrub = True
     if has_a_scrub:
         print(audioFile + " has a Scrub Jay! :)")
