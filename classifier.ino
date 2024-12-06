@@ -1,13 +1,30 @@
+// This #include statement was automatically added by the Particle IDE.
+
+
+// This #include statement was automatically added by the Particle IDE.
+#include <PlainFFT.h>
+
+#include "1809.h"
+//#include "1060.h"
+//#include "1809bad.h"
+
+// Include Particle Device OS APIs
 #include "Particle.h"
-#include "PlainFFT.h"
-#include "audio_data.h" // Your audio data header
+
+// Let Device OS manage the connection to the Particle Cloud
+SYSTEM_MODE(AUTOMATIC);
+
+// Show system, cloud connectivity, and application logs over USB
+// View logs with CLI using 'particle serial monitor --follow'
+SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
 // -------------------- Configuration --------------------
-#define SAMPLING_FREQ 16000 // Sampling frequency of your audio
+#define SAMPLING_FREQ 32000 // Sampling frequency of your audio
 #define FFT_SIZE 256        // Size of your FFT
 #define OVERLAP 32          // Overlap for spectrogram frames
 #define WINDOW_SIZE FFT_SIZE
 #define HOP_SIZE (WINDOW_SIZE - OVERLAP)
+#define NUM_FRAMES 15385
 
 // Filter coefficients for bandpass filters (example placeholders)
 static const float bp_b_2000_6000[9] = {
@@ -94,9 +111,9 @@ void compute_fft_frame(const float *frame, int size, float fs)
   // PlainFFT typically uses a function: myFFT.Compute(data, NULL, size, FFT_FORWARD);
   // But we need to check your version of PlainFFT.
   // Let's assume myFFT.Compute(fftInput, NULL, FFT_SIZE, FFT_FORWARD) is available:
-  myFFT.Windowing(fftInput, FFT_SIZE, FFT_WIN_TYP_HANN, FFT_FORWARD);
-  myFFT.Compute(fftInput, NULL, FFT_SIZE, FFT_FORWARD);
-  myFFT.ComplexToMagnitude(fftInput, NULL, FFT_SIZE);
+  myFFT.windowing(fftInput, FFT_SIZE, FFT_WIN_TYP_HANN, FFT_FORWARD);
+  myFFT.compute(fftInput, NULL, FFT_SIZE, FFT_FORWARD);
+  myFFT.complexToMagnitude(fftInput, NULL, FFT_SIZE);
 
   // After ComplexToMagnitude, fftInput contains magnitudes (not real/imag separately)
   // We'll just store magnitudes in fftOutputR
@@ -249,7 +266,7 @@ void setup()
   // If your audio_data.h is int16_t, convert here:
   for (int i = 0; i < NUM_FRAMES; i++)
   {
-    data[i] = audioData[i]; // if already float normalized to [-1,1], great.
+    data[i] = data1809[i]; // if already float normalized to [-1,1], great.
   }
 
   // Example: apply bandpass filters if needed for final checks
@@ -299,5 +316,8 @@ void setup()
 
 void loop()
 {
-  // nothing here
+  // Replace this with actual audio data acquisition
+
+  
 }
+
