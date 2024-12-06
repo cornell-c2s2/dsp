@@ -44,6 +44,8 @@ for i in audioFiles:
 
     def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
         b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+        print(b)
+        print(a)
         return lfilter(b, a, data)
 
     def normalize_intensity(intensity_dB):
