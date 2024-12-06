@@ -100,8 +100,8 @@ for i in audioFiles:
     # Calculate Spectrogram 
     lowcut = 3000
     highcut = 7500
-    lower_threshold_dB_normalized = 0.8
-    upper_threshold_dB_normalized = 0.9
+    lower_threshold_dB_normalized = 0.70
+    upper_threshold_dB_normalized = 0.85
     filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
 
     impulse = np.zeros(100)
@@ -143,7 +143,7 @@ for i in audioFiles:
         plt.xlabel('Time [s]')
         plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
         plt.colorbar(label='Intensity (Normalized) [dB]')
-        plt.ylim(0, 20000)
+        plt.ylim(0, 10000)
         plt.show()
 
     # Scrub Jay Classify
@@ -167,9 +167,9 @@ for i in audioFiles:
             total_intensity = np.nansum(area_intensity)
             return total_intensity
         
-        print("Above: "+str(sum_intense(9000, 15000, .18)))
-        print("Middle: "+str(sum_intense(7000, 8000, 0.05)))
-        print("Below: "+str(sum_intense(1000, 6000, .18)))
+        print("Above: "+str(sum_intense(4500, 7500, .18)))
+        print("Middle: "+str(sum_intense(3500, 4000, 0.05)))
+        print("Below: "+str(sum_intense(500, 3000, .18)))
         print()
         if showGraphsAndPrint:
             plt.figure(figsize=(10, 4))
@@ -178,10 +178,10 @@ for i in audioFiles:
             plt.xlabel('Time [s]')
             plt.title(f'Spectrogram (Band-Pass {lowcut}-{highcut}) of {i}')
             plt.colorbar(label='Intensity (Normalized) [dB]')
-            plt.ylim(0, 20000)
+            plt.ylim(0, 10000)
             plt.show()
 
-        if sum_intense(7000, 8000, 0.05) < 75 and sum_intense(9000, 15000, 0.18) > 215 and sum_intense(1000, 6000, 0.18) > 215:
+        if sum_intense(3500, 4000, 0.05) < 75 and sum_intense(4500, 7500, 0.18) > 215 and sum_intense(500, 3000, 0.18) > 215:
             has_a_scrub = True
     if has_a_scrub:
         print(audioFile + " has a Scrub Jay! :)")
