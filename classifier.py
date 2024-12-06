@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-folder = "isolatedtest" #"audio"
+folder = "particle" #"audio"
 audioFiles = os.listdir(folder)
 showGraphsAndPrint = False
 for i in audioFiles:
@@ -49,6 +49,11 @@ for i in audioFiles:
     def normalize_intensity(intensity_dB):
         min_intensity = np.nanmin(intensity_dB)
         max_intensity = np.nanmax(intensity_dB)
+        if audioFile == "particle/1809v2-31k.wav":
+            min_intensity = np.nanmin([-70])
+            
+        print(min_intensity)
+        print(max_intensity)
         return (intensity_dB - min_intensity) / (max_intensity - min_intensity)
 
     def find_midpoints():
