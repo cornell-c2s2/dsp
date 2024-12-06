@@ -25,7 +25,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 int main()
 {
 
-    char folder[] = "isolatedtest";
+    char folder[] = "particle";
 
     struct dirent *entry;
     DIR *directory = opendir(folder);
@@ -59,6 +59,25 @@ int main()
             }
 
             free(wav_data); // No longer needed
+
+            // Save Data to files
+            char dataName[MAX_FILENAME];
+            snprintf(dataName, sizeof(dataName), "data/%s.txt", entry->d_name);
+            FILE *_data = fopen(dataName, "w");
+            for (int t = 0; t < num_frames; t++)
+            {
+                if (t != num_frames - 1)
+                {
+
+                    fprintf(_data, "%f,", (data[t]));
+                }
+                else
+                {
+                    fprintf(_data, "%f", (data[t]));
+                }
+            }
+            fclose(_data);
+            printf("_data saved to '%s'\n", dataName);
 
             // Step 3: Apply Butterworth bandpass filter
             double *filtered = malloc(num_frames * sizeof(double));
