@@ -124,7 +124,10 @@ int main()
                     }
                 }
             }
-
+            if (strcmp(entry->d_name, "1809v2-32k.wav"))
+            {
+                min_intensity = -70;
+            }
             // Normalize intensity
             double **intensity_normalized = (double **)malloc(freq_bins_bp * sizeof(double *));
             for (int i = 0; i < freq_bins_bp; i++)

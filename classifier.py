@@ -5,9 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-folder = "particle" #"audio"
+folder = "16k" #"audio"
 audioFiles = os.listdir(folder)
-showGraphsAndPrint = False
+showGraphsAndPrint = True
 for i in audioFiles:
     audioFile = folder+"/"+i
 
@@ -32,7 +32,7 @@ for i in audioFiles:
         plt.xlabel('Time [s]')
         plt.title(f'Spectrogram of {i}')
         plt.colorbar(label='Intensity [dB]')
-        plt.ylim(0, 20000)
+        plt.ylim(0, 10000)
         plt.show()
         
     def butter_bandpass(lowcut, highcut, fs, order=4):
@@ -58,7 +58,7 @@ for i in audioFiles:
 
     def find_midpoints():
         lower_threshold_dB = 45
-        filtered_signal = butter_bandpass_filter(mySoundOneChannel, 2000, 6000, samplingFreq)
+        filtered_signal = butter_bandpass_filter(mySoundOneChannel, 1000, 3000, samplingFreq)
         _, times, intensity = spectrogram(filtered_signal, fs=samplingFreq)
         intensity = 10 * np.log10(intensity / (10**-12))
         intensity_dB_filtered = np.where(intensity > lower_threshold_dB, intensity, np.nan)
@@ -98,8 +98,8 @@ for i in audioFiles:
     midpoints = find_midpoints()
 
     # Calculate Spectrogram 
-    lowcut = 6000
-    highcut = 15000
+    lowcut = 3000
+    highcut = 7500
     lower_threshold_dB_normalized = 0.8
     upper_threshold_dB_normalized = 0.9
     filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
