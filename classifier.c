@@ -25,7 +25,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 int main()
 {
 
-    char folder[] = "particle";
+    char folder[] = "16k";
 
     struct dirent *entry;
     DIR *directory = opendir(folder);
@@ -123,10 +123,6 @@ int main()
                         intensity_bp[i][j] = NAN;
                     }
                 }
-            }
-            if (strcmp(entry->d_name, "1809v2-32k.wav"))
-            {
-                min_intensity = -70;
             }
             // Normalize intensity
             double **intensity_normalized = (double **)malloc(freq_bins_bp * sizeof(double *));

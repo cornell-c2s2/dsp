@@ -1,7 +1,7 @@
 // This #include statement was automatically added by the Particle IDE.
 
 // This #include statement was automatically added by the Particle IDE.
-#include <PlainFFT.h>
+#include "PlainFFT.h"
 
 #include "1809.h"
 // #include "1060.h"
@@ -23,7 +23,7 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 #define OVERLAP 32          // Overlap for spectrogram frames
 #define WINDOW_SIZE FFT_SIZE
 #define HOP_SIZE (WINDOW_SIZE - OVERLAP)
-#define NUM_FRAMES 15385
+#define NUM_FRAMES 6611
 
 // Filter coefficients for bandpass filters (example placeholders)
 static const float bp_b_2000_6000[9] = {
@@ -266,10 +266,6 @@ void setup()
   // Load data from audio_data.h (assumed already included and audioData[] defined)
   // data[] = normalized?
   // If your audio_data.h is int16_t, convert here:
-  for (int i = 0; i < NUM_FRAMES; i++)
-  {
-    data[i] = data1809[i]; // if already float normalized to [-1,1], great.
-  }
 
   // Example: apply bandpass filters if needed for final checks
   iir_filter(data, filtered_6000_15000, NUM_FRAMES, bp_b_6000_15000, bp_a_6000_15000);

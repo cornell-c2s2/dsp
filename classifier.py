@@ -7,7 +7,7 @@ from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
 folder = "16k" #"audio"
 audioFiles = os.listdir(folder)
-showGraphsAndPrint = True
+showGraphsAndPrint = False
 for i in audioFiles:
     audioFile = folder+"/"+i
 
@@ -44,16 +44,14 @@ for i in audioFiles:
 
     def butter_bandpass_filter(data, lowcut, highcut, fs, order=4):
         b, a = butter_bandpass(lowcut, highcut, fs, order=order)
-        print(b)
-        print(a)
+        # print(lowcut)
+        # print(b)
+        # print(a)
         return lfilter(b, a, data)
 
     def normalize_intensity(intensity_dB):
         min_intensity = np.nanmin(intensity_dB)
         max_intensity = np.nanmax(intensity_dB)
-            
-        print(min_intensity)
-        print(max_intensity)
         return (intensity_dB - min_intensity) / (max_intensity - min_intensity)
 
     def find_midpoints():
