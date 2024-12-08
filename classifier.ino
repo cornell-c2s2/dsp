@@ -145,7 +145,7 @@ int find_midpoints(float *inData, int n, float fs, float *midpoints, int max_mid
   // Compute spectrogram over filtData:
   int time_bins = (n - WINDOW_SIZE) / HOP_SIZE + 1;
   bool *valid = (bool *)malloc(time_bins * sizeof(bool));
-
+  Serial.println("Valid malloc");
   // Determine which time bins have > LOWER_THRESHOLD_DB
   for (int t = 0; t < time_bins; t++)
   {
@@ -165,9 +165,10 @@ int find_midpoints(float *inData, int n, float fs, float *midpoints, int max_mid
     }
     valid[t] = bin_valid;
   }
-
+  Serial.println("Threshold done");
   // Extract times for valid bins
   float *blob_times = (float *)malloc(time_bins * sizeof(float));
+  Serial.println("blob_times malloc");
   int blobCount = 0;
   for (int t = 0; t < time_bins; t++)
   {
@@ -177,7 +178,7 @@ int find_midpoints(float *inData, int n, float fs, float *midpoints, int max_mid
       blob_times[blobCount++] = centerTime;
     }
   }
-
+  Serial.println("cluster begin");
   // Cluster the valid times
   int midpointCount = 0;
   if (blobCount > 0)
@@ -293,7 +294,7 @@ void setup()
     float midpoint = midpoints[i];
     float sum_above = sum_intense(4500, 7500, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_3000_7500, NUM_FRAMES, midpoint);
     float sum_middle = sum_intense(3500, 4000, 0.05f, times, time_bins, SAMPLING_FREQ, filtered_3000_7500, NUM_FRAMES, midpoint);
-    float sum_below = sum_intense(500, 300, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_3000_7500, NUM_FRAMES, midpoint);
+    float sum_below = sum_intense(500, 3000, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_3000_7500, NUM_FRAMES, midpoint);
 
     Serial.printlnf("Midpoint %f: Above=%f, Middle=%f, Below=%f", midpoint, sum_above, sum_middle, sum_below);
 
