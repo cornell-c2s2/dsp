@@ -23,21 +23,21 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 #define OVERLAP 32          // Overlap for spectrogram frames
 #define WINDOW_SIZE FFT_SIZE
 #define HOP_SIZE (WINDOW_SIZE - OVERLAP)
-#define NUM_FRAMES 6611
+#define NUM_FRAMES 4803
 
 // Filter coefficients for bandpass filters (example placeholders)
-static const float bp_b_2000_6000[9] = {
+static const float bp_b_1000_3000[9] = {
     // Fill in with your known coefficients
     0.01020948, 0.0, -0.04083792, 0.0, 0.06125688, 0.0, -0.04083792, 0.0, 0.01020948};
-static const float bp_a_2000_6000[9] = {
+static const float bp_a_1000_3000[9] = {
     // Fill in with your known coefficients
     1.0, -4.56803686, 9.95922498, -13.49912589, 12.43979269,
     -7.94997696, 3.43760562, -0.92305481, 0.1203896};
 
-static const float bp_b_6000_15000[9] = {
+static const float bp_b_3000_7500[9] = {
     // Fill in with your known coefficients
     0.1362017, 0.0, -0.5448068, 0.0, 0.8172102, 0.0, -0.5448068, 0.0, 0.1362017};
-static const float bp_a_6000_15000[9] = {
+static const float bp_a_3000_7500[9] = {
     // Fill in with your known coefficients
     1.0, 2.60935592, 2.32553038, 1.20262614, 1.11690211,
     0.76154474, 0.10005124, -0.0129829, 0.02236815};
@@ -48,7 +48,7 @@ static const float bp_a_6000_15000[9] = {
 #define MIN_BLOB_DURATION 0.15f
 
 // -------------------- Global Buffers --------------------
-static float data[NUM_FRAMES];
+
 static float filtered_1000_3000[NUM_FRAMES];
 static float filtered_3000_7500[NUM_FRAMES];
 
@@ -291,9 +291,9 @@ void setup()
   for (int i = 0; i < num_midpoints; i++)
   {
     float midpoint = midpoints[i];
-    float sum_above = sum_intense(4500, 7500, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
-    float sum_middle = sum_intense(3500, 4000, 0.05f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
-    float sum_below = sum_intense(500, 300, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
+    float sum_above = sum_intense(4500, 7500, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_3000_7500, NUM_FRAMES, midpoint);
+    float sum_middle = sum_intense(3500, 4000, 0.05f, times, time_bins, SAMPLING_FREQ, filtered_3000_7500, NUM_FRAMES, midpoint);
+    float sum_below = sum_intense(500, 300, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_3000_7500, NUM_FRAMES, midpoint);
 
     Serial.printlnf("Midpoint %f: Above=%f, Middle=%f, Below=%f", midpoint, sum_above, sum_middle, sum_below);
 
