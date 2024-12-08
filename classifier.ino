@@ -63,6 +63,7 @@ PlainFFT myFFT; // Instantiate PlainFFT object
 // Apply IIR filter (order=4) given by b and a coeffs
 void iir_filter(float *data, float *output, int n, const float *b, const float *a)
 {
+  Serial.println("Began IIR");
   float w[9];
   for (int i = 0; i < 9; i++)
   {
@@ -90,6 +91,7 @@ void iir_filter(float *data, float *output, int n, const float *b, const float *
 
     output[i] = y;
   }
+  Serial.println("Finished IIR");
 }
 
 // Compute the spectrogram magnitude for one frame
@@ -135,6 +137,7 @@ float mag_to_dB(float mag)
 // Find midpoints logic (simplified)
 int find_midpoints(float *inData, int n, float fs, float *midpoints, int max_midpoints)
 {
+  Serial.println("Began Midpoints");
   // Filter with 1000-3000 band
   static float filtData[NUM_FRAMES];
   iir_filter(inData, filtData, n, bp_b_1000_3000, bp_a_1000_3000);
@@ -203,7 +206,7 @@ int find_midpoints(float *inData, int n, float fs, float *midpoints, int max_mid
 
   free(valid);
   free(blob_times);
-
+  Serial.println("Finished Midpoints");
   return midpointCount;
 }
 
