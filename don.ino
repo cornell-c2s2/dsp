@@ -4,7 +4,7 @@
 #include <math.h>
 #include <float.h>
 #include <stdbool.h>
-#include "1809.h"
+#include "1060.h"
 
 // ------------------------------------------------------------
 // Function Prototypes
@@ -21,8 +21,7 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
 // ------------------------------------------------------------
 void setup()
 {
-    Serial.println("begin");
-    int num_frames = 4803;
+    int num_frames = sizeof(data)/sizeof(data[0]);
     int samplingFreq = 16000;
 
     float lowcut = 3000.0;
@@ -30,15 +29,12 @@ void setup()
     int order = 4;
     float b[9] = {0.0};
     float a[9] = {0.0};
-    Serial.println("pre butter");
     butter_bandpass(lowcut, highcut, b, a);
 
-    // Calculate Spectrogram with new bandpass
 
     // Apply Butterworth bandpass filter
     float *filtered_signal_bp = (float *)malloc(num_frames * sizeof(float));
     butter_bandpass_filter(data, num_frames, b, a, filtered_signal_bp);
-    Serial.println("post butter");
 
     // Compute spectrogram of filtered_signal_bp
     float *frequencies_bp = NULL;
@@ -46,13 +42,10 @@ void setup()
     float **intensity_bp = NULL;
     int freq_bins_bp = 0, time_bins_bp = 0;
 
-    Serial.println("pre spect");
-    // this is right now
     compute_spectrogram(filtered_signal_bp, num_frames, samplingFreq, &frequencies_bp, &times_bp, &intensity_bp, &freq_bins_bp, &time_bins_bp);
-    Serial.println("ppost spect");
     free(filtered_signal_bp);
 
-    // Convert intensity to dB and normalize
+    // Convert intensity to dB 
     float min_intensity = DBL_MAX;
     float max_intensity = -DBL_MAX;
     for (int i = 0; i < freq_bins_bp; i++)
@@ -86,7 +79,6 @@ void setup()
                 intensity_normalized[i][j] = NAN;
         }
     }
-    Serial.println("intensity normalized");
 
     float lower_threshold_dB_normalized = 0.70;
     float upper_threshold_dB_normalized = 0.85;
@@ -105,11 +97,11 @@ void setup()
         }
     }
 
-    Serial.println("pre midpoints");
     // Scrub Jay Classify
     int num_midpoints = 0;
     float *midpoints = find_midpoints(data, num_frames, samplingFreq, &num_midpoints);
-    Serial.println("post midpoints");
+    Serial.print("Number of Midpoints: ");
+    Serial.println(num_midpoints);
 
     if (midpoints == NULL)
     {
@@ -128,8 +120,11 @@ void setup()
         float sum_middle = sum_intense(3500, 4000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
         float sum_below = sum_intense(500, 3000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
 
+        Serial.print("Above intensities: ");
         Serial.println(sum_above);
+        Serial.print("Middle intensities: ");
         Serial.println(sum_middle);
+        Serial.print("Below intensities: ");
         Serial.println(sum_below);
 
         if (sum_middle < 75 && sum_above > 300 && sum_below > 100)
@@ -141,11 +136,11 @@ void setup()
 
     if (has_a_scrub)
     {
-        Serial.println("We has a Scrub Jay! :)");
+        Serial.println("We have a Scrub Jay! :)");
     }
     else
     {
-        Serial.println("We has no Scrub Jay! :(");
+        Serial.println("We have no Scrub Jay! :(");
     }
 
     // Free allocated memory
@@ -160,10 +155,7 @@ void setup()
     free(intensity_dB_filtered);
 }
 
-void loop()
-{
-    // Nothing needed here if just analyzing once
-}
+void loop(){}
 
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a)
 {
@@ -251,11 +243,14 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
                          float **frequencies, float **times, float ***Sxx,
                          int *freq_bins, int *time_bins)
 {
-    int window_size = 256;
+    int window_size = 64;
     int noverlap = window_size / 8;        // 32 points overlap
     int hop_size = window_size - noverlap; // 224 points step size
     int nfft = window_size;
     float alpha = 0.25f; // Tukey window parameter
+    static float vReal[64];  // Match nfft size
+    static float vImag[64];
+    static float window[64];
 
     // Compute the number of frequency and time bins
     *freq_bins = nfft / 2 + 1;
@@ -282,10 +277,8 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
         int start = t * hop_size;
         (*times)[t] = ((float)(start + window_size / 2)) / (float)fs;
     }
-    Serial.println("vals computed");
 
     // Create the Tukey window
-    float *window = (float *)malloc(window_size * sizeof(float));
     {
         float M = (float)(window_size + 1);
         if (alpha <= 0.0f)
@@ -323,7 +316,6 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
             }
         }
     }
-    Serial.println("tukey computed");
 
     // Compute the window power (sum of squares)
     float U = 0.0f;
@@ -332,13 +324,9 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
         U += window[i] * window[i];
     }
     U *= (float)fs;
-    Serial.println("pre malloc");
 
     // Allocate arrays for FFT
-    float *vReal = (float *)malloc(nfft * sizeof(float));
-    float *vImag = (float *)malloc(nfft * sizeof(float));
     memset(vImag, 0, nfft * sizeof(float));
-    Serial.println("post malloc");
     // Create PlainFFT instance
     PlainFFT fft;
 
@@ -401,10 +389,6 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
         }
     }
 
-    // Clean up
-    free(vReal);
-    free(vImag);
-    free(window);
 }
 
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint)
@@ -561,14 +545,6 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
             idx++;
         }
     }
-
-    // FILE *_blobtimes = fopen("_blobtimes.txt", "w");
-    // for (int t = 0; t < num_blob_times; t++)
-    // {
-    //     fprintf(_blobtimes, " %f", (blob_times[t]));
-    // }
-    // fclose(_blobtimes);
-    // printf("_blobtimes data saved to '_blobtimes.txt'\n");
 
     // Cluster the blob_times
     float time_tolerance = 0.05;    // seconds
