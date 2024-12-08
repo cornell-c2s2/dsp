@@ -49,8 +49,8 @@ static const float bp_a_6000_15000[9] = {
 
 // -------------------- Global Buffers --------------------
 static float data[NUM_FRAMES];
-static float filtered_2000_6000[NUM_FRAMES];
-static float filtered_6000_15000[NUM_FRAMES];
+static float filtered_1000_3000[NUM_FRAMES];
+static float filtered_3000_7500[NUM_FRAMES];
 
 static float fftInput[FFT_SIZE];
 static float fftOutputR[FFT_SIZE / 2 + 1];
@@ -68,7 +68,6 @@ void iir_filter(float *data, float *output, int n, const float *b, const float *
   {
     w[i] = 0.0f;
   }
-  Serial.println("bruh");
   for (int i = 0; i < n; i++)
   {
     float w0 = data[i];
@@ -136,9 +135,9 @@ float mag_to_dB(float mag)
 // Find midpoints logic (simplified)
 int find_midpoints(float *inData, int n, float fs, float *midpoints, int max_midpoints)
 {
-  // Filter with 2000-6000 band
+  // Filter with 1000-3000 band
   static float filtData[NUM_FRAMES];
-  iir_filter(inData, filtData, n, bp_b_2000_6000, bp_a_2000_6000);
+  iir_filter(inData, filtData, n, bp_b_1000_3000, bp_a_1000_3000);
 
   // Compute spectrogram over filtData:
   int time_bins = (n - WINDOW_SIZE) / HOP_SIZE + 1;
@@ -209,7 +208,7 @@ int find_midpoints(float *inData, int n, float fs, float *midpoints, int max_mid
 }
 
 float sum_intense(float lower, float upper, float half_range, float *times, int time_bins, float fs,
-                  float *inSignal, int n, float midpoint, float lower_thresh = 0.8f, float upper_thresh = 0.9f)
+                  float *inSignal, int n, float midpoint, float lower_thresh = 0.7f, float upper_thresh = 0.85f)
 {
   // Compute mini-spectrogram around midpoint and sum intensities in given freq band.
   // This is simplified: we won't store a full spectrogram. We'll just check frames within range.
@@ -268,9 +267,9 @@ void setup()
   // If your audio_data.h is int16_t, convert here:
 
   // Example: apply bandpass filters if needed for final checks
-  iir_filter(data, filtered_6000_15000, NUM_FRAMES, bp_b_6000_15000, bp_a_6000_15000);
+  iir_filter(data, filtered_3000_7500, NUM_FRAMES, bp_b_3000_7500, bp_a_3000_7500);
 
-  // Find midpoints in the signal using the low band (2000-6000)
+  // Find midpoints in the signal using the low band (1000-3000)
   float midpoints[50]; // Up to 50 midpoints
   int num_midpoints = find_midpoints(data, NUM_FRAMES, SAMPLING_FREQ, midpoints, 50);
   Serial.printlnf("Found %d midpoints", num_midpoints);
@@ -289,13 +288,13 @@ void setup()
   for (int i = 0; i < num_midpoints; i++)
   {
     float midpoint = midpoints[i];
-    float sum_above = sum_intense(9000, 15000, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
-    float sum_middle = sum_intense(7000, 8000, 0.05f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
-    float sum_below = sum_intense(1000, 6000, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
+    float sum_above = sum_intense(4500, 7500, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
+    float sum_middle = sum_intense(3500, 4000, 0.05f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
+    float sum_below = sum_intense(500, 300, 0.18f, times, time_bins, SAMPLING_FREQ, filtered_6000_15000, NUM_FRAMES, midpoint);
 
     Serial.printlnf("Midpoint %f: Above=%f, Middle=%f, Below=%f", midpoint, sum_above, sum_middle, sum_below);
 
-    if (sum_middle < 75 && sum_above > 215 && sum_below > 215)
+    if (sum_middle < 75 && sum_above > 300 && sum_below > 100)
     {
       has_scrub = true;
       break;
