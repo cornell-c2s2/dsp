@@ -124,6 +124,8 @@ int main()
                     }
                 }
             }
+            printf("%f", min_intensity);
+            printf("%f", max_intensity);
             // Normalize intensity
             double **intensity_normalized = (double **)malloc(freq_bins_bp * sizeof(double *));
             for (int i = 0; i < freq_bins_bp; i++)
