@@ -456,7 +456,7 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
                          double **frequencies, double **times, double ***Sxx,
                          int *freq_bins, int *time_bins)
 {
-    int window_size = 256;
+    int window_size = 64;
     int noverlap = window_size / 8;        // 32 points overlap
     int hop_size = window_size - noverlap; // 224 points step size
     int nfft = window_size;
