@@ -100,7 +100,6 @@ int main()
             double **intensity_bp = NULL;
             int freq_bins_bp = 0, time_bins_bp = 0;
 
-            // this is right now
             compute_spectrogram(filtered_signal_bp, num_frames, samplingFreq, &frequencies_bp, &times_bp, &intensity_bp, &freq_bins_bp, &time_bins_bp);
 
             // Convert intensity to dB and normalize
@@ -459,10 +458,10 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
                          int *freq_bins, int *time_bins)
 {
     int window_size = 64;
-    int noverlap = window_size / 8;        // 32 points overlap
-    int hop_size = window_size - noverlap; // 224 points step size
+    int noverlap = window_size / 8;
+    int hop_size = window_size - noverlap;
     int nfft = window_size;
-    double alpha = 0.25; // Tukey window parameter
+    double alpha = 0.25;
 
     // Compute the number of frequency bins and time bins
     *freq_bins = nfft / 2 + 1; // One-sided spectrum

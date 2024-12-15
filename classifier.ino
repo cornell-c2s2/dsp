@@ -1,10 +1,10 @@
-#include "application.h" // For Particle devices
+#include "application.h"
 #include "PlainFFT.h"
 #include "Particle.h"
 #include <math.h>
 #include <float.h>
 #include <stdbool.h>
-#include "1060.h"
+#include "1060.h" //#include "1809.h" //#include "1809bad.h"
 
 // ------------------------------------------------------------
 // Function Prototypes
@@ -21,7 +21,7 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
 // ------------------------------------------------------------
 void setup()
 {
-    int num_frames = sizeof(data)/sizeof(data[0]);
+    int num_frames = sizeof(data) / sizeof(data[0]);
     int samplingFreq = 16000;
 
     float lowcut = 3000.0;
@@ -30,7 +30,6 @@ void setup()
     float b[9] = {0.0};
     float a[9] = {0.0};
     butter_bandpass(lowcut, highcut, b, a);
-
 
     // Apply Butterworth bandpass filter
     float *filtered_signal_bp = (float *)malloc(num_frames * sizeof(float));
@@ -45,7 +44,7 @@ void setup()
     compute_spectrogram(filtered_signal_bp, num_frames, samplingFreq, &frequencies_bp, &times_bp, &intensity_bp, &freq_bins_bp, &time_bins_bp);
     free(filtered_signal_bp);
 
-    // Convert intensity to dB 
+    // Convert intensity to dB
     float min_intensity = DBL_MAX;
     float max_intensity = -DBL_MAX;
     for (int i = 0; i < freq_bins_bp; i++)
@@ -155,7 +154,7 @@ void setup()
     free(intensity_dB_filtered);
 }
 
-void loop(){}
+void loop() {}
 
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a)
 {
@@ -244,11 +243,11 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
                          int *freq_bins, int *time_bins)
 {
     int window_size = 64;
-    int noverlap = window_size / 8;        // 32 points overlap
-    int hop_size = window_size - noverlap; // 224 points step size
+    int noverlap = window_size / 8;
+    int hop_size = window_size - noverlap;
     int nfft = window_size;
-    float alpha = 0.25f; // Tukey window parameter
-    static float vReal[64];  // Match nfft size
+    float alpha = 0.25f;
+    static float vReal[64];
     static float vImag[64];
     static float window[64];
 
@@ -388,7 +387,6 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
             (*Sxx)[f][t] *= 2.0f;
         }
     }
-
 }
 
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint)
@@ -475,7 +473,6 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
     float **intensity_mp_bp = NULL;
     int freq_bins_mp_bp = 0, time_bins_mp_bp = 0;
 
-    // this is right now
     compute_spectrogram(filtered_signal_mp, num_frames, samplingFreq, &frequencies_mp_bp, &times_mp_bp, &intensity_mp_bp, &freq_bins_mp_bp, &time_bins_mp_bp);
 
     // Convert intensity to dB and normalize
@@ -547,8 +544,8 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
     }
 
     // Cluster the blob_times
-    float time_tolerance = 0.05;    // seconds
-    float min_blob_duration = 0.15; // seconds
+    float time_tolerance = 0.05;
+    float min_blob_duration = 0.15;
 
     int max_clusters = num_blob_times;
     float **clusters = (float **)malloc(max_clusters * sizeof(float *));
