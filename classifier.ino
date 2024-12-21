@@ -1,14 +1,22 @@
+//========================================================================
+// classifier.ino
+//========================================================================
+// A particle board compatible implementation of the Donut Classifier
+
 #include "application.h"
 #include "PlainFFT.h"
 #include "Particle.h"
 #include <math.h>
 #include <float.h>
 #include <stdbool.h>
-#include "1060.h" //#include "1809.h" //#include "1809bad.h"
 
-// ------------------------------------------------------------
-// Function Prototypes
-// ------------------------------------------------------------
+// Only include one of these files
+// Must have a float array called 'data'
+#include "1060.h"
+// #include "1809.h"
+// #include "1809bad.h"
+
+// Function prototypes
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a);
 void butter_bandpass_filter(float *data, int n, float *b, float *a, float *output);
 void compute_spectrogram(float *signal, int signal_length, int fs, float **frequencies, float **times, float ***Sxx, int *freq_bins, int *time_bins);
@@ -16,9 +24,7 @@ float normalize_intensity(float value, float min, float max);
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint);
 float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_midpoints);
 
-// ------------------------------------------------------------
 // Setup
-// ------------------------------------------------------------
 void setup()
 {
     int num_frames = sizeof(data) / sizeof(data[0]);
@@ -105,7 +111,6 @@ void setup()
     if (midpoints == NULL)
     {
         Serial.println("Failed to find midpoints.");
-        // Handle error
         return;
     }
     bool has_a_scrub = false;
@@ -129,7 +134,7 @@ void setup()
         if (sum_middle < 75 && sum_above > 300 && sum_below > 100)
         {
             has_a_scrub = true;
-            break; // We can stop after finding a Scrub Jay
+            break;
         }
     }
 
@@ -142,9 +147,7 @@ void setup()
         Serial.println("We have no Scrub Jay! :(");
     }
 
-    // Free allocated memory
     free(midpoints);
-
     for (int i = 0; i < freq_bins_bp; i++)
     {
         free(intensity_normalized[i]);
@@ -154,6 +157,7 @@ void setup()
     free(intensity_dB_filtered);
 }
 
+// Only run program once so 'loop' is empty
 void loop() {}
 
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a)
@@ -212,7 +216,7 @@ bool butter_bandpass(float lowcut, float highcut, float *b, float *a)
 
 void butter_bandpass_filter(float *data, int n, float *b, float *a, float *output)
 {
-    float w[9] = {0}; // State variables initialized to zero
+    float w[9] = {0};
 
     for (int i = 0; i < n; i++)
     {
@@ -324,9 +328,7 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
     }
     U *= (float)fs;
 
-    // Allocate arrays for FFT
     memset(vImag, 0, nfft * sizeof(float));
-    // Create PlainFFT instance
     PlainFFT fft;
 
     for (int t = 0; t < *time_bins; t++)

@@ -1,24 +1,29 @@
+#========================================================================
+# classifier.py
+#========================================================================
+# A python implementation of the Donut Classifier
+
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
-folder = "testing" #"audio"
+
+# Location of the audio files
+folder = "testing"
 audioFiles = os.listdir(folder)
+
+# Set to 'True' to display graphs
 showGraphsAndPrint = False
 for i in audioFiles:
     audioFile = folder+"/"+i
-
+    # Read audio file
     samplingFreq, mySound = wavfile.read(audioFile)
-
     # Normalize
     mySound = mySound / (2.**15)
-
-
     # If stereo, take one channel
     mySoundOneChannel = mySound[:, 0]
-
-
+    # Compute spectrogram
     frequencies, times, intensity = spectrogram(mySoundOneChannel, fs=samplingFreq)
     # Intensity to dB
     intensity = 10*np.log10(intensity/(10**-12))
@@ -50,6 +55,7 @@ for i in audioFiles:
         return (intensity_dB - min_intensity) / (max_intensity - min_intensity)
 
     def find_midpoints():
+        # Filter signal and compute spectrogram (above intensity threshold)
         lower_threshold_dB = 45
         filtered_signal = butter_bandpass_filter(mySoundOneChannel, 2000, 6000, samplingFreq)
         _, times, intensity = spectrogram(filtered_signal, fs=samplingFreq)
@@ -65,11 +71,12 @@ for i in audioFiles:
         cluster_midpoints = []
         current_cluster = [blob_times[0]] if blob_times else []
 
-        # Tolerance for clustering times (in seconds)
+        # Tolerance for clustering times in seconds
         time_tolerance = 0.05
         # Minimum blob length in seconds
         min_blob_duration = 0.15  
 
+        # Find valid midpoints
         for j in range(1, len(blob_times)):
             if blob_times[j] - blob_times[j - 1] <= time_tolerance:
                 current_cluster.append(blob_times[j])
@@ -98,36 +105,18 @@ for i in audioFiles:
     filtered_signal = butter_bandpass_filter(mySoundOneChannel, lowcut, highcut, samplingFreq)
 
     impulse = np.zeros(100)
-    impulse[0] = 1  # Set the first sample to 1
+    impulse[0] = 1
 
     # Apply Butterworth bandpass filter
     filtered_impulse = butter_bandpass_filter(impulse, lowcut, highcut, samplingFreq)
 
-    # # Save filtered data
-    # np.savetxt("filtered_data_python.txt", filtered_signal)
-    # print("Filtered data saved to 'filtered_data_python.txt'")
-
-
     frequencies, times, intensity = spectrogram(filtered_signal, fs=samplingFreq)
 
-    # # Save filtered data
-    # np.savetxt("filtered_intensity_python.txt", intensity)
-    # print("Filtered data saved to 'filtered_intensity_python.txt'")
-
-
+    # Normalize and filter intensities 
     intensity = 10 * np.log10(intensity/(10**-12))
-
     intensity_dB_normalized = normalize_intensity(intensity)
-
-
-
-
     intensity_dB_filtered = np.where(intensity_dB_normalized > lower_threshold_dB_normalized, intensity_dB_normalized, np.nan)
     intensity_dB_filtered = np.where(intensity_dB_filtered < upper_threshold_dB_normalized, intensity_dB_normalized, np.nan)
-
-
-
-
 
     if showGraphsAndPrint:
         plt.figure(figsize=(10, 4))
@@ -174,6 +163,7 @@ for i in audioFiles:
             plt.ylim(0, 20000)
             plt.show()
 
+        # Check thresholds
         if sum_intense(7000, 8000, 0.05) < 50 and sum_intense(9000, 15000, 0.18) > 200 and sum_intense(1000, 6000, 0.18) > 200:
             has_a_scrub = True
     if has_a_scrub:

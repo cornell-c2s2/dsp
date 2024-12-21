@@ -1,3 +1,8 @@
+//========================================================================
+// classifier.c
+//========================================================================
+// A C implementation of the Donut Classifier
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -24,7 +29,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 
 int main()
 {
-
+    // Location of the audio files
     char folder[] = "16k";
 
     struct dirent *entry;
@@ -37,13 +42,9 @@ int main()
             char audioFile[MAX_FILENAME];
             snprintf(audioFile, sizeof(audioFile), "%s/%s", folder, entry->d_name);
 
-            bool showGraphsAndPrint = true;
-
-            // Step 1: Read the WAV file
-            // const char *filename = "testing/2287-sj.wav";
+            // Read audio files
             int16_t *wav_data = NULL;
             int samplingFreq, num_frames, num_channels;
-
             read_wav_file(audioFile, &wav_data, &samplingFreq, &num_frames, &num_channels);
 
             printf("Loaded WAV file: %s\n", audioFile);
@@ -51,14 +52,14 @@ int main()
             printf("Channels: %d (output as mono)\n", num_channels);
             printf("Total Samples: %d\n", num_frames);
 
-            // Step 2: Normalize and convert WAV data to double
+            // Normalize and convert WAV data to double
             double *data = malloc(num_frames * sizeof(double));
             for (int i = 0; i < num_frames; i++)
             {
                 data[i] = wav_data[i] / 32768.0; // Normalize to [-1, 1]
             }
 
-            free(wav_data); // No longer needed
+            free(wav_data);
 
             // Save Data to files
             char dataName[MAX_FILENAME];
@@ -79,7 +80,7 @@ int main()
             fclose(_data);
             printf("_data saved to '%s'\n", dataName);
 
-            // Step 3: Apply Butterworth bandpass filter
+            // Create Butterworth bandpass filter
             double *filtered = malloc(num_frames * sizeof(double));
             double lowcut = 3000.0;
             double highcut = 7500.0;
@@ -87,8 +88,6 @@ int main()
             double b[9] = {0.0};
             double a[9] = {0.0};
             butter_bandpass(lowcut, highcut, b, a);
-
-            // Calculate Spectrogram with new bandpass
 
             // Apply Butterworth bandpass filter
             double *filtered_signal_bp = (double *)malloc(num_frames * sizeof(double));
@@ -99,7 +98,6 @@ int main()
             double *times_bp = NULL;
             double **intensity_bp = NULL;
             int freq_bins_bp = 0, time_bins_bp = 0;
-
             compute_spectrogram(filtered_signal_bp, num_frames, samplingFreq, &frequencies_bp, &times_bp, &intensity_bp, &freq_bins_bp, &time_bins_bp);
 
             // Convert intensity to dB and normalize
@@ -125,6 +123,7 @@ int main()
             }
             printf("%f", min_intensity);
             printf("%f", max_intensity);
+
             // Normalize intensity
             double **intensity_normalized = (double **)malloc(freq_bins_bp * sizeof(double *));
             for (int i = 0; i < freq_bins_bp; i++)
@@ -163,7 +162,6 @@ int main()
             if (midpoints == NULL)
             {
                 printf("Failed to find midpoints.\n");
-                // Handle error
                 return 1;
             }
             printf("%d\n", num_midpoints);
@@ -178,17 +176,15 @@ int main()
                 double sum_middle = sum_intense(3500, 4000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
                 double sum_below = sum_intense(500, 3000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
 
-                if (showGraphsAndPrint)
-                {
-                    printf("Above: %f\n", sum_above);
-                    printf("Middle: %f\n", sum_middle);
-                    printf("Below: %f\n\n", sum_below);
-                }
+                printf("Above: %f\n", sum_above);
+                printf("Middle: %f\n", sum_middle);
+                printf("Below: %f\n\n", sum_below);
 
+                // Check thresholds
                 if (sum_middle < 75 && sum_above > 300 && sum_below > 100)
                 {
                     has_a_scrub = true;
-                    break; // We can stop after finding a Scrub Jay
+                    break;
                 }
             }
 
@@ -201,10 +197,8 @@ int main()
                 printf("%s has no Scrub Jay! :(\n", audioFile);
             }
 
-            // Free allocated memory
             free(data);
             free(midpoints);
-
             for (int i = 0; i < freq_bins_bp; i++)
             {
                 free(intensity_normalized[i]);
@@ -287,7 +281,6 @@ int read_wav_file(const char *filename, int16_t **data, int *sample_rate, int *n
     int total_samples = data_chunk_size / (bits_per_sample / 8);
     int samples_per_channel = total_samples / channels;
 
-    // Allocate memory for the first channel's data
     *data = (int16_t *)malloc(samples_per_channel * sizeof(int16_t));
     if (!*data)
     {
@@ -299,14 +292,14 @@ int read_wav_file(const char *filename, int16_t **data, int *sample_rate, int *n
     // Read audio data, only taking the first channel
     for (int i = 0; i < samples_per_channel; i++)
     {
-        fread(&((*data)[i]), sizeof(int16_t), 1, file);          // Read the first channel
-        fseek(file, (channels - 1) * sizeof(int16_t), SEEK_CUR); // Skip remaining channels
+        fread(&((*data)[i]), sizeof(int16_t), 1, file);
+        fseek(file, (channels - 1) * sizeof(int16_t), SEEK_CUR);
     }
 
     // Set metadata
     *sample_rate = sample_rate_local;
     *num_samples = samples_per_channel;
-    *num_channels = 1; // Output is now single-channel
+    *num_channels = 1;
 
     fclose(file);
     return 1;
@@ -314,7 +307,6 @@ int read_wav_file(const char *filename, int16_t **data, int *sample_rate, int *n
 
 /**
  * Designs a Butterworth bandpass filter using the bilinear transform method.
- * Supports second-order (order=2) filters.
  *
  * @param lowcut Low cut-off frequency in Hz
  * @param highcut High cut-off frequency in Hz
@@ -346,7 +338,7 @@ bool butter_bandpass(double lowcut, double highcut, double *b, double *a)
         // a[5] = -34.21333503;
         // a[6] = 15.89913237;
         // a[7] = -4.25840048;
-        // a[8] = 0.50337536;  b[0] = 0.00021314;
+        // a[8] = 0.50337536;
         b[0] = 0.01020948;
         b[1] = 0.;
         b[2] = -0.04083792;
@@ -427,7 +419,7 @@ bool butter_bandpass(double lowcut, double highcut, double *b, double *a)
  */
 void butter_bandpass_filter(double *data, int n, double *b, double *a, double *output)
 {
-    double w[9] = {0}; // State variables initialized to zero
+    double w[9] = {0};
 
     for (int i = 0; i < n; i++)
     {
@@ -467,7 +459,6 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
     *freq_bins = nfft / 2 + 1; // One-sided spectrum
     *time_bins = (signal_length - window_size) / hop_size + 1;
 
-    // Allocate memory for frequencies, times, and the spectrogram matrix
     *frequencies = (double *)malloc((*freq_bins) * sizeof(double));
     *times = (double *)malloc((*time_bins) * sizeof(double));
     *Sxx = (double **)malloc((*freq_bins) * sizeof(double *));
@@ -492,7 +483,7 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
     // Create the Tukey window
     double *window = (double *)malloc(window_size * sizeof(double));
     double N_minus_1 = (double)(window_size - 1);
-    int M = window_size + 1; // Total number of points + 1 bc symmetric idk the python did this
+    int M = window_size + 1;
 
     if (alpha <= 0)
     {
@@ -530,7 +521,7 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
     }
 
     // Compute the window power (sum of squares)
-    // this U is equal to 1/scale in the python implementation
+    // This U is equal to 1/scale in the python implementation
     double U = 0.0;
     for (int i = 0; i < window_size; i++)
     {
@@ -538,7 +529,6 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
     }
     U *= fs; // Include sampling frequency in scaling
 
-    // Allocate memory for FFT input and output
     double *segment = (double *)malloc(nfft * sizeof(double));
     fftw_complex *out = (fftw_complex *)fftw_malloc((*freq_bins) * sizeof(fftw_complex));
 
@@ -595,7 +585,6 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
         }
     }
 
-    // Clean up
     fftw_destroy_plan(p);
     fftw_free(out);
     free(segment);
@@ -669,7 +658,6 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 {
 
     double lower_threshold_dB = 45.0;
-
     double lowcut = 1000.0;
     double highcut = 3000.0;
     double b[9] = {0.0};
@@ -686,7 +674,6 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
     double **intensity_mp_bp = NULL;
     int freq_bins_mp_bp = 0, time_bins_mp_bp = 0;
 
-    // this is right now
     compute_spectrogram(filtered_signal_mp, num_frames, samplingFreq, &frequencies_mp_bp, &times_mp_bp, &intensity_mp_bp, &freq_bins_mp_bp, &time_bins_mp_bp);
 
     // Convert intensity to dB and normalize
@@ -758,17 +745,9 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
         }
     }
 
-    // FILE *_blobtimes = fopen("_blobtimes.txt", "w");
-    // for (int t = 0; t < num_blob_times; t++)
-    // {
-    //     fprintf(_blobtimes, " %f", (blob_times[t]));
-    // }
-    // fclose(_blobtimes);
-    // printf("_blobtimes data saved to '_blobtimes.txt'\n");
-
     // Cluster the blob_times
-    double time_tolerance = 0.05;    // seconds
-    double min_blob_duration = 0.15; // seconds
+    double time_tolerance = 0.05;
+    double min_blob_duration = 0.15;
 
     int max_clusters = num_blob_times;
     double **clusters = (double **)malloc(max_clusters * sizeof(double *));
@@ -822,7 +801,6 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 
     *num_midpoints = count_midpoints;
 
-    // Free allocated memory
     for (int i = 0; i < num_clusters; i++)
     {
         free(clusters[i]);
