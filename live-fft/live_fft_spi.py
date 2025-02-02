@@ -1,42 +1,44 @@
 """
-Live FFT from SPI using Matplotlib
+Live FFT from SPIDriver using Matplotlib
 
 Press the 'd' key in the plot window to toggle between two display modes:
     - Mode 0: Top three frequency peaks are highlighted.
     - Mode 1: Only the single maximum frequency is highlighted.
 
-IMPORTANT:
-- This is a template to demonstrate how one might switch from PyAudio to SPI.
-- You must adapt SPI settings (bus, device, speed, data format, timing) to your hardware.
+NOTE:
+- This template shows how to replace spidev (or PyAudio) with spidriver.
+- You must adapt SPI commands, data parsing, and timing to your actual device.
 """
 
-import spidev
-import numpy as np
 import struct
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
-# SPI and "audio" settings
-CHUNK = 1024            # Number of samples to read per frame (adapt to your hardware)
-SPI_BUS = 0             # SPI bus (change if needed)
-SPI_DEVICE = 0          # SPI device/chip select (change if needed)
-SPI_SPEED_HZ = 2_000_000  # SPI clock speed in Hz (adapt to your hardware)
+# spidriver import
+from spidriver import SPIDriver
 
-# For audio-like FFT, set an expected sampling rate
-# This should match your actual ADC sampling rate over SPI.
-RATE = 44100  # in Hz (example: if your ADC is sampling at 44.1 kHz)
-              # Adjust to whatever your real sampling rate is.
+# 1) Configure how many samples to read per frame and the "audio" rate
+CHUNK = 1024            # Number of samples to read per frame
+RATE = 44100            # Sampling rate in Hz (if your ADC is sampling at 44.1 kHz)
+                        # Adjust to match your actual hardware's sampling rate!
 
-# FFT and display settings
+# 2) SPIDriver configuration
+PORT_NAME = "/dev/ttyUSB0"  # Linux example. Windows might be "COM3", macOS "cu.usbserial-xxx"
+SPI_SPEED = 2_000_000       # SPI bus speed (Hz). Adjust for your hardware and cable length.
+
+# 3) FFT and plotting settings
 FFT_SIZE = CHUNK
 FILTER_THRESHOLD = 2
 NUM_MAXES = 3
 
-# Display mode: 0 or 1
-display_mode = 0
+# Global for display mode
+display_mode = 0  # 0: highlight top 3 peaks; 1: highlight only the maximum peak
 
 def on_key_press(event):
-    """Toggle display mode when 'd' key is pressed."""
+    """
+    Toggle display mode when 'd' key is pressed.
+    """
     global display_mode
     if event.key == 'd':
         display_mode = 1 - display_mode
@@ -46,95 +48,105 @@ def main():
     global display_mode
 
     # -----------------------------------------------------------------------
-    # 1. Initialize SPI
+    # 1. Open SPIDriver
     # -----------------------------------------------------------------------
-    spi = spidev.SpiDev()
-    spi.open(SPI_BUS, SPI_DEVICE)
-    spi.max_speed_hz = SPI_SPEED_HZ
-    # Depending on your hardware, you may also need to configure
-    # spi.mode (0, 1, 2, or 3), spi.bits_per_word, etc.
+    print(f"Opening SPIDriver on port: {PORT_NAME}")
+    d = SPIDriver(PORT_NAME)
+    d.setspeed(SPI_SPEED)
+    print(f"SPI speed set to {SPI_SPEED} Hz")
+
+    # Depending on your device, you might need to configure mode, pins, etc.
+    # For example, set CS pin high/low manually or pull other pins as needed:
+    # d.setpins(d.PIN_CS)   # example usage: keep CS high if needed
+    # d.setpins(0)         # example usage: set all pins low
 
     # -----------------------------------------------------------------------
-    # 2. Prepare the Hanning window
+    # 2. Create a Hanning window (helps reduce FFT spectral leakage)
     # -----------------------------------------------------------------------
     window = np.hanning(FFT_SIZE)
 
     # -----------------------------------------------------------------------
-    # 3. Set up Matplotlib figure
+    # 3. Set up Matplotlib for plotting
     # -----------------------------------------------------------------------
-    freqs = np.linspace(0, RATE/2, FFT_SIZE//2)
+    freqs = np.linspace(0, RATE / 2, FFT_SIZE // 2)
     fig, ax = plt.subplots()
-    bars = ax.bar(freqs, np.zeros(FFT_SIZE//2), width=freqs[1]-freqs[0], color='r')
-    ax.set_xlim(0, RATE/2)
-    ax.set_ylim(0, 100)  # Adjust if your amplitude range differs
+    bars = ax.bar(freqs, np.zeros(FFT_SIZE // 2), width=freqs[1] - freqs[0], color='r')
+    ax.set_xlim(0, RATE / 2)
+    ax.set_ylim(0, 100)  # Adjust to match your expected FFT amplitude range
     ax.set_xlabel("Frequency (Hz)")
     ax.set_ylabel("Amplitude")
-    ax.set_title("Live FFT from SPI Driver")
+    ax.set_title("Live FFT from SPIDriver")
 
-    # Connect key press event
+    # Connect key-press event for toggling display modes
     fig.canvas.mpl_connect('key_press_event', on_key_press)
 
     # -----------------------------------------------------------------------
-    # 4. Function to read samples from SPI
+    # 4. Function to read samples from SPIDriver
     # -----------------------------------------------------------------------
     def read_spi_samples(num_samples):
         """
-        Reads num_samples of 16-bit data from SPI.
+        Reads num_samples of 16-bit data via SPIDriver.
         Returns a NumPy array of signed 16-bit integers.
-        
-        NOTE: This is a simplistic example: we send num_samples*2 dummy bytes
-        (or 0x00) and expect to get num_samples*2 bytes back from the device.
-        Many ADCs require specific command frames, register addresses, etc.
-        Modify accordingly for your hardware protocol.
+
+        NOTE:
+        - This code assumes your device returns raw 16-bit samples immediately
+          if we clock out zeros. In practice, you may need a custom command
+          sequence or read registers from your ADC/device.
+        - Adjust for endianness, bit depth, or protocol specifics.
         """
-        # Each 16-bit sample is 2 bytes
+        # Each sample is 2 bytes (16 bits)
         bytes_to_read = num_samples * 2
         
-        # Perform SPI transfer. We send all 0x00 to clock out data.
-        # The device must be continuously sampling and ready to return data.
-        raw_data = spi.xfer2([0x00] * bytes_to_read)
-
-        # Convert the returned bytes to a NumPy array of signed 16-bit integers.
-        # 'raw_data' is a list of ints (0-255).
-        # We'll pack them into a binary string, then unpack as little-endian 16-bit.
-        # Adjust endianness if your hardware uses big-endian format.
+        # Pull CS low before communication
+        d.sel()
+        
+        # Write zero bytes and simultaneously read the response
+        # This returns a list of integers (0..255)
+        raw_data = d.write([0x00] * bytes_to_read)
+        
+        # Release CS
+        d.unsel()
+        
+        # Convert returned list to a bytes object
         byte_str = bytes(raw_data)
+        
+        # Unpack as little-endian 16-bit integers: '<h'
         samples = struct.unpack('<' + 'h' * num_samples, byte_str)
         
         return np.array(samples, dtype=np.int16)
 
     # -----------------------------------------------------------------------
-    # 5. Animation update function
+    # 5. Matplotlib animation function
     # -----------------------------------------------------------------------
     def update_frame(frame):
-        # Read a chunk of samples from SPI
+        # Read a chunk of data from the SPI
         try:
             audio_data = read_spi_samples(CHUNK)
         except Exception as e:
             print("Error reading SPI data:", e)
             return bars
 
-        # Apply window
+        # Apply the window
         windowed_data = audio_data * window
 
-        # Compute the FFT (positive frequencies only)
+        # Compute the FFT (only positive frequencies)
         yf = np.fft.fft(windowed_data)
         N = len(yf)
         yff = (1.0 / N) * np.abs(yf[:N // 2])
 
-        # Optional filtering
+        # Optional filtering: zero out values below threshold
         yff = np.array([val if val > FILTER_THRESHOLD else 0 for val in yff])
 
-        # Prepare colors
+        # Prepare default colors (red)
         colors = ['r'] * (FFT_SIZE // 2)
 
         if display_mode == 1:
-            # Single maximum mode
+            # Highlight only the single maximum peak (ignoring the DC component)
             if len(yff) > 1:
-                max_index = yff[1:].argmax() + 1  # skip DC
+                max_index = yff[1:].argmax() + 1
                 colors[max_index] = 'blue'
         else:
-            # display_mode == 0 -> highlight top three peaks
+            # Highlight the top three peaks
             find_max = yff[1:].copy()
             highlight_colors = ['blue', 'green', 'orange']
             for i in range(min(NUM_MAXES, len(find_max))):
@@ -142,7 +154,7 @@ def main():
                 colors[idx] = highlight_colors[i]
                 find_max[idx - 1] = -1  # so it won't get picked again
 
-        # Update the bars
+        # Update the bar heights and colors
         for bar, height, col in zip(bars, yff, colors):
             bar.set_height(height)
             bar.set_color(col)
@@ -150,15 +162,17 @@ def main():
         return bars
 
     # -----------------------------------------------------------------------
-    # 6. Run Matplotlib animation
+    # 6. Start Matplotlib animation
     # -----------------------------------------------------------------------
     ani = animation.FuncAnimation(fig, update_frame, interval=10, blit=False)
     plt.show()
 
     # -----------------------------------------------------------------------
-    # 7. Clean up
+    # 7. Cleanup
     # -----------------------------------------------------------------------
-    spi.close()
+    # Optionally, set all pins to default state, close serial, etc.
+    d.close()
+    print("SPIDriver closed.")
 
 if __name__ == "__main__":
     main()
