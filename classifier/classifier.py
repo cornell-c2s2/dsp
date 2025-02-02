@@ -14,7 +14,7 @@ folder = "testing"
 audioFiles = os.listdir(folder)
 
 # Set to 'True' to display graphs
-showGraphsAndPrint = False
+showGraphsAndPrint = True
 for i in audioFiles:
     audioFile = folder+"/"+i
     # Read audio file
