@@ -24,7 +24,7 @@ RATE = 44100            # Sampling rate in Hz (if your ADC is sampling at 44.1 k
                         # Adjust to match your actual hardware's sampling rate!
 
 # 2) SPIDriver configuration
-PORT_NAME = "/dev/ttyUSB0"  # Linux example. Windows might be "COM3", macOS "cu.usbserial-xxx"
+PORT_NAME = "/dev/cu.Bluetooth-Incoming-Port"  # Linux example. Windows might be "COM3", macOS "cu.usbserial-xxx"
 SPI_SPEED = 2_000_000       # SPI bus speed (Hz). Adjust for your hardware and cable length.
 
 # 3) FFT and plotting settings
