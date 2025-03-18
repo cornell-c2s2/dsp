@@ -56,11 +56,11 @@ void loop()
     int adcValue = analogRead(A0);
 
     // Convert 12-bit ADC value (0-4095) to signed 16-bit PCM (-32768 to 32767)
-    float pcmSample = (adcValue - 2048) / 2048.0;
+    int16_t pcmSample = (adcValue - 2048) * 16;
 
     if (count < BUF_SIZE)
     {
-      buffer[count++] = pcmSample; // / 32768.0;
+      buffer[count++] = pcmSample / 32768.0;
       // buffer[count++] = adcValue;
     }
     else if (count == BUF_SIZE)
