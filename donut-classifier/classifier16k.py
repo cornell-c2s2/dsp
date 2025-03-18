@@ -10,7 +10,7 @@ from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
 
 # Location of the audio files
-folder = "16k"
+folder = "16k-from-mic"
 audioFiles = os.listdir(folder)
 
 # Set to 'True' to display graphs
