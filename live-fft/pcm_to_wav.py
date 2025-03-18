@@ -2,7 +2,7 @@ import numpy as np
 from scipy.signal import resample_poly
 from scipy.io import wavfile
 
-INPUT_FILE = "hello_hello_hello.txt"
+INPUT_FILE = "bird_control.txt"
 OUTPUT_WAV = "new_out.wav"
 
 def convert_10k_to_16k_mono_to_stereo(input_file, output_wav):
@@ -21,7 +21,8 @@ def convert_10k_to_16k_mono_to_stereo(input_file, output_wav):
     #    resample_poly(x, up, down) effectively does:
     #        new_length = len(x) * up / down
     #    Here up=16, down=10
-    resampled = resample_poly(samples, 16, 10)
+    scaled_data = samples * 32768.0
+    resampled = resample_poly(scaled_data, 16, 10)
     
     # 3) Convert mono to stereo by duplicating the channel
     stereo_data = np.column_stack((resampled, resampled))
