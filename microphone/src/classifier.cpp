@@ -9,8 +9,6 @@
 #include <float.h>
 #include <stdbool.h>
 
-// Only include one of these files
-
 // Function prototypes
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a);
 void butter_bandpass_filter(float *data, int n, float *b, float *a, float *output);

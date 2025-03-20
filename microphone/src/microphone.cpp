@@ -22,17 +22,17 @@ SYSTEM_THREAD(ENABLED);
 // View logs with CLI using 'particle serial monitor --follow'
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
-void setup()
-{
-  Serial.begin(115200);
-  delay(5000);
-  classify(data);
-  Serial.println("PASSED");
-}
+// void setup()
+// {
+//   Serial.begin(115200);
+//   delay(5000);
+//   classify(data);
+//   Serial.println("PASSED");
+// }
 
-void loop()
-{
-}
+// void loop()
+// {
+// }
 
 //// UNCOMMNENT BELOW HERE
 // static unsigned long lastSampleTime = 0;
