@@ -19,10 +19,10 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
 
 void classify(float *data, int data_size)
 {
-    Serial.begin(115200);
     int num_frames = data_size; // sizeof(data) / sizeof(data[0]);
-    Serial.println(num_frames);
+
     int samplingFreq = 16000;
+
     float lowcut = 3000.0;
     float highcut = 7500.0;
     int order = 4;
@@ -97,6 +97,10 @@ void classify(float *data, int data_size)
 
     // Scrub Jay Classify
     int num_midpoints = 0;
+    Serial.print("NF: ");
+    Serial.println(num_frames);
+    Serial.print("SF: ");
+    Serial.println(samplingFreq);
     float *midpoints = find_midpoints(data, num_frames, samplingFreq, &num_midpoints);
     Serial.print("Number of Midpoints: ");
     Serial.println(num_midpoints);
