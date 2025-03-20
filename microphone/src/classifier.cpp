@@ -65,16 +65,14 @@ void classify(float *data, int data_size)
         }
     }
     // Normalize intensity
-    float **intensity_normalized = (float **)malloc(freq_bins_bp * sizeof(float *));
     for (int i = 0; i < freq_bins_bp; i++)
     {
-        intensity_normalized[i] = (float *)malloc(time_bins_bp * sizeof(float));
         for (int j = 0; j < time_bins_bp; j++)
         {
             if (!isnan(intensity_bp[i][j]))
-                intensity_normalized[i][j] = (intensity_bp[i][j] - min_intensity) / (max_intensity - min_intensity);
+                intensity_bp[i][j] = (intensity_bp[i][j] - min_intensity) / (max_intensity - min_intensity);
             else
-                intensity_normalized[i][j] = NAN;
+                intensity_bp[i][j] = NAN;
         }
     }
 
@@ -82,16 +80,14 @@ void classify(float *data, int data_size)
     float upper_threshold_dB_normalized = 0.85;
 
     // Apply normalized dB thresholds
-    float **intensity_dB_filtered = (float **)malloc(freq_bins_bp * sizeof(float *));
     for (int i = 0; i < freq_bins_bp; i++)
     {
-        intensity_dB_filtered[i] = (float *)malloc(time_bins_bp * sizeof(float));
         for (int j = 0; j < time_bins_bp; j++)
         {
-            if (intensity_normalized[i][j] > lower_threshold_dB_normalized && intensity_normalized[i][j] < upper_threshold_dB_normalized)
-                intensity_dB_filtered[i][j] = intensity_normalized[i][j];
+            if (intensity_bp[i][j] > lower_threshold_dB_normalized && intensity_bp[i][j] < upper_threshold_dB_normalized)
+                intensity_bp[i][j] = intensity_bp[i][j];
             else
-                intensity_dB_filtered[i][j] = NAN;
+                intensity_bp[i][j] = NAN;
         }
     }
 
@@ -117,9 +113,9 @@ void classify(float *data, int data_size)
 
         float time_threshold = 0.18;
 
-        float sum_above = sum_intense(4500, 7500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
-        float sum_middle = sum_intense(3500, 4000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
-        float sum_below = sum_intense(500, 3000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
+        float sum_above = sum_intense(4500, 7500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
+        float sum_middle = sum_intense(3500, 4000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
+        float sum_below = sum_intense(500, 3000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
 
         Serial.print("Above intensities: ");
         Serial.println(sum_above);
@@ -145,13 +141,7 @@ void classify(float *data, int data_size)
     }
 
     free(midpoints);
-    for (int i = 0; i < freq_bins_bp; i++)
-    {
-        free(intensity_normalized[i]);
-        free(intensity_dB_filtered[i]);
-    }
-    free(intensity_normalized);
-    free(intensity_dB_filtered);
+    free(intensity_bp);
 }
 
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a)
@@ -494,16 +484,14 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
     }
 
     // Apply lower_threshold_dB
-    float **intensity_dB_filtered = (float **)malloc(freq_bins_mp_bp * sizeof(float *));
     for (int i = 0; i < freq_bins_mp_bp; i++)
     {
-        intensity_dB_filtered[i] = (float *)malloc(time_bins_mp_bp * sizeof(float));
         for (int j = 0; j < time_bins_mp_bp; j++)
         {
             if (intensity_mp_bp[i][j] > lower_threshold_dB)
-                intensity_dB_filtered[i][j] = intensity_mp_bp[i][j];
+                intensity_mp_bp[i][j] = intensity_mp_bp[i][j];
             else
-                intensity_dB_filtered[i][j] = NAN;
+                intensity_mp_bp[i][j] = NAN;
         }
     }
     // Collect times where there is any valid intensity
@@ -513,7 +501,7 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
         valid_time_bins[j] = false;
         for (int i = 0; i < freq_bins_mp_bp; i++)
         {
-            if (!isnan(intensity_dB_filtered[i][j]))
+            if (!isnan(intensity_mp_bp[i][j]))
             {
                 valid_time_bins[j] = true;
                 break;
@@ -607,10 +595,8 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
 
     for (int i = 0; i < freq_bins_mp_bp; i++)
     {
-        free(intensity_dB_filtered[i]);
         free(intensity_mp_bp[i]);
     }
-    free(intensity_dB_filtered);
     free(intensity_mp_bp);
     free(frequencies_mp_bp);
     free(times_mp_bp);

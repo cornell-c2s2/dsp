@@ -38,10 +38,10 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 static unsigned long lastSampleTime = 0;
 const int sampleRate = 16000; // 16 KHz
 int count = 0;
-const int BUF_SIZE = 3125;
-static float buffer[BUF_SIZE];
-const int UPBUF_SIZE = 5000;
+const int UPBUF_SIZE = 7000;
 static float upsampledBuffer[UPBUF_SIZE];
+const int BUF_SIZE = UPBUF_SIZE * 5 / 8;
+static float buffer[BUF_SIZE];
 
 void setup()
 {
