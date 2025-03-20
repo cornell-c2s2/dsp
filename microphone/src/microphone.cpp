@@ -38,23 +38,28 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 static unsigned long lastSampleTime = 0;
 const int sampleRate = 16000; // 16 KHz
 int count = 0;
-const int MOVE_SIZE = 900;
+const int MOVE_SIZE = 450;
 const int BUF_SIZE = 4500;
 static float buffer[BUF_SIZE];
 const int UPBUF_SIZE = BUF_SIZE * 8 / 5;
 static float upsampledBuffer[UPBUF_SIZE];
 
-void setup()
+void countdown()
 {
-  Serial.begin(115200);
-  delay(5000);
   Serial.println("3");
   delay(1000);
   Serial.println("2");
   delay(1000);
   Serial.println("1");
   delay(1000);
-  Serial.println("SPEAK!!!");
+  Serial.println("SQUAWK!!!");
+}
+
+void setup()
+{
+  Serial.begin(115200);
+  delay(5000);
+  countdown();
 }
 
 void upsampleLinear(const float *inBuffer, int oldSize, float *outBuffer, int newSize)
@@ -119,6 +124,7 @@ void loop()
       {
         buffer[i] = buffer[i + MOVE_SIZE];
       }
+
       // for (int i = 0; i < UPBUF_SIZE; i++)
       // {
       //   Serial.printf("%f,", upsampledBuffer[i]);
