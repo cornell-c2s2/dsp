@@ -93,10 +93,6 @@ void classify(float *data, int data_size)
 
     // Scrub Jay Classify
     int num_midpoints = 0;
-    Serial.print("NF: ");
-    Serial.println(num_frames);
-    Serial.print("SF: ");
-    Serial.println(samplingFreq);
     float *midpoints = find_midpoints(data, num_frames, samplingFreq, &num_midpoints);
     Serial.print("Number of Midpoints: ");
     Serial.println(num_midpoints);
@@ -141,7 +137,13 @@ void classify(float *data, int data_size)
     }
 
     free(midpoints);
+    for (int i = 0; i < freq_bins_bp; i++)
+    {
+        free(intensity_bp[i]);
+    }
     free(intensity_bp);
+    free(frequencies_bp);
+    free(times_bp);
 }
 
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a)

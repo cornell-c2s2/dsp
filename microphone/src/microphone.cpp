@@ -38,10 +38,11 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 static unsigned long lastSampleTime = 0;
 const int sampleRate = 16000; // 16 KHz
 int count = 0;
-const int UPBUF_SIZE = 7000;
-static float upsampledBuffer[UPBUF_SIZE];
-const int BUF_SIZE = UPBUF_SIZE * 5 / 8;
+const int MOVE_SIZE = 900;
+const int BUF_SIZE = 4500;
 static float buffer[BUF_SIZE];
+const int UPBUF_SIZE = BUF_SIZE * 8 / 5;
+static float upsampledBuffer[UPBUF_SIZE];
 
 void setup()
 {
@@ -100,20 +101,24 @@ void loop()
     int16_t pcmSample = (adcValue - 2048) * 16;
     if (count < BUF_SIZE)
     {
-      buffer[count++] = pcmSample; /// 32768.0;
-      // buffer[count++] = adcValue;
+      buffer[count++] = pcmSample;
     }
     else if (count == BUF_SIZE)
     {
-
-      count++;
       upsampleLinear(buffer, BUF_SIZE, upsampledBuffer, UPBUF_SIZE);
       for (int i = 0; i < UPBUF_SIZE; i++)
       {
         upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
       }
+      Serial.println("Begin Classification...");
       classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
-      Serial.print("PASSED");
+      Serial.println("Classification Ended!");
+      Serial.println("");
+      count = BUF_SIZE - MOVE_SIZE;
+      for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
+      {
+        buffer[i] = buffer[i + MOVE_SIZE];
+      }
       // for (int i = 0; i < UPBUF_SIZE; i++)
       // {
       //   Serial.printf("%f,", upsampledBuffer[i]);
