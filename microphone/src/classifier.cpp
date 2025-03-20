@@ -17,11 +17,12 @@ float normalize_intensity(float value, float min, float max);
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint);
 float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_midpoints);
 
-void classify(float *data)
+void classify(float *data, int data_size)
 {
-    int num_frames = sizeof(data) / sizeof(data[0]);
+    Serial.begin(115200);
+    int num_frames = data_size; // sizeof(data) / sizeof(data[0]);
+    Serial.println(num_frames);
     int samplingFreq = 16000;
-
     float lowcut = 3000.0;
     float highcut = 7500.0;
     int order = 4;

@@ -10,6 +10,6 @@ void compute_spectrogram(float *signal, int signal_length, int fs, float **frequ
 float normalize_intensity(float value, float min, float max);
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint);
 float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_midpoints);
-void classify(float *data);
+void classify(float *data, int data_size);
 
 #endif // CLASSIFIER_H

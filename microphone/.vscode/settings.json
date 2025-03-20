@@ -2,9 +2,6 @@
     "extensions.ignoreRecommendations": true,
     "C_Cpp.default.configurationProvider": "particle.particle-vscode-core",
     "files.associations": {
-        "*.ino": "cpp",
-        "application.h": "c",
-        "plainfft.h": "c"
-    },
-    "particle.targetDevice": ""
+        "*.ino": "cpp"
+    }
 }
