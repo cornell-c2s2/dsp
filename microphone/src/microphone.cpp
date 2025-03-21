@@ -35,11 +35,15 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 // }
 
 // CODE BELOW HERE
+void classificationTask(void *param);
+volatile bool classificationNeeded = false;
+Thread classificationThread("classificationThread", classificationTask);
+
 static unsigned long lastSampleTime = 0;
 const int sampleRate = 16000; // 16 KHz
 int count = 0;
-const int MOVE_SIZE = 4004;
-const int BUF_SIZE = 4005;
+const int MOVE_SIZE = 400;
+const int BUF_SIZE = 3807;
 static float buffer[BUF_SIZE];
 const int UPBUF_SIZE = BUF_SIZE * 16 / 9;
 static float upsampledBuffer[UPBUF_SIZE];
@@ -108,26 +112,47 @@ void loop()
       {
         upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
       }
+      classificationNeeded = true;
+      // Serial.println("Begin Classification...");
+      // classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
+      // Serial.println("Classification Ended!");
+      // Serial.println("");
+      // TRULY LIVE MOVEMENT
+      count = BUF_SIZE - MOVE_SIZE;
+      for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
+      {
+        buffer[i] = buffer[i + MOVE_SIZE];
+      }
+
+      // for (int i = 0; i < UPBUF_SIZE; i++)
+      // {
+      //   Serial.printf("%f,", upsampledBuffer[i]);
+      // }
+      // Serial.println("");
+      // BIG MOVEMENT
+      // count = 0;
+      // countdown();
+    }
+  }
+}
+
+void classificationTask(void *param)
+{
+  while (true)
+  {
+    // If the main loop signals that classification is needed…
+    if (classificationNeeded)
+    {
+      // We clear the flag here to indicate we’re actively classifying
+      classificationNeeded = false;
+
       Serial.println("Begin Classification...");
-      classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
+      // Classify the upsampledBuffer in the background
+      classify(upsampledBuffer, UPBUF_SIZE);
       Serial.println("Classification Ended!");
       Serial.println("");
-      // TRULY LIVE MOVEMENT
-      // count = BUF_SIZE - MOVE_SIZE;
-      // for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
-      // {
-      //   buffer[i] = buffer[i + MOVE_SIZE];
-      // }
-      //
-
-      for (int i = 0; i < UPBUF_SIZE; i++)
-      {
-        Serial.printf("%f,", upsampledBuffer[i]);
-      }
-      Serial.println("");
-      // BIG MOVEMENT
-      count = 0;
-      countdown();
     }
+    // Don’t hog the CPU in this thread
+    delay(20);
   }
 }

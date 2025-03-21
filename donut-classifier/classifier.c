@@ -30,7 +30,7 @@ double *find_midpoints(double *data, int num_frames, int samplingFreq, int *num_
 int main()
 {
     // Location of the audio files
-    char folder[] = "16k";
+    char folder[] = "16k-single-test";
 
     struct dirent *entry;
     DIR *directory = opendir(folder);
@@ -172,9 +172,9 @@ int main()
 
                 double time_threshold = 0.18;
 
-                double sum_above = sum_intense(4500, 7500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
-                double sum_middle = sum_intense(3500, 4000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
-                double sum_below = sum_intense(500, 3000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
+                double sum_above = sum_intense(5000, 7000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
+                double sum_middle = sum_intense(2500, 5000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
+                double sum_below = sum_intense(500, 2500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_dB_filtered, midpoint);
 
                 printf("Above: %f\n", sum_above);
                 printf("Middle: %f\n", sum_middle);
@@ -449,7 +449,7 @@ void compute_spectrogram(double *signal, int signal_length, int fs,
                          double **frequencies, double **times, double ***Sxx,
                          int *freq_bins, int *time_bins)
 {
-    int window_size = 64;
+    int window_size = 256;
     int noverlap = window_size / 8;
     int hop_size = window_size - noverlap;
     int nfft = window_size;

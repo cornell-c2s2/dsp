@@ -232,14 +232,14 @@ void compute_spectrogram(float *signal, int signal_length, int fs,
                          float **frequencies, float **times, float ***Sxx,
                          int *freq_bins, int *time_bins)
 {
-    int window_size = 64;
+    int window_size = 256;
     int noverlap = window_size / 8;
     int hop_size = window_size - noverlap;
     int nfft = window_size;
     float alpha = 0.25f;
-    static float vReal[64];
-    static float vImag[64];
-    static float window[64];
+    static float vReal[256];
+    static float vImag[256];
+    static float window[256];
 
     // Compute the number of frequency and time bins
     *freq_bins = nfft / 2 + 1;
