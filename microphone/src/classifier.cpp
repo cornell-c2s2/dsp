@@ -19,8 +19,7 @@ float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_mi
 
 void classify(float *data, int data_size)
 {
-    int num_frames = data_size; // sizeof(data) / sizeof(data[0]);
-
+    int num_frames = data_size;
     int samplingFreq = 16000;
 
     float lowcut = 3000.0;
