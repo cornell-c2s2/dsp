@@ -38,7 +38,7 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 static unsigned long lastSampleTime = 0;
 const int sampleRate = 16000; // 16 KHz
 int count = 0;
-const int MOVE_SIZE = 450;
+const int MOVE_SIZE = 900;
 const int BUF_SIZE = 4500;
 static float buffer[BUF_SIZE];
 const int UPBUF_SIZE = BUF_SIZE * 8 / 5;
@@ -64,23 +64,15 @@ void setup()
 
 void upsampleLinear(const float *inBuffer, int oldSize, float *outBuffer, int newSize)
 {
-  // We assume oldSize > 1
-  // We'll treat the old buffer indices as ranging 0..(oldSize-1).
-  // We'll map new samples to an "oldIndex" and interpolate.
   for (int i = 0; i < newSize; i++)
   {
-    // A float index in the old buffer
     float oldIndex = i * ((float)(oldSize - 1) / (float)(newSize - 1));
 
-    // Floor of oldIndex
     int indexFloor = (int)floor(oldIndex);
-    // Cap the ceiling at the last valid index
     int indexCeil = (indexFloor == (oldSize - 1)) ? (oldSize - 1) : (indexFloor + 1);
 
-    // Fractional part for interpolation
     float frac = oldIndex - indexFloor;
 
-    // Linear interpolation
     float valFloor = inBuffer[indexFloor];
     float valCeil = inBuffer[indexCeil];
     outBuffer[i] = valFloor + (valCeil - valFloor) * frac;
@@ -115,20 +107,21 @@ void loop()
       {
         upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
       }
-      Serial.println("Begin Classification...");
+      // Serial.println("Begin Classification...");
       classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
-      Serial.println("Classification Ended!");
-      Serial.println("");
+      // Serial.println("Classification Ended!");
+      // Serial.println("");
       count = BUF_SIZE - MOVE_SIZE;
       for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
       {
         buffer[i] = buffer[i + MOVE_SIZE];
       }
+      // countdown();
 
-      // for (int i = 0; i < UPBUF_SIZE; i++)
-      // {
-      //   Serial.printf("%f,", upsampledBuffer[i]);
-      // }
+      for (int i = 0; i < UPBUF_SIZE; i++)
+      {
+        Serial.printf("%f,", upsampledBuffer[i]);
+      }
     }
   }
 }
