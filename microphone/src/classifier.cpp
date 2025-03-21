@@ -120,7 +120,7 @@ void classify(float *data, int data_size)
         Serial.print("Below intensities: ");
         Serial.println(sum_below);
 
-        if (sum_middle < 100 && sum_above > 200 && sum_below > 200)
+        if (sum_middle < 100 && sum_above > 200 && sum_below > 150)
         {
             has_a_scrub = true;
             break;

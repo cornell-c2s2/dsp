@@ -49,23 +49,27 @@ const int BUF_SIZE = 3807;
 static float buffer[BUF_SIZE];
 const int UPBUF_SIZE = BUF_SIZE * 16 / 9;
 static float upsampledBuffer[UPBUF_SIZE];
+bool flag = false;
 
-void countdown()
+void countdown(bool s)
 {
-  Serial.println("3");
-  delay(1000);
-  Serial.println("2");
-  delay(1000);
-  Serial.println("1");
-  delay(1000);
-  Serial.println("SQUAWK!!!");
+  if (!s)
+  {
+    Serial.println("3");
+    delay(1000);
+    Serial.println("2");
+    delay(1000);
+    Serial.println("1");
+    delay(1000);
+  }
+  Serial.println("LISTENING...");
 }
 
 void setup()
 {
   Serial.begin(115200);
   delay(5000);
-  countdown();
+  countdown(false);
 }
 
 void upsampleLinear(const float *inBuffer, int oldSize, float *outBuffer, int newSize)
@@ -98,49 +102,57 @@ void loop()
 
     // Read 12-bit ADC value from A0
     int adcValue = analogRead(A0);
-
-    // Convert 12-bit ADC value (0-4095) to signed 16-bit PCM (-32768 to 32767)
-    int16_t pcmSample = (adcValue - 2048) * 16;
-    if (count < BUF_SIZE)
+    if (adcValue < 1548 || adcValue > 2548)
     {
-      buffer[count++] = pcmSample;
+      // Serial.println(adcValue);
+      flag = true;
     }
-    else if (count == BUF_SIZE)
+    if (flag)
     {
-      // Serial.println("YOU'RE DONE");
-      upsampleLinear(buffer, BUF_SIZE, upsampledBuffer, UPBUF_SIZE);
-      for (int i = 0; i < UPBUF_SIZE; i++)
+      // Convert 12-bit ADC value (0-4095) to signed 16-bit PCM (-32768 to 32767)
+      int16_t pcmSample = (adcValue - 2048) * 16;
+      if (count < BUF_SIZE)
       {
-        upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
+        buffer[count++] = pcmSample;
       }
-
-      // if (currentTime % 10000000 < 2000000)
-      // {
-      //   Serial.printlnf("Class %d (%f) requested at: %lu", mainCount, upsampledBuffer[0], millis());
-      //   mainCount++;
-      //   classificationNeeded = true;
-      // }
-      Serial.println("Begin Classification...");
-      unsigned long before = micros();
-      classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
-      Serial.println(micros() - before);
-      Serial.println("Classification Ended!");
-      Serial.println("");
-      // TRULY LIVE MOVEMENT
-      count = BUF_SIZE - MOVE_SIZE;
-      for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
+      else if (count == BUF_SIZE)
       {
-        buffer[i] = buffer[i + MOVE_SIZE];
-      }
+        // Serial.println("YOU'RE DONE");
+        upsampleLinear(buffer, BUF_SIZE, upsampledBuffer, UPBUF_SIZE);
+        for (int i = 0; i < UPBUF_SIZE; i++)
+        {
+          upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
+        }
 
-      // for (int i = 0; i < UPBUF_SIZE; i++)
-      // {
-      //   Serial.printf("%f,", upsampledBuffer[i]);
-      // }
-      // Serial.println("");
-      // BIG MOVEMENT
-      // count = 0;
-      // countdown();
+        // if (currentTime % 10000000 < 2000000)
+        // {
+        //   Serial.printlnf("Class %d (%f) requested at: %lu", mainCount, upsampledBuffer[0], millis());
+        //   mainCount++;
+        //   classificationNeeded = true;
+        // }
+        Serial.println("Begin Classification...");
+        // unsigned long before = micros();
+        classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
+        // Serial.println(micros() - before);
+        Serial.println("Classification Ended!");
+        Serial.println("");
+        // // TRULY LIVE MOVEMENT
+        // count = BUF_SIZE - MOVE_SIZE;
+        // for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
+        // {
+        //   buffer[i] = buffer[i + MOVE_SIZE];
+        // }
+
+        // for (int i = 0; i < UPBUF_SIZE; i++)
+        // {
+        //   Serial.printf("%f,", upsampledBuffer[i]);
+        // }
+        // Serial.println("");
+        // BIG MOVEMENT
+        flag = false;
+        count = 0;
+        countdown(true);
+      }
     }
   }
 }
