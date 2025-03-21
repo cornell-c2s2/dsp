@@ -10,7 +10,6 @@
 // Include Particle Device OS APIs
 #include "Particle.h"
 #include "classifier.h"
-#include "test.h"
 
 // Let Device OS manage the connection to the Particle Cloud
 SYSTEM_MODE(AUTOMATIC);
@@ -22,29 +21,9 @@ SYSTEM_THREAD(ENABLED);
 // View logs with CLI using 'particle serial monitor --follow'
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
-// void setup()
-// {
-//   Serial.begin(115200);
-//   delay(5000);
-//   classify(data, (sizeof(data) / sizeof(data[0])));
-//   Serial.println("PASSED");
-// }
-
-// void loop()
-// {
-// }
-
-// CODE BELOW HERE
-// void classificationTask(void *param);
-// volatile bool classificationNeeded = false;
-// Thread classificationThread("classificationThread", classificationTask);
-// int mainCount = 1;
-// int threadCount = 1;
-
 static unsigned long lastSampleTime = 0;
-const int sampleRate = 16000; // 16 KHz
+const int sampleRate = 16000;
 int count = 0;
-const int MOVE_SIZE = 400;
 const int BUF_SIZE = 3807;
 static float buffer[BUF_SIZE];
 const int UPBUF_SIZE = BUF_SIZE * 16 / 9;
@@ -94,7 +73,7 @@ void loop()
 
   unsigned long currentTime = micros();
   if (currentTime - lastSampleTime >= (1000000 / sampleRate))
-  { // ~16 kHz sampling rate
+  {
 
     // Serial.printf("%d", currentTime - lastSampleTime);
     // Serial.print(",");
@@ -109,7 +88,7 @@ void loop()
     }
     if (flag)
     {
-      // Convert 12-bit ADC value (0-4095) to signed 16-bit PCM (-32768 to 32767)
+      // Convert 12-bit ADC value to signed 16-bit PCM
       int16_t pcmSample = (adcValue - 2048) * 16;
       if (count < BUF_SIZE)
       {
@@ -117,38 +96,17 @@ void loop()
       }
       else if (count == BUF_SIZE)
       {
-        // Serial.println("YOU'RE DONE");
         upsampleLinear(buffer, BUF_SIZE, upsampledBuffer, UPBUF_SIZE);
         for (int i = 0; i < UPBUF_SIZE; i++)
         {
           upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
         }
-
-        // if (currentTime % 10000000 < 2000000)
-        // {
-        //   Serial.printlnf("Class %d (%f) requested at: %lu", mainCount, upsampledBuffer[0], millis());
-        //   mainCount++;
-        //   classificationNeeded = true;
-        // }
         Serial.println("Begin Classification...");
         // unsigned long before = micros();
         classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
         // Serial.println(micros() - before);
         Serial.println("Classification Ended!");
         Serial.println("");
-        // // TRULY LIVE MOVEMENT
-        // count = BUF_SIZE - MOVE_SIZE;
-        // for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
-        // {
-        //   buffer[i] = buffer[i + MOVE_SIZE];
-        // }
-
-        // for (int i = 0; i < UPBUF_SIZE; i++)
-        // {
-        //   Serial.printf("%f,", upsampledBuffer[i]);
-        // }
-        // Serial.println("");
-        // BIG MOVEMENT
         flag = false;
         count = 0;
         countdown(true);
@@ -156,26 +114,3 @@ void loop()
     }
   }
 }
-
-// void classificationTask(void *param)
-// {
-//   while (true)
-//   {
-//     // If the main loop signals that classification is needed…
-//     if (classificationNeeded)
-//     {
-//       Serial.printlnf("Class %d (%f) retrieved at: %lu", threadCount, upsampledBuffer[0], millis());
-//       threadCount++;
-//       // We clear the flag here to indicate we’re actively classifying
-//       classificationNeeded = false;
-
-//       // Serial.println("Begin Classification...");
-//       //  Classify the upsampledBuffer in the background
-//       classify(upsampledBuffer, UPBUF_SIZE);
-//       // Serial.println("Classification Ended!");
-//       // Serial.println("");
-//     }
-//     // Don’t hog the CPU in this thread
-//     // delay(20);
-//   }
-// }
