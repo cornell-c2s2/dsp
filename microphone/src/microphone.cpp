@@ -120,11 +120,11 @@ void loop()
       // }
       //
 
-      // for (int i = 0; i < UPBUF_SIZE; i++)
-      // {
-      //   Serial.printf("%f,", upsampledBuffer[i]);
-      // }
-      // Serial.println("");
+      for (int i = 0; i < UPBUF_SIZE; i++)
+      {
+        Serial.printf("%f,", upsampledBuffer[i]);
+      }
+      Serial.println("");
       // BIG MOVEMENT
       count = 0;
       countdown();
