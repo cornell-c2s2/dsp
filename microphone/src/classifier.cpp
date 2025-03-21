@@ -94,8 +94,8 @@ void classify(float *data, int data_size)
     // Scrub Jay Classify
     int num_midpoints = 0;
     float *midpoints = find_midpoints(data, num_frames, samplingFreq, &num_midpoints);
-    // Serial.print("Number of Midpoints: ");
-    // Serial.println(num_midpoints);
+    Serial.print("Number of Midpoints: ");
+    Serial.println(num_midpoints);
 
     if (midpoints == NULL)
     {
@@ -109,16 +109,16 @@ void classify(float *data, int data_size)
 
         float time_threshold = 0.18;
 
-        float sum_above = sum_intense(4500, 7500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
-        float sum_middle = sum_intense(3500, 4000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
-        float sum_below = sum_intense(500, 3000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
+        float sum_above = sum_intense(5500, 7500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
+        float sum_middle = sum_intense(2500, 5500, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
+        float sum_below = sum_intense(500, 2500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
 
-        // Serial.print("Above intensities: ");
-        // Serial.println(sum_above);
-        // Serial.print("Middle intensities: ");
-        // Serial.println(sum_middle);
-        // Serial.print("Below intensities: ");
-        // Serial.println(sum_below);
+        Serial.print("Above intensities: ");
+        Serial.println(sum_above);
+        Serial.print("Middle intensities: ");
+        Serial.println(sum_middle);
+        Serial.print("Below intensities: ");
+        Serial.println(sum_below);
 
         if (sum_middle < 75 && sum_above > 300 && sum_below > 100)
         {

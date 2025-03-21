@@ -38,10 +38,10 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 static unsigned long lastSampleTime = 0;
 const int sampleRate = 16000; // 16 KHz
 int count = 0;
-const int MOVE_SIZE = 900;
-const int BUF_SIZE = 4500;
+const int MOVE_SIZE = 4004;
+const int BUF_SIZE = 4005;
 static float buffer[BUF_SIZE];
-const int UPBUF_SIZE = BUF_SIZE * 8 / 5;
+const int UPBUF_SIZE = BUF_SIZE * 16 / 9;
 static float upsampledBuffer[UPBUF_SIZE];
 
 void countdown()
@@ -87,7 +87,7 @@ void loop()
   if (currentTime - lastSampleTime >= (1000000 / sampleRate))
   { // ~16 kHz sampling rate
 
-    // Serial.print(currentTime - lastSampleTime);
+    // Serial.printf("%d", currentTime - lastSampleTime);
     // Serial.print(",");
     lastSampleTime = currentTime;
 
@@ -107,10 +107,10 @@ void loop()
       {
         upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
       }
-      // Serial.println("Begin Classification...");
+      Serial.println("Begin Classification...");
       classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
-      // Serial.println("Classification Ended!");
-      // Serial.println("");
+      Serial.println("Classification Ended!");
+      Serial.println("");
       count = BUF_SIZE - MOVE_SIZE;
       for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
       {
@@ -118,10 +118,10 @@ void loop()
       }
       // countdown();
 
-      for (int i = 0; i < UPBUF_SIZE; i++)
-      {
-        Serial.printf("%f,", upsampledBuffer[i]);
-      }
+      // for (int i = 0; i < UPBUF_SIZE; i++)
+      // {
+      //   Serial.printf("%f,", upsampledBuffer[i]);
+      // }
     }
   }
 }

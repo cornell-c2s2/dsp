@@ -149,9 +149,9 @@ for i in audioFiles:
             total_intensity = np.nansum(area_intensity)
             return total_intensity
         
-        print("Above: "+str(sum_intense(4500, 7500, .18)))
-        print("Middle: "+str(sum_intense(3500, 4000, 0.05)))
-        print("Below: "+str(sum_intense(500, 3000, .18)))
+        print("Above: "+str(sum_intense(5500, 7500, .18)))
+        print("Middle: "+str(sum_intense(2500, 5500, 0.05)))
+        print("Below: "+str(sum_intense(500, 2500, .18)))
         print()
         if showGraphsAndPrint:
             plt.figure(figsize=(10, 4))
@@ -164,7 +164,7 @@ for i in audioFiles:
             plt.show()
         
         # Check thresholds
-        if sum_intense(3500, 4000, 0.05) < 75 and sum_intense(4500, 7500, 0.18) > 300 and sum_intense(500, 3000, 0.18) > 100:
+        if sum_intense(2500, 5500, 0.05) < 75 and sum_intense(5500, 7500, 0.18) > 300 and sum_intense(500, 2500, 0.18) > 100:
             has_a_scrub = True
     if has_a_scrub:
         print(audioFile + " has a Scrub Jay! :)")
