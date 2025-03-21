@@ -94,8 +94,8 @@ void classify(float *data, int data_size)
     // Scrub Jay Classify
     int num_midpoints = 0;
     float *midpoints = find_midpoints(data, num_frames, samplingFreq, &num_midpoints);
-    Serial.print("Number of Midpoints: ");
-    Serial.println(num_midpoints);
+    // Serial.print("Number of Midpoints: ");
+    // Serial.println(num_midpoints);
 
     if (midpoints == NULL)
     {
@@ -133,7 +133,7 @@ void classify(float *data, int data_size)
     }
     else
     {
-        Serial.println("We have no Scrub Jay! :(");
+        // Serial.println("We have no Scrub Jay! :(");
     }
 
     free(midpoints);

@@ -38,6 +38,8 @@ SerialLogHandler logHandler(LOG_LEVEL_INFO);
 void classificationTask(void *param);
 volatile bool classificationNeeded = false;
 Thread classificationThread("classificationThread", classificationTask);
+int mainCount = 1;
+int threadCount = 1;
 
 static unsigned long lastSampleTime = 0;
 const int sampleRate = 16000; // 16 KHz
@@ -87,7 +89,6 @@ void loop()
 {
 
   unsigned long currentTime = micros();
-
   if (currentTime - lastSampleTime >= (1000000 / sampleRate))
   { // ~16 kHz sampling rate
 
@@ -106,13 +107,19 @@ void loop()
     }
     else if (count == BUF_SIZE)
     {
-      Serial.println("YOU'RE DONE");
+      // Serial.println("YOU'RE DONE");
       upsampleLinear(buffer, BUF_SIZE, upsampledBuffer, UPBUF_SIZE);
       for (int i = 0; i < UPBUF_SIZE; i++)
       {
         upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
       }
-      classificationNeeded = true;
+
+      if (currentTime % 10000000 < 2000000)
+      {
+        Serial.printlnf("Class %d (%f) requested at: %lu", mainCount, upsampledBuffer[0], millis());
+        mainCount++;
+        classificationNeeded = true;
+      }
       // Serial.println("Begin Classification...");
       // classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
       // Serial.println("Classification Ended!");
@@ -143,16 +150,18 @@ void classificationTask(void *param)
     // If the main loop signals that classification is needed…
     if (classificationNeeded)
     {
+      Serial.printlnf("Class %d (%f) retrieved at: %lu", threadCount, upsampledBuffer[0], millis());
+      threadCount++;
       // We clear the flag here to indicate we’re actively classifying
       classificationNeeded = false;
 
-      Serial.println("Begin Classification...");
-      // Classify the upsampledBuffer in the background
+      // Serial.println("Begin Classification...");
+      //  Classify the upsampledBuffer in the background
       classify(upsampledBuffer, UPBUF_SIZE);
-      Serial.println("Classification Ended!");
-      Serial.println("");
+      // Serial.println("Classification Ended!");
+      // Serial.println("");
     }
     // Don’t hog the CPU in this thread
-    delay(20);
+    // delay(20);
   }
 }
