@@ -109,8 +109,8 @@ void classify(float *data, int data_size)
 
         float time_threshold = 0.18;
 
-        float sum_above = sum_intense(5500, 7500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
-        float sum_middle = sum_intense(2500, 5500, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
+        float sum_above = sum_intense(5000, 7000, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
+        float sum_middle = sum_intense(2500, 5000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
         float sum_below = sum_intense(500, 2500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
 
         Serial.print("Above intensities: ");
@@ -120,7 +120,7 @@ void classify(float *data, int data_size)
         Serial.print("Below intensities: ");
         Serial.println(sum_below);
 
-        if (sum_middle < 75 && sum_above > 300 && sum_below > 100)
+        if (sum_middle < 100 && sum_above > 200 && sum_below > 200)
         {
             has_a_scrub = true;
             break;

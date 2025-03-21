@@ -21,7 +21,7 @@ def convert_10k_to_16k_mono_to_stereo(input_file, output_wav):
     #    resample_poly(x, up, down) effectively does:
     #        new_length = len(x) * up / down
     #    Here up=16, down=10
-    scaled_data = np.round(samples * 32768.0)
+    scaled_data = samples * 32768.0
     # with open("output1.txt", "w") as file:
     #     file.write(",".join(map(str, scaled_data)))
     # resampled = resample_poly(scaled_data, 16, 8)

@@ -102,6 +102,7 @@ void loop()
     }
     else if (count == BUF_SIZE)
     {
+      Serial.println("YOU'RE DONE");
       upsampleLinear(buffer, BUF_SIZE, upsampledBuffer, UPBUF_SIZE);
       for (int i = 0; i < UPBUF_SIZE; i++)
       {
@@ -111,17 +112,22 @@ void loop()
       classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
       Serial.println("Classification Ended!");
       Serial.println("");
-      count = BUF_SIZE - MOVE_SIZE;
-      for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
-      {
-        buffer[i] = buffer[i + MOVE_SIZE];
-      }
-      // countdown();
+      // TRULY LIVE MOVEMENT
+      // count = BUF_SIZE - MOVE_SIZE;
+      // for (int i = 0; i < BUF_SIZE - MOVE_SIZE; i++)
+      // {
+      //   buffer[i] = buffer[i + MOVE_SIZE];
+      // }
+      //
 
       // for (int i = 0; i < UPBUF_SIZE; i++)
       // {
       //   Serial.printf("%f,", upsampledBuffer[i]);
       // }
+      // Serial.println("");
+      // BIG MOVEMENT
+      count = 0;
+      countdown();
     }
   }
 }
