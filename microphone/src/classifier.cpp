@@ -129,10 +129,12 @@ void classify(float *data, int data_size)
     if (has_a_scrub)
     {
         Serial.println("We have a Scrub Jay! :)");
+        Serial1.print('2');
     }
     else
     {
         // Serial.println("We have no Scrub Jay! :(");
+        Serial1.write('1');
     }
 
     free(midpoints);

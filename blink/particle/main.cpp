@@ -4,7 +4,6 @@
 // This #include statement was automatically added by the Particle IDE.
 #include "classifier.h"
 
-
 /*
  * Project donut-microphone
  * Author: C2S2 Software
@@ -85,7 +84,7 @@ void loop()
     // Serial.printf("%d", currentTime - lastSampleTime);
     // Serial.print(",");
     lastSampleTime = currentTime;
-  Serial1.print('0');
+    Serial1.print('0');
     // Read 12-bit ADC value from A0
     int adcValue = analogRead(A0);
     // Check if the digital signal is sufficient far from 2048 (we have noise) and let the sample collection start
