@@ -1,9 +1,3 @@
-// This #include statement was automatically added by the Particle IDE.
-#include "PlainFFT.h"
-
-// This #include statement was automatically added by the Particle IDE.
-#include "classifier.h"
-
 /*
  * Project donut-microphone
  * Author: C2S2 Software

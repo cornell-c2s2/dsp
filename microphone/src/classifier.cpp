@@ -1,7 +1,8 @@
 //========================================================================
-// classifier.c
+// classifier.cpp
 //========================================================================
 // A particle board compatible implementation of the Donut Classifier
+
 #include "application.h"
 #include "PlainFFT.h"
 #include "Particle.h"
