@@ -13,7 +13,6 @@
 #include "ringbuffer.h"
 #include "pico/multicore.h"
 
-
 // Pico W devices use a GPIO on the WIFI chip for the LED,
 // so when building for Pico W, CYW43_WL_GPIO_LED_PIN will be defined
 #ifdef CYW43_WL_GPIO_LED_PIN
@@ -28,7 +27,6 @@
 
 #define UART_ID uart1
 
-
 #define UART_TX 8
 #define UART_RX 9
 
@@ -40,10 +38,9 @@ IntRingBuffer *classification_buffer;
 
 volatile uint8_t print_imu = 0;
 
-
-
 // Perform initialisation
-int pico_led_init(void) {
+int pico_led_init(void)
+{
 #if defined(PICO_DEFAULT_LED_PIN)
     // A device like Pico that uses a GPIO for the LED will define PICO_DEFAULT_LED_PIN
     // so we can use normal GPIO functionality to turn the led on and off
@@ -57,7 +54,8 @@ int pico_led_init(void) {
 }
 
 // Turn the led on or off
-void pico_set_led(bool led_on) {
+void pico_set_led(bool led_on)
+{
 #if defined(PICO_DEFAULT_LED_PIN)
     // Just set the GPIO on or off
     gpio_put(PICO_DEFAULT_LED_PIN, led_on);
@@ -71,30 +69,26 @@ void pico_set_led(bool led_on) {
 int spinlock_num_count;
 spin_lock_t *spinlock_classification;
 
-
-void test_ringbuffer() {
+void test_ringbuffer()
+{
     printf("Test 1: Initialization\n");
     IntRingBuffer *buffer = create_int_ring(3);
     printf("Buffer capacity: %d\n", buffer->capacity);
-
 
     printf("Test 2: Adding Elements\n");
     ring_buffer_put(buffer, 10);
     ring_buffer_put(buffer, 20);
     ring_buffer_put(buffer, 30);
-    
+
     printf("Test 3: Retrieving Elements\n");
     printf("Expected: 10, Got: %d\n", ring_buffer_get(buffer));
     printf("Expected: 20, Got: %d\n", ring_buffer_get(buffer));
 
-
     printf("Test 4: Buffer Wraparound\n");
     ring_buffer_put(buffer, 40);
     ring_buffer_put(buffer, 50);
-    
 
     printf("Expected: 30, Got: %d\n", ring_buffer_get(buffer));
-
 
     printf("Expected: 40, Got: %d\n", ring_buffer_get(buffer));
 
@@ -113,23 +107,30 @@ void test_ringbuffer() {
     free_ring_buffer(buffer); // Cleanup allocated memory
 }
 
-void print_imu_buffers(IntRingBuffer* ax, IntRingBuffer* ay, IntRingBuffer* az, IntRingBuffer* classification_buffer) {
-    while (ring_buffer_peek(ax) != -1 || ring_buffer_peek(classification_buffer) != -1) {
+void print_imu_buffers(IntRingBuffer *ax, IntRingBuffer *ay, IntRingBuffer *az, IntRingBuffer *classification_buffer)
+{
+    while (ring_buffer_peek(ax) != -1 || ring_buffer_peek(classification_buffer) != -1)
+    {
         printf("Classification_state: %d, ax: %d, ay: %d, az: %d\n", ring_buffer_get(classification_buffer), ring_buffer_get(ax), ring_buffer_get(ay), ring_buffer_get(az));
     }
 }
 
-void core1_task() {
-    while(true) {
-        while(!uart_is_readable);
+void core1_task()
+{
+    while (true)
+    {
+        while (!uart_is_readable)
+            ;
 
         // UART
         spin_lock_unsafe_blocking(spinlock_classification);
         char byte = uart_getc(UART_ID);
-        printf("%d\n", (int)byte);
+        // printf("%d\n", (int)byte);
+        sleep_ms(1);
         ring_buffer_put(classification_buffer, (int)byte);
 
-        if (byte == 50){
+        if (byte == 50)
+        {
             print_imu = 1;
         }
         spin_unlock_unsafe(spinlock_classification);
@@ -139,7 +140,8 @@ void core1_task() {
     }
 }
 
-int main() {
+int main()
+{
     stdio_init_all();
 
     // UART init
@@ -155,10 +157,10 @@ int main() {
     gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
     gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
     // Make the I2C pins available to picotool
-    //bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
+    // bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
 
     mpu6050_reset();
- 
+
     int16_t acceleration[3], gyro[3];
 
     int rc = pico_led_init();
@@ -166,7 +168,7 @@ int main() {
     hard_assert(rc == PICO_OK);
     // test_ringbuffer();
 
-    uint32_t start =  time_us_32();
+    uint32_t start = time_us_32();
 
     spinlock_num_count = spin_lock_claim_unused(true);
     spinlock_classification = spin_lock_init(spinlock_num_count);
@@ -178,7 +180,8 @@ int main() {
     ay = create_int_ring(100);
     az = create_int_ring(100);
     classification_buffer = create_int_ring(100);
-    while (true) {
+    while (true)
+    {
         mpu6050_read_raw(acceleration, gyro);
         // printf("new iteration\n");
         // Write ring buffer values:
@@ -186,10 +189,11 @@ int main() {
         ring_buffer_put(ay, acceleration[1]);
         ring_buffer_put(az, acceleration[2]);
 
-        if (print_imu) {
+        if (print_imu)
+        {
             spin_lock_unsafe_blocking(spinlock_classification);
             print_imu = 0;
-            print_imu_buffers(ax,ay,az, classification_buffer);
+            print_imu_buffers(ax, ay, az, classification_buffer);
             spin_unlock_unsafe(spinlock_classification);
             sleep_ms(1);
         }
