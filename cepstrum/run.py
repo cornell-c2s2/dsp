@@ -6,7 +6,7 @@ import librosa
 # Use the same MFCC configuration as during training
 N_MFCC = 20
 MODEL_PATH = "scrubjay_svm.joblib"
-AUDIO_FOLDER = "full-sr" 
+AUDIO_FOLDER = "testing" 
 
 def mfcc_stats(y, sr):
     """Extract mean and std of MFCC coefficients."""
