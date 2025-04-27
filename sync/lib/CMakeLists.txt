@@ -1,24 +1,13 @@
-add_library(mpu6050 STATIC mpu6050.c)
+add_library(mpu6050 mpu6050.c)
+add_library(ringbuffer ringbuffer.c)
+add_library(classifier classifier.cpp)
 
-target_include_directories(mpu6050 PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-
-target_link_libraries(mpu6050 
-                    pico_stdlib 
-                    hardware_i2c
-                    hardware_irq
-                    hardware_clocks
-                    hardware_pll
-                    hardware_adc
-                    ) 
-
-add_library(ringbuffer STATIC ringbuffer.c)
-
-target_include_directories(ringbuffer PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-
+# This will correctly add all SDK include paths and defines
+target_link_libraries(mpu6050 pico_stdlib hardware_i2c)
 target_link_libraries(ringbuffer pico_stdlib)
+target_link_libraries(classifier pico_stdlib)
 
-add_library(PlainFFT STATIC PlainFFT.cpp)
-
-target_include_directories(PlainFFT PUBLIC ${CMAKE_CURRENT_LIST_DIR})
-
-target_link_libraries(PlainFFT)
+# (Optional) If you want clean headers visibility for your libs
+target_include_directories(mpu6050 PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(ringbuffer PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(classifier PUBLIC ${CMAKE_CURRENT_LIST_DIR})

@@ -181,7 +181,7 @@
  
      // Initialize I2C
      // Uses I2C0 on the default SDA and SCL pins (4, 5 on a Pico)
-     i2c_init(I2C_CHAN, 400 * 1000);
+    //  i2c_init(I2C_CHAN, 400 * 1000);
      gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
      gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
      gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
