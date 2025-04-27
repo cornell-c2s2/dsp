@@ -104,11 +104,29 @@
      cyw43_arch_gpio_put(CYW43_WL_GPIO_LED_PIN, led_on);
  #endif
  }
+
+
+static unsigned long lastSampleTime = 0;  // Time of last sample
+const int sampleRate = 16000;             // Actually closer to 9000 (hardware limitations?)
+int count = 0;                            // Number of samples in buffer
+const int BUF_SIZE = 3807;                // Size of the buffer
+static float buffer[BUF_SIZE];            // Collect samples for the classifier
+const int UPBUF_SIZE = BUF_SIZE * 16 / 9; // 9000 Hz to 16000 Hz
+static float upsampledBuffer[UPBUF_SIZE]; // Buffer after upsampling
+bool flag = false;                        // Hit noise requirement
+
  
- // Core1 task (blank for now)
+ // Core1 task: run classifier when flag is true (from alarm IRQ)
  void core1_task() {
      while (true) {
-         // Add work for core1 if needed
+        if (!flag) {
+            printf("Waiting for noise...\n");
+            //bruh
+        }
+        else {
+            printf("Begin Classification...\n");
+            classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
+        }
      }
  }
  
@@ -116,8 +134,32 @@
  static void alarm_irq(void) {
      uint16_t adc_val = adc_read();
      filtered_adc = filtered_adc + ((adc_val - filtered_adc) >> ADC_CUTOFF);
-     printf("%d,", adc_val);
- 
+    //  printf("%d,", adc_val);
+
+    if (filtered_adc > 1000)
+    {
+      flag = true;
+    }
+    if (flag)
+    {
+      // Convert 12-bit ADC value to signed 16-bit PCM
+      int16_t pcmSample = (adc_val - 2048) * 16;
+
+      if (count < BUF_SIZE) // Collect data
+      {
+        buffer[count++] = pcmSample;
+      }
+      else if (count == BUF_SIZE) // Data collected
+      {
+        // Normalize the data to [-1, 1]
+        for (int i = 0; i < UPBUF_SIZE; i++)
+        {
+          upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
+        }
+      }
+    }
+
+     //mpu logic
      mpu6050_read_raw(acceleration, gyro);
  
      if (print_imu) {
