@@ -2,12 +2,16 @@
 // classifier.c
 //========================================================================
 // A particle board compatible implementation of the Donut Classifier
-#include "application.h"
-#include "PlainFFT.h"
-#include "Particle.h"
+// #include "application.h"
+// #include "Particle.h"
+
+#include "../lib/PlainFFT.h"
 #include <math.h>
 #include <float.h>
 #include <stdbool.h>
+#include <cstdio>
+#include <cstring>
+#define PI 3.14159265358979323846
 
 // Function prototypes
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a);
@@ -16,7 +20,6 @@ void compute_spectrogram(float *signal, int signal_length, int fs, float **frequ
 float normalize_intensity(float value, float min, float max);
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint);
 float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_midpoints);
-
 void classify(float *data, int data_size)
 {
     int num_frames = data_size;
@@ -98,7 +101,7 @@ void classify(float *data, int data_size)
 
     if (midpoints == NULL)
     {
-        Serial.println("Failed to find midpoints.");
+        printf("Failed to find midpoints");
         return;
     }
     bool has_a_scrub = false;
@@ -112,12 +115,11 @@ void classify(float *data, int data_size)
         float sum_middle = sum_intense(2500, 5000, 0.05, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
         float sum_below = sum_intense(500, 2500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint);
 
-        Serial.print("Above intensities: ");
-        Serial.println(sum_above);
-        Serial.print("Middle intensities: ");
-        Serial.println(sum_middle);
-        Serial.print("Below intensities: ");
-        Serial.println(sum_below);
+      
+        printf("Above intensities: %f\n", sum_above);
+        printf("Middle intensities: %f\n", sum_middle);
+        printf("Below intensities: %f\n", sum_below);
+
 
         if (sum_middle < 100 && sum_above > 200 && sum_below > 150)
         {
@@ -128,13 +130,14 @@ void classify(float *data, int data_size)
 
     if (has_a_scrub)
     {
-        Serial.println("We have a Scrub Jay! :)");
-        Serial1.print('2');
+        printf("We have a Scrub Jay! :)");
+
+        // Serial1.print('2');
     }
     else
     {
         // Serial.println("We have no Scrub Jay! :(");
-        Serial1.write('1');
+        // Serial1.write('1');
     }
 
     free(midpoints);
@@ -195,7 +198,8 @@ bool butter_bandpass(float lowcut, float highcut, float *b, float *a)
     }
     else
     {
-        Serial.println("invalid bandpass range");
+        printf("invalid bandpass range");
+
         return false;
     }
     return true;
