@@ -111,8 +111,8 @@ const int sampleRate = 16000;             // Actually closer to 9000 (hardware l
 int count = 0;                            // Number of samples in buffer
 const int BUF_SIZE = 3807;                // Size of the buffer
 static float buffer[BUF_SIZE];            // Collect samples for the classifier
-const int UPBUF_SIZE = BUF_SIZE * 16 / 9; // 9000 Hz to 16000 Hz
-static float upsampledBuffer[UPBUF_SIZE]; // Buffer after upsampling
+// const int UPBUF_SIZE = BUF_SIZE * 16 / 9; // 9000 Hz to 16000 Hz
+// static float upsampledBuffer[UPBUF_SIZE]; // Buffer after upsampling
 bool flag = false;                        // Hit noise requirement
 
  
@@ -125,7 +125,11 @@ bool flag = false;                        // Hit noise requirement
         }
         else {
             printf("Begin Classification...\n");
-            classify(upsampledBuffer, (sizeof(upsampledBuffer) / sizeof(upsampledBuffer[0])));
+            classify(buffer, (sizeof(buffer) / sizeof(buffer[0])));
+            
+            //reset to start listening again 
+            count = 0;
+            flag = false;
         }
      }
  }
@@ -147,15 +151,8 @@ bool flag = false;                        // Hit noise requirement
 
       if (count < BUF_SIZE) // Collect data
       {
-        buffer[count++] = pcmSample;
-      }
-      else if (count == BUF_SIZE) // Data collected
-      {
         // Normalize the data to [-1, 1]
-        for (int i = 0; i < UPBUF_SIZE; i++)
-        {
-          upsampledBuffer[i] = upsampledBuffer[i] / 32768.0;
-        }
+        buffer[count++] = pcmSample / 32768.0;
       }
     }
 
