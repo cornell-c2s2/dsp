@@ -113,31 +113,29 @@ void pico_set_led(bool led_on)
 static unsigned long lastSampleTime = 0; // Time of last sample
 const int sampleRate = 16000;            // Actually closer to 9000 (hardware limitations?)
 int count = 0;                           // Number of samples in buffer
-const int BUF_SIZE = 3807;               // Size of the buffer
+const int BUF_SIZE = 16000;               // Size of the buffer
 static float buffer[BUF_SIZE];           // Collect samples for the classifier
 // const int UPBUF_SIZE = BUF_SIZE * 16 / 9; // 9000 Hz to 16000 Hz
 // static float upsampledBuffer[UPBUF_SIZE]; // Buffer after upsampling
 bool flag = false; // Hit noise requirement
+bool flag2 = false;
 
 // Core1 task: run classifier when flag is true (from alarm IRQ)
 void core1_task()
 {
     while (true)
     {
-        if (!flag)
-        {
-            printf("Waiting for noise...\n");
-            // bruh
-        }
-        else
-        {
-            printf("Begin Classification...\n");
+        if (flag2) {
+            //printf("Begin Classification...\n");
             classify(buffer, (sizeof(buffer) / sizeof(buffer[0])));
 
             // reset to start listening again
             count = 0;
             flag = false;
+            flag2=false;
+            printf("Waiting for noise...\n");
         }
+        sleep_ms(1);
     }
 }
 
@@ -145,13 +143,15 @@ void core1_task()
 static void alarm_irq(void)
 {
     uint16_t adc_val = adc_read();
-    filtered_adc = filtered_adc + ((adc_val - filtered_adc) >> ADC_CUTOFF);
-    //  printf("%d,", adc_val);
+    //filtered_adc = filtered_adc + ((adc_val - filtered_adc) >> ADC_CUTOFF);
+    //printf("%d,", adc_val);
 
-    if (filtered_adc < 1548 || filtered_adc > 2548)
+    if ((adc_val < 1548 || adc_val > 2548)&&!flag)
     {
-        Serial.println(adcValue);
+        //printf("%d,",filtered_adc);
         flag = true;
+        printf("start");
+        
     }
     if (flag)
     {
@@ -162,6 +162,11 @@ static void alarm_irq(void)
         {
             // Normalize the data to [-1, 1]
             buffer[count++] = pcmSample / 32768.0;
+        } else if (!flag2) {
+            printf("end");
+            // for(int i =0; i<BUF_SIZE;i++){printf("%.6f,",buffer[i]);}
+            flag2=true;
+            
         }
     }
 

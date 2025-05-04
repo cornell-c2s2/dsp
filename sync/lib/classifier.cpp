@@ -82,8 +82,7 @@ void classify(float *data, int data_size)
     // Scrub Jay Classify
     int num_midpoints = 0;
     float *midpoints = find_midpoints(data, num_frames, samplingFreq, &num_midpoints);
-    // Serial.print("Number of Midpoints: ");
-    // Serial.println(num_midpoints);
+    printf("Number of Midpoints: %d\n", num_midpoints);
 
     if (midpoints == NULL)
     {
