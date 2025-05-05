@@ -19,7 +19,8 @@
 #define BAUD_RATE 115200
 #define ALARM_NUM 0
 #define ALARM_IRQ TIMER_IRQ_0
-#define DELAY 62.5 // how often (in us) IRQ fires
+// Round down from 62.5 to 62 since we only accept integers
+#define DELAY 62 // how often (in us) IRQ fires
 
 #define ADC_PIN 27 // GPIO 27 / ADC1
 #define ADC_CHAN 1
@@ -143,6 +144,9 @@ void core1_task()
 // Alarm interrupt handler (mic reading)
 static void alarm_irq(void)
 {
+    static bool pin_state = false;
+    gpio_put(13, pin_state);
+    pin_state = !pin_state;
     uint16_t adc_val = adc_read();
     // filtered_adc = filtered_adc + ((adc_val - filtered_adc) >> ADC_CUTOFF);
     // printf("%d,", adc_val);
@@ -151,7 +155,9 @@ static void alarm_irq(void)
     {
         // printf("%d,",filtered_adc);
         flag = true;
-        gpio_put(13, 1);
+        
+        // printf("start");
+
     }
     if (flag)
     {
@@ -165,12 +171,13 @@ static void alarm_irq(void)
         }
         else if (!flag2)
         {
-            gpio_put(13, 0);
-            printf("end");
+
+            // printf("end");
 
             flag2 = true;
         }
     }
+
 
     // mpu logic
     mpu6050_read_raw(acceleration, gyro);
