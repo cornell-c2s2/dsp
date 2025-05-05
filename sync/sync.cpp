@@ -144,6 +144,8 @@ void core1_task()
 // Alarm interrupt handler (mic reading)
 static void alarm_irq(void)
 {
+    // This code creates a square wave on PIN 17 of the PICO
+    // 2 square waves is how long the alarm_irq runs for
     static bool pin_state = false;
     gpio_put(13, pin_state);
     pin_state = !pin_state;
@@ -180,7 +182,8 @@ static void alarm_irq(void)
 
 
     // mpu logic
-    mpu6050_read_raw(acceleration, gyro);
+    // TODO: WE NEED TO PUT THIS SOMEWHERE ELSE - ELIAS
+    // mpu6050_read_raw(acceleration, gyro);
 
     if (print_imu)
     {
