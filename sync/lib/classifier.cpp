@@ -6,7 +6,7 @@ void butter_bandpass_filter(float *data, int n, float *b, float *a, float *outpu
 void compute_spectrogram(float *signal, int signal_length, int fs, float **frequencies, float **times, float ***Sxx, int *freq_bins, int *time_bins);
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint);
 float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_midpoints);
-void classify(float *data, int data_size)
+int classify(float *data, int data_size)
 {
     int num_frames = data_size;
     int samplingFreq = 16000;
@@ -87,7 +87,7 @@ void classify(float *data, int data_size)
     if (midpoints == NULL)
     {
         printf("Failed to find midpoints");
-        return;
+        return 0;
     }
     bool has_a_scrub = false;
     for (int idx = 0; idx < num_midpoints; idx++)
@@ -115,14 +115,12 @@ void classify(float *data, int data_size)
 
     if (has_a_scrub)
     {
-        printf("We have a Scrub Jay! :)");
+        printf("We have a Scrub Jay! :)\n");
 
-        // Serial1.print('2');
     }
     else
     {
-        // Serial.println("We have no Scrub Jay! :(");
-        // Serial1.write('1');
+        printf("We have no Scrub Jay! :(\n");
     }
 
     free(midpoints);
@@ -133,6 +131,8 @@ void classify(float *data, int data_size)
     free(intensity_bp);
     free(frequencies_bp);
     free(times_bp);
+
+    return has_a_scrub;
 }
 
 bool butter_bandpass(float lowcut, float highcut, float *b, float *a)

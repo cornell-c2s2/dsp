@@ -2,8 +2,8 @@ import numpy as np
 from scipy.signal import resample_poly
 from scipy.io import wavfile
 
-INPUT_FILE = "fuckyou.txt"
-OUTPUT_WAV = "new_out1.wav"
+INPUT_FILE = "without_filter.txt"
+OUTPUT_WAV = "without_filter.wav"
 
 def convert_10k_to_16k_mono_to_stereo(output_wav):
     # Desired sample rate

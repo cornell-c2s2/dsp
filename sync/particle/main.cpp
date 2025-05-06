@@ -34,7 +34,7 @@ const int BUF_SIZE = 3807;                // Size of the buffer
 static float buffer[BUF_SIZE];            // Collect samples for the classifier
 const int UPBUF_SIZE = BUF_SIZE * 16 / 9; // 9000 Hz to 16000 Hz
 static float upsampledBuffer[UPBUF_SIZE]; // Buffer after upsampling
-bool flag = false;                        // Hit noise requirement
+bool sample_from_adc = false;                        // Hit noise requirement
 
 // Alert user we are waiting for noise
 void countdown(bool countdown)
@@ -92,9 +92,9 @@ void loop()
     if (adcValue < 1548 || adcValue > 2548)
     {
       // Serial.println(adcValue);
-      flag = true;
+      sample_from_adc = true;
     }
-    if (flag)
+    if (sample_from_adc)
     {
       // Convert 12-bit ADC value to signed 16-bit PCM
       int16_t pcmSample = (adcValue - 2048) * 16;
@@ -120,7 +120,7 @@ void loop()
         Serial.println("");
 
         // Reset after classification
-        flag = false;
+        sample_from_adc = false;
         count = 0;
         countdown(true);
       }

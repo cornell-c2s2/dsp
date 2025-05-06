@@ -1,6 +1,6 @@
 #include "ringbuffer.h"
 
-IntRingBuffer *create_int_ring(uint8_t capacity)
+IntRingBuffer *create_int_ring(uint16_t capacity)
 {
     IntRingBuffer *buffer = (IntRingBuffer *)malloc(sizeof(IntRingBuffer));
 

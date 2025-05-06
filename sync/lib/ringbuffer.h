@@ -17,7 +17,7 @@ typedef struct {
     uint8_t capacity;
 } IntRingBuffer;
 
-IntRingBuffer *create_int_ring(uint8_t capacity);
+IntRingBuffer *create_int_ring(uint16_t capacity);
 
 void ring_buffer_put(IntRingBuffer *buffer, int16_t value);
 

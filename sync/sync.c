@@ -172,7 +172,7 @@
      hw_clear_bits(&timer_hw->intr, 1u << ALARM_NUM);
  
      // reset the alarm register
-     timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + DELAY;
+     timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + IMU_DELAY;
  }
  
  int main()
@@ -226,7 +226,7 @@
      irq_set_enabled(ALARM_IRQ, true);
  
      // write the lower 32 bits of the target time to the alarm register, arming it
-     timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + DELAY;
+     timer_hw->alarm[ALARM_NUM] = timer_hw->timerawl + IMU_DELAY;
  
      // nothing happening here
      while(1){}

@@ -16,6 +16,6 @@ void butter_bandpass_filter(float *data, int n, float *b, float *a, float *outpu
 void compute_spectrogram(float *signal, int signal_length, int fs, float **frequencies, float **times, float ***Sxx, int *freq_bins, int *time_bins);
 float sum_intense(float lower, float upper, float half_range, float *frequencies, int freq_bins, float *times, int time_bins, float **intensity_dB_filtered, float midpoint);
 float* find_midpoints(float *data, int num_frames, int samplingFreq, int *num_midpoints);
-void classify(float *data, int data_size);
+int classify(float *data, int data_size);
 
 #endif // CLASSIFIER_H
