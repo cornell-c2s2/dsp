@@ -213,9 +213,13 @@ bool adc_callback(struct repeating_timer *t)
     gpio_put(13, pin_state);
     pin_state = !pin_state;
 
-    uint16_t filtered_adc = adc_read();
-    // filtered_adc = filtered_adc + ((adc_val - filtered_adc) >> ADC_CUTOFF);
-    // printf("%d,", adc_val);
+    uint16_t adc_val = adc_read();
+    filtered_adc = filtered_adc + ((adc_val - filtered_adc) >> ADC_CUTOFF);
+    // if(filtered_adc < 1248 || filtered_adc > 2848)  {
+    //     printf("%d,", filtered_adc);
+        
+    // }
+    //printf("%d,", adc_val);
 
     if ((filtered_adc < 1548 || filtered_adc > 2548) && !sample_from_adc)
     {
@@ -226,7 +230,7 @@ bool adc_callback(struct repeating_timer *t)
     if (sample_from_adc)
     {
         // Convert 12-bit ADC value to signed 16-bit PCM
-        int16_t pcmSample = (filtered_adc - 2048) * 16;
+        int16_t pcmSample = (adc_val - 2048) * 16;
 
         if (count < BUF_SIZE) // Collect data
         {
