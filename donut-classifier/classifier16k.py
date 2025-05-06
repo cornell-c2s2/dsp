@@ -10,7 +10,7 @@ from scipy.io import wavfile
 from scipy.signal import spectrogram, butter, lfilter
 
 # Location of the audio files
-folder = "16k-single-test"
+folder = "try"
 audioFiles = os.listdir(folder)
 
 # Set to 'True' to display graphs
@@ -56,7 +56,7 @@ for i in audioFiles:
 
     def find_midpoints():
         # Filter signal and compute spectrogram (above intensity threshold)
-        lower_threshold_dB = 45
+        lower_threshold_dB = 70
         filtered_signal = butter_bandpass_filter(mySoundOneChannel, 1000, 3000, samplingFreq)
         _, times, intensity = spectrogram(filtered_signal, fs=samplingFreq)
         intensity = 10 * np.log10(intensity / (10**-12))
