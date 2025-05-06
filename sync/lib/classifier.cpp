@@ -64,8 +64,8 @@ int classify(float *data, int data_size)
         }
     }
 
-    float lower_threshold_dB_normalized = 0.70;
-    float upper_threshold_dB_normalized = 0.85;
+    float lower_threshold_dB_normalized = 0.65;
+    float upper_threshold_dB_normalized = 0.80;
 
     // Apply normalized dB thresholds
     for (int i = 0; i < freq_bins_bp; i++)
@@ -104,11 +104,11 @@ int classify(float *data, int data_size)
         printf("Above intensities: %f\n", sum_above);
         printf("Middle intensities: %f\n", sum_middle);
         printf("Below intensities: %f\n", sum_below);
-        for(int i = 500; i<=6500; i+=500){printf("%d: %f\n",i,sum_intense(i, i+500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint));}
+        //for(int i = 500; i<=6500; i+=500){printf("%d: %f\n",i,sum_intense(i, i+500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint));}
 
 
 
-        if (sum_middle < 100 && sum_above > 200 && sum_below > 150)
+        if (sum_middle < 100 && sum_above > 200 && sum_below > 80)
         {
             has_a_scrub = true;
             break;

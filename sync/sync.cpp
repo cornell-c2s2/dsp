@@ -180,7 +180,7 @@ void core1_task()
         if (use_classifier)
         {
 
-            for(int i =0 ; i<BUF_SIZE;i++){printf("%.6f,",buffer[i]);}
+            //for(int i =0 ; i<BUF_SIZE;i++){printf("%.6f,",buffer[i]);}
             print_imu = classify(buffer, (sizeof(buffer) / sizeof(buffer[0])));
             
             // reset to start listening again
