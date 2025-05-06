@@ -104,6 +104,8 @@ int classify(float *data, int data_size)
         printf("Above intensities: %f\n", sum_above);
         printf("Middle intensities: %f\n", sum_middle);
         printf("Below intensities: %f\n", sum_below);
+        for(int i = 500; i<=6500; i+=500){printf("%d: %f\n",i,sum_intense(i, i+500, 0.18, frequencies_bp, freq_bins_bp, times_bp, time_bins_bp, intensity_bp, midpoint));}
+
 
 
         if (sum_middle < 100 && sum_above > 200 && sum_below > 150)
@@ -433,7 +435,7 @@ float sum_intense(float lower, float upper, float half_range, float *frequencies
 float *find_midpoints(float *data, int num_frames, int samplingFreq, int *num_midpoints)
 {
 
-    float lower_threshold_dB = 45.0;
+    float lower_threshold_dB = 70.0;
 
     float lowcut = 1000.0;
     float highcut = 3000.0;

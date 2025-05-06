@@ -179,6 +179,7 @@ void core1_task()
     {
         if (use_classifier)
         {
+
             for(int i =0 ; i<BUF_SIZE;i++){printf("%.6f,",buffer[i]);}
             print_imu = classify(buffer, (sizeof(buffer) / sizeof(buffer[0])));
             
@@ -186,7 +187,7 @@ void core1_task()
             count = 0;
             sample_from_adc = false;
             use_classifier = false;
-            printf("Waiting for noise...\n");
+            printf("\nWaiting for noise...\n");
         }
 
         if (print_imu)
@@ -218,7 +219,7 @@ bool adc_callback(struct repeating_timer *t)
 
     if ((filtered_adc < 1548 || filtered_adc > 2548) && !sample_from_adc)
     {
-        //printf("Start");
+        printf("Heard that!\n");
         sample_from_adc = true;
     }
 
@@ -235,7 +236,7 @@ bool adc_callback(struct repeating_timer *t)
         else if (!use_classifier)
         {
 
-            //printf("end");
+            printf("Done listening.\n");
 
             use_classifier = true;
         }
