@@ -41,16 +41,28 @@ uint16_t filtered_adc;
 
 // Ring buffers:
 
-// accelerometer
-IntRingBuffer *ax;
-IntRingBuffer *ay;
-IntRingBuffer *az;
+#define FRAME_SIZE 50
+#define WINDOW_SIZE 4
 
-// gyro
-IntRingBuffer *gx;
-IntRingBuffer *gy;
-IntRingBuffer *gz;
+int frame_index = 0;
+int frame_count = 0;
 
+// Struct containing 1 sec of information
+typedef struct {
+    int16_t ax[FRAME_SIZE];
+    int16_t ay[FRAME_SIZE];
+    int16_t az[FRAME_SIZE];
+
+    int16_t gx[FRAME_SIZE];
+    int16_t gy[FRAME_SIZE];
+    int16_t gz[FRAME_SIZE];
+
+    // 0 = no class, 1 = no bird, 2 = scrub jay
+    int8_t classification;  
+} IMUClassificationFrame;
+
+// 4 second imu window
+IMUClassificationFrame imu_window[WINDOW_SIZE];
 
 IntRingBuffer *classification_buffer;
 
@@ -116,28 +128,36 @@ void test_ringbuffer()
     free_ring_buffer(buffer);
 }
 
-// Print ring buffers
-void print_imu_buffers(IntRingBuffer *ax, IntRingBuffer *ay, IntRingBuffer *az, IntRingBuffer *classification_buffer)
+void print_classification_buffer()
 {
     char buffer[128];  // temp string buffer
-    while (ring_buffer_peek(ax) != -1 || ring_buffer_peek(classification_buffer) != -1)
+
+    for (int frame = 0; frame < WINDOW_SIZE; frame++)
     {
-        int cls = ring_buffer_get(classification_buffer);
-        int x = ring_buffer_get(ax);
-        int y = ring_buffer_get(ay);
-        int z = ring_buffer_get(az);
+        int cls = imu_window[frame].classification;
 
-        int gx_val = ring_buffer_get(gx);
-        int gy_val = ring_buffer_get(gy);
-        int gz_val = ring_buffer_get(gz);
-
+        // Print classification for this 1-second frame
         snprintf(buffer, sizeof(buffer),
-                "Cls: %d, ax: %d, ay: %d, az: %d, gx: %d, gy: %d, gz: %d\n",
-                cls, x, y, z, gx_val, gy_val, gz_val);
-
+                 "Frame %d - Classification: %d\n", frame, cls);
         dma_uart_print(buffer);
+
+        // Print first few IMU samples to show structure
+        for (int i = 0; i < 10; i++)  // print first 3 samples
+        {
+            snprintf(buffer, sizeof(buffer),
+                     "  Sample[%d] ax:%d ay:%d az:%d gx:%d gy:%d gz:%d\n",
+                     i,
+                     imu_window[frame].ax[i],
+                     imu_window[frame].ay[i],
+                     imu_window[frame].az[i],
+                     imu_window[frame].gx[i],
+                     imu_window[frame].gy[i],
+                     imu_window[frame].gz[i]);
+            dma_uart_print(buffer);
+        }
     }
 }
+
 
 
 // LED initialization
@@ -167,8 +187,6 @@ const int sampleRate = 16000;            // Actually closer to 9000 (hardware li
 int count = 0;                           // Number of samples in buffer
 const int BUF_SIZE = 16000;              // Size of the buffer
 static float buffer[BUF_SIZE];           // Collect samples for the classifier
-// const int UPBUF_SIZE = BUF_SIZE * 16 / 9; // 9000 Hz to 16000 Hz
-// static float upsampledBuffer[UPBUF_SIZE]; // Buffer after upsampling
 bool sample_from_adc = false; // Hit noise requirement
 bool use_classifier = false;
 
@@ -181,23 +199,13 @@ void core1_task()
         {
 
             //for(int i =0 ; i<BUF_SIZE;i++){printf("%.6f,",buffer[i]);}
-            print_imu = classify(buffer, (sizeof(buffer) / sizeof(buffer[0])));
-            
+            print_imu = classify(buffer, (sizeof(buffer) / sizeof(buffer[0]))) + 1;
+            imu_window[frame_index].classification = print_imu;
             // reset to start listening again
             count = 0;
             sample_from_adc = false;
             use_classifier = false;
             printf("\nWaiting for noise...\n");
-        }
-
-        if (print_imu)
-        {
-            spin_lock_unsafe_blocking(spinlock_classification);
-            print_imu = 0;
-            //print_imu_buffers(ax, ay, az, classification_buffer);
-            spin_unlock_unsafe(spinlock_classification);
-            // SPINLOCK DOCUMENTATION SAYS TO SLEEP FOR 1 MS
-            sleep_ms(1);
         }
         
         sleep_ms(1);
@@ -215,12 +223,7 @@ bool adc_callback(struct repeating_timer *t)
 
     uint16_t adc_val = adc_read();
     filtered_adc = filtered_adc + ((adc_val - filtered_adc) >> ADC_CUTOFF);
-    // if(filtered_adc < 1248 || filtered_adc > 2848)  {
-    //     printf("%d,", filtered_adc);
-        
-    // }
-    //printf("%d,", adc_val);
-
+\
     if ((filtered_adc < 1548 || filtered_adc > 2548) && !sample_from_adc)
     {
         printf("Heard that!\n");
@@ -245,7 +248,7 @@ bool adc_callback(struct repeating_timer *t)
             use_classifier = true;
         }
     }
-    ring_buffer_put(classification_buffer, 0);
+
 
     return true;
 }
@@ -259,15 +262,26 @@ bool IMU_callback(struct repeating_timer *t)
     // Get new accelerometer values
     mpu6050_read_raw(acceleration, gyro, &temp);
 
-    ring_buffer_put(ax, acceleration[0]);
-    ring_buffer_put(ay, acceleration[1]);
-    ring_buffer_put(az, acceleration[2]);
+    // Store into current frame
+    if (frame_count < FRAME_SIZE) {
+        imu_window[frame_index].ax[frame_count] = acceleration[0];
+        imu_window[frame_index].ay[frame_count] = acceleration[1];
+        imu_window[frame_index].az[frame_count] = acceleration[2];
 
-    ring_buffer_put(gx, gyro[0]);
-    ring_buffer_put(gy, gyro[1]);
-    ring_buffer_put(gz, gyro[2]);
+        imu_window[frame_index].gx[frame_count] = gyro[0];
+        imu_window[frame_index].gy[frame_count] = gyro[1];
+        imu_window[frame_index].gz[frame_count] = gyro[2];
 
+        frame_count++;
+    }
 
+    // When 1 second of samples is collected
+    if (frame_count >= FRAME_SIZE) {
+        // default/unclassified
+        imu_window[frame_index].classification = 0; 
+        frame_index = (frame_index + 1) % WINDOW_SIZE;  // move to next second
+        frame_count = 0;
+    }
     return true;
 
 
@@ -315,15 +329,15 @@ int main()
     // Put in core 1
     multicore_launch_core1(core1_task);
 
-    // acc
-    ax = create_int_ring(1000);
-    ay = create_int_ring(1000);
-    az = create_int_ring(1000);
+    // // acc
+    // ax = create_int_ring(1000);
+    // ay = create_int_ring(1000);
+    // az = create_int_ring(1000);
 
-    // gyro
-    gx = create_int_ring(1000);
-    gy = create_int_ring(1000);
-    gz = create_int_ring(1000);
+    // // gyro
+    // gx = create_int_ring(1000);
+    // gy = create_int_ring(1000);
+    // gz = create_int_ring(1000);
 
     classification_buffer = create_int_ring(1000);
 
@@ -338,6 +352,16 @@ int main()
     alarm_pool_add_repeating_timer_us(core0pool, -IMU_DELAY, IMU_callback, NULL, &imu_sample);
 
     while(true) {
+
+        if (print_imu)
+        {
+            spin_lock_unsafe_blocking(spinlock_classification);
+            print_imu = 0;
+            print_classification_buffer();
+            spin_unlock_unsafe(spinlock_classification);
+            // SPINLOCK DOCUMENTATION SAYS TO SLEEP FOR 1 MS
+            sleep_ms(1);
+        }
 
     };
 

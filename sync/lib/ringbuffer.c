@@ -4,6 +4,8 @@ IntRingBuffer *create_int_ring(uint16_t capacity)
 {
     IntRingBuffer *buffer = (IntRingBuffer *)malloc(sizeof(IntRingBuffer));
 
+    if (!buffer) return NULL;
+
     buffer->ring_buffer = (int16_t *)malloc(capacity * sizeof(int16_t));
 
     buffer->write = 0;
@@ -54,6 +56,13 @@ int16_t ring_buffer_get(IntRingBuffer *buffer)
     }
 
     return value;
+}
+
+void ring_buffer_modify_latest(IntRingBuffer *buffer, int16_t new_value)
+{
+    // Most recent entry is at write - 1 (wrap around if needed)
+    uint16_t last_index = (buffer->write + buffer->capacity - 1) % buffer->capacity;
+    buffer->ring_buffer[last_index] = new_value;
 }
 
 // Free allocated memory

@@ -27,6 +27,8 @@ int16_t ring_buffer_get(IntRingBuffer *buffer);
 
 void free_ring_buffer(IntRingBuffer *buffer);
 
+void ring_buffer_modify_latest(IntRingBuffer *buffer, int16_t new_value);
+
 #ifdef __cplusplus
 }
 #endif
