@@ -1,7 +1,9 @@
 add_library(mpu6050 mpu6050.c)
 add_library(ringbuffer ringbuffer.c)
-add_library(classifier classifier.cpp)
-
+ add_library(classifier
+     classifier.cpp
+     PlainFFT.cpp
+ )
 # This will correctly add all SDK include paths and defines
 target_link_libraries(mpu6050 pico_stdlib hardware_i2c)
 target_link_libraries(ringbuffer pico_stdlib)

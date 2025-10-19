@@ -61,6 +61,7 @@ target_link_libraries(sync
     hardware_irq
     hardware_clocks
     hardware_pll
+    hardware_dma
     pico_multicore
     mpu6050
     ringbuffer

@@ -17,7 +17,7 @@ typedef struct {
     uint8_t capacity;
 } IntRingBuffer;
 
-IntRingBuffer *create_int_ring(uint8_t capacity);
+IntRingBuffer *create_int_ring(uint16_t capacity);
 
 void ring_buffer_put(IntRingBuffer *buffer, int16_t value);
 
@@ -26,6 +26,8 @@ int16_t ring_buffer_peek(IntRingBuffer *buffer);
 int16_t ring_buffer_get(IntRingBuffer *buffer);
 
 void free_ring_buffer(IntRingBuffer *buffer);
+
+void ring_buffer_modify_latest(IntRingBuffer *buffer, int16_t new_value);
 
 #ifdef __cplusplus
 }
