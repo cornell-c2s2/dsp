@@ -1,5 +1,5 @@
 # To train: python3 speaker_verify_mfcc.py train \ --pos data/pos --neg data/neg \ --min_precision 0.98
-# To run: python3 speaker_verify_mfcc.py predict --folder testing
+# To run: python3 speaker_verify_mfcc.py predict --folder data/testing
 
 
 
@@ -184,7 +184,7 @@ def load_model(model_path="models/mfcc_target_verifier.joblib",
         thr = json.load(f)["threshold"]
     return model, float(thr)
 
-def predict_folder(folder="testing",
+def predict_folder(folder="data/testing",
                    model_path="models/mfcc_target_verifier.joblib",
                    threshold_path="models/threshold.json",
                    sr=16000):
@@ -246,7 +246,7 @@ def main():
     ap_train.add_argument("--min_precision", type=float, default=0.97)
 
     ap_pred = sub.add_parser("predict", help="Score all files in testing/")
-    ap_pred.add_argument("--folder", default="testing")
+    ap_pred.add_argument("--folder", default="data/testing")
     ap_pred.add_argument("--model", default="models/mfcc_target_verifier.joblib")
     ap_pred.add_argument("--threshold", default="models/threshold.json")
 
