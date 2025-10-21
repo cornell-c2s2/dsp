@@ -16,7 +16,7 @@ def convert_wav_to_16kHz_ffmpeg(folder):
                         "-i",
                         file_path,
                         "-ar",
-                        "16000",  # 16 kHz
+                        "8000",  # 8 kHz
                         "-ac",
                         "1",  # mono
                         temp_file,
