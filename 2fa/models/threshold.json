@@ -1,0 +1,9 @@
+{
+  "threshold": 0.16842975469452492,
+  "selection": {
+    "avg_precision": 1.0,
+    "picked_precision": 0.9841269841269841,
+    "picked_recall": 1.0,
+    "strategy": "precision>=0.98"
+  }
+}
