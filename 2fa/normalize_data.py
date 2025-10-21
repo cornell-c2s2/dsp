@@ -1,3 +1,5 @@
+# Requires FFMPEG
+
 import os
 import argparse
 import subprocess
@@ -16,7 +18,7 @@ def convert_wav_to_16kHz_ffmpeg(folder):
                         "-i",
                         file_path,
                         "-ar",
-                        "8000",  # 8 kHz
+                        "16000",  # 16 kHz
                         "-ac",
                         "1",  # mono
                         temp_file,
