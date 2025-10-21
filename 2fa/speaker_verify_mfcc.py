@@ -191,12 +191,44 @@ def predict_folder(folder="testing",
     if not files:
         print(f"No audio files found in {folder}")
         return
+    num_pos = 0
+    num_neg = 0
+    num_false_pos = 0
+    num_false_neg = 0
     print(f"\nScoring {len(files)} file(s) in '{folder}' (threshold={thr:.4f})")
     for f in files:
         x = extract_feature_vector(f, sr=sr)[None, :]
         prob = float(model.predict_proba(x)[0, 1])
         label = "PASS (target)" if prob >= thr else "FAIL (not target)"
         print(f"{os.path.basename(f):<40}  score={prob:.4f}  ->  {label}")
+        if "jackson" in os.path.basename(f):
+            num_pos+=1
+            if prob < thr:
+                num_false_neg+=1
+        else:
+            num_neg+=1
+            if prob >= thr:
+                num_false_pos+=1
+    total = num_pos + num_neg
+    tp = num_pos - num_false_neg
+    tn = num_neg - num_false_pos
+
+    accuracy = (tp + tn) / total * 100
+    false_pos_rate = num_false_pos / num_neg * 100
+    false_neg_rate = num_false_neg / num_pos * 100
+    precision = tp / (tp + num_false_pos) * 100
+    recall = tp / (tp + num_false_neg) * 100
+
+    print(f"Total samples     : {total}")
+    print(f"Positive samples  : {num_pos} ({num_pos/total*100:.2f}%)")
+    print(f"Negative samples  : {num_neg} ({num_neg/total*100:.2f}%)")
+    print(f"False negatives   : {num_false_neg} ({false_neg_rate:.2f}%)")
+    print(f"False positives   : {num_false_pos} ({false_pos_rate:.2f}%)")
+    print(f"Accuracy          : {accuracy:.2f}%")
+    print(f"Precision         : {precision:.2f}%")
+    print(f"Recall (TPR)      : {recall:.2f}%")
+        
+
 
 def main():
     ap = argparse.ArgumentParser(description="MFCC-based target speaker verification")
