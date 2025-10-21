@@ -1,3 +1,6 @@
+# To train: python3 speaker_verify_mfcc.py train \ --pos data/pos --neg data/neg \ --min_precision 0.98
+# To run: python3 speaker_verify_mfcc.py predict --folder testing
+
 #!/usr/bin/env python3
 import os, glob, json, argparse, warnings
 import numpy as np
