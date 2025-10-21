@@ -2,6 +2,7 @@
 # To run: python3 speaker_verify_mfcc.py predict --folder testing
 
 
+
 #!/usr/bin/env python3
 import os, glob, json, argparse, warnings
 import numpy as np
