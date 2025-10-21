@@ -24,7 +24,7 @@ def list_audio_files(folder):
         files.extend(glob.glob(os.path.join(folder, f"*{ext}")))
     return sorted(files)
 
-def load_audio(path, target_sr=16000):
+def load_audio(path, target_sr=8000):
     # soundfile handles most formats; fall back to librosa if needed
     try:
         y, sr = sf.read(path, always_2d=False)
