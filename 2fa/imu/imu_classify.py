@@ -1,20 +1,21 @@
-#!/usr/bin/env python3
-# imu_classify.py
-# Usage:
-#   Train:   python imu_classify.py train --train_dir data/train --model models/imu_rf.joblib
-#   Predict: python imu_classify.py predict --folder data/test --model models/imu_rf.joblib
-# Expected layout:
-# data/train/
-#   clap/*.csv
-#   wave/*.csv
-#   idle/*.csv
-#
-# Each CSV: columns like time,ax,ay,az,gx,gy,gz (time in seconds or ms)
 
-import os, glob, json, argparse, warnings
+# imu_classify.py (updated for this dataset & per-row predictions)
+# Usage:
+#   Train (RF):   python imu_classify.py train --train_dir data/train --algo rf --hz 50
+#   Train (kNN):  python imu_classify.py train --train_dir data/train --algo knn --hz 50
+#   Predict files:python imu_classify.py predict --folder data/test --hz 50
+#   Predict rows: python imu_classify.py predict_rows --file data/test/Sub9_clapping.csv --row_window 64 --hz 50 --out predictions/Sub9_clapping_rows.csv
+#
+# Notes
+# - Works with CSVs produced by convert_xlsx_to_csv.py.
+#   • If you exported a single group (e.g., ARM): expected columns -> ax,ay,az,gx,gy,gz
+#   • If you exported ALL groups: expected columns -> ax_arm,...,gz_arm, ax_leg,...,gz_leg, ax_neck,...,gz_neck
+# - If no timestamps, we assume uniform sampling at --hz (default 50 Hz).
+
+import os, glob, json, re, argparse, warnings
 import numpy as np
 import pandas as pd
-from scipy import signal
+from typing import List, Tuple
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.preprocessing import StandardScaler
@@ -25,215 +26,260 @@ from joblib import dump, load
 
 warnings.filterwarnings("ignore", category=UserWarning)
 IMU_EXTS = (".csv", ".tsv")
+AXES = ["ax","ay","az","gx","gy","gz"]
 
-def list_imu_files(folder):
+
+def list_imu_files(folder: str) -> List[str]:
     files = []
     for ext in IMU_EXTS:
         files.extend(glob.glob(os.path.join(folder, f"*{ext}")))
     return sorted(files)
 
-def read_imu_csv(path):
-    # Try common headers; allow both comma and tab
-    sep = "," if path.endswith(".csv") else "\t"
+
+def read_imu_csv(path: str) -> pd.DataFrame:
+    sep = "," if path.lower().endswith(".csv") else "	"
     df = pd.read_csv(path, sep=sep)
-    # Normalize column names
-    cols = {c.lower().strip(): c for c in df.columns}
-    # Required axes: ax, ay, az, gx, gy, gz
-    # Accept variants like acc_x, accelx, gyro_x, wx, etc.
-    def find(names, candidates):
-        for n in names:
-            if n in cols: return cols[n]
-        for cand in candidates:
-            if cand in df.columns: return cand
-        return None
+    # Normalize header to lowercase
+    df.columns = [c.strip().lower() for c in df.columns]
 
-    ax = find(["ax", "accx", "acc_x", "accelx"], ["ax","acc_x"])
-    ay = find(["ay", "accy", "acc_y", "accely"], ["ay","acc_y"])
-    az = find(["az", "accz", "acc_z", "accelz"], ["az","acc_z"])
-    gx = find(["gx", "gyrox", "gyr_x", "wx"], ["gx","gyr_x"])
-    gy = find(["gy", "gyroy", "gyr_y", "wy"], ["gy","gyr_y"])
-    gz = find(["gz", "gyroz", "gyr_z", "wz"], ["gz","gyr_z"])
+    # Case 1: single-group format ax..gz present
+    if all(c in df.columns for c in AXES):
+        return df[AXES].copy()
 
-    # Time (optional). If missing, we assume uniform sampling per file.
-    tx = None
-    for cand in ["time","timestamp","t","ms","millis"]:
-        if cand in cols:
-            tx = cols[cand]
-            break
+    # Case 2: multi-group format with suffixes _arm/_leg/_neck
+    # Build in order ARM, LEG, NECK if present
+    groups = ["arm","leg","neck"]
+    cols = []
+    for G in groups:
+        gcols = [f"{a}_{G}" for a in AXES]
+        if all(gc in df.columns for gc in gcols):
+            cols.extend(gcols)
+    if cols:
+        return df[cols].copy()
 
-    use_cols = [c for c in [tx, ax, ay, az, gx, gy, gz] if c is not None]
-    if len(use_cols) < 6:
-        raise ValueError(f"{path}: missing required IMU columns")
-    df = df[use_cols].copy()
-    df.columns = ["time","ax","ay","az","gx","gy","gz"] if tx else ["ax","ay","az","gx","gy","gz"]
-    return df
+    # Attempt to recover columns with other suffixes
+    suffixes = sorted(set(m.group(1) for m in (re.match(r"^(ax|ay|az|gx|gy|gz)_(.+)$", c) for c in df.columns) if m))
+    if suffixes:
+        chosen = []
+        for s in suffixes:
+            gcols = [f"{a}_{s}" for a in AXES]
+            if all(gc in df.columns for gc in gcols):
+                chosen.extend(gcols)
+        if chosen:
+            return df[chosen].copy()
 
-def resample_to_hz(df, target_hz=50):
-    if "time" in df.columns:
-        t = df["time"].values.astype(float)
-        # If time looks like milliseconds, convert to seconds
-        if t.max() > 1e4: t = t / 1000.0
-        duration = t[-1] - t[0] if len(t) > 1 else 0
-        if duration <= 0:
-            # fallback: just return as-is
-            return df.drop(columns=["time"]) if "time" in df else df
-        new_t = np.arange(t[0], t[-1], 1.0/target_hz)
-        out = {"ax":None,"ay":None,"az":None,"gx":None,"gy":None,"gz":None}
-        for col in out.keys():
-            out[col] = np.interp(new_t, t, df[col].values.astype(float))
-        return pd.DataFrame(out)
-    else:
-        # No timestamps: assume approximately uniform; polyphase resample
-        n = len(df)
-        # Guess original Hz by assuming ~50 Hz; if wildly different, user should specify
-        # For simplicity, use polyphase gain with ratio target/orig ~ 1
-        return df.copy()  # keep as-is to avoid distortion without time
+    raise ValueError(f"{path}: could not find IMU columns (ax..gz or ax_* suffixes)")
 
-def magnitude(x, y, z): return np.sqrt(x*x + y*y + z*z)
 
-def segment_windows(arr, win_len=2.0, hop=1.0, hz=50):
-    W = int(win_len * hz)
-    H = int(hop * hz)
-    if len(arr) < W:  # pad
-        pad = np.zeros((W - len(arr), arr.shape[1]))
+def magnitude(x, y, z):
+    return np.sqrt(x*x + y*y + z*z)
+
+
+def segment_windows(arr: np.ndarray, win_len: float = 2.0, hop: float = 1.0, hz: int = 50) -> List[np.ndarray]:
+    W = int(max(1, round(win_len * hz)))
+    H = int(max(1, round(hop * hz)))
+    if len(arr) < W:
+        pad = np.zeros((W - len(arr), arr.shape[1]), dtype=arr.dtype)
         arr = np.vstack([arr, pad])
-    starts = np.arange(0, max(1, len(arr)-W+1), H, dtype=int)
+    starts = np.arange(0, max(1, len(arr) - W + 1), H, dtype=int)
     return [arr[s:s+W] for s in starts]
 
-def feature_vector(win):
-    # win: (T, 6) for ax,ay,az,gx,gy,gz
-    a = win[:,0:3]; g = win[:,3:6]
-    feats = []
 
-    for M in (a, g):
-        # time-domain stats per axis
-        feats.extend(M.mean(axis=0))
-        feats.extend(M.std(axis=0))
-        feats.extend(np.median(M, axis=0))
-        feats.extend(np.percentile(M, 10, axis=0))
-        feats.extend(np.percentile(M, 90, axis=0))
-        # magnitude stats
-        mag = magnitude(M[:,0], M[:,1], M[:,2])
-        feats += [mag.mean(), mag.std(), np.median(mag),
-                  np.percentile(mag,10), np.percentile(mag,90)]
-        # zero-crossing rate per axis
-        zc = ((M[:-1] * M[1:]) < 0).sum(axis=0) / float(len(M)-1 + 1e-9)
-        feats.extend(zc)
+def feature_vector_multi(win: np.ndarray, hz: int = 50) -> np.ndarray:
+    """Compute features over possibly multiple sensor groups.
+    win shape: (T, 6*G), group blocks are [ax,ay,az,gx,gy,gz] for each group in order.
+    """
+    T, D = win.shape
+    G = D // 6
+    feats_all = []
 
-        # simple spectral energy around 0–5 Hz, 5–15 Hz bands
-        # (with Hann window)
-        sig = mag - mag.mean()
-        fft = np.fft.rfft(sig * np.hanning(len(sig)))
-        freqs = np.fft.rfftfreq(len(sig), d=1.0/50.0)  # assuming 50 Hz
-        def band_energy(fmin, fmax):
-            idx = np.where((freqs>=fmin) & (freqs<fmax))[0]
-            return float((np.abs(fft[idx])**2).sum() / (len(idx)+1e-9))
-        feats += [band_energy(0.0,5.0), band_energy(5.0,15.0)]
+    for g in range(G):
+        block = win[:, g*6:(g+1)*6]
+        a = block[:, 0:3]
+        gy = block[:, 3:6]
 
-    # inter-axis correlations for accelerometer and gyro
-    for M in (a, g):
-        c = np.corrcoef(M.T)
-        feats += [c[0,1], c[0,2], c[1,2]]
+        # time stats per axis
+        for M in (a, gy):
+            feats_all.extend(M.mean(axis=0))
+            feats_all.extend(M.std(axis=0))
+            feats_all.extend(np.median(M, axis=0))
+            feats_all.extend(np.percentile(M, 10, axis=0))
+            feats_all.extend(np.percentile(M, 90, axis=0))
+            # magnitude stats
+            mag = magnitude(M[:,0], M[:,1], M[:,2])
+            feats_all += [mag.mean(), mag.std(), np.median(mag),
+                          np.percentile(mag,10), np.percentile(mag,90)]
+            # zero-cross rate per axis
+            if len(M) > 1:
+                zc = ((M[:-1] * M[1:]) < 0).sum(axis=0) / float(len(M)-1)
+            else:
+                zc = np.zeros(3)
+            feats_all.extend(zc)
+            # simple spectral energies (0–5 Hz, 5–15 Hz) from magnitude
+            sig = mag - mag.mean()
+            fft = np.fft.rfft(sig * np.hanning(len(sig)))
+            freqs = np.fft.rfftfreq(len(sig), d=1.0/float(hz))
+            def band_energy(fmin, fmax):
+                idx = np.where((freqs>=fmin) & (freqs<fmax))[0]
+                return float((np.abs(fft[idx])**2).sum() / (len(idx)+1e-9))
+            feats_all += [band_energy(0.0,5.0), band_energy(5.0,15.0)]
+        # inter-axis correlations for acc and gyro
+        for M in (a, gy):
+            if M.shape[0] >= 3:
+                c = np.corrcoef(M.T)
+                feats_all += [c[0,1], c[0,2], c[1,2]]
+            else:
+                feats_all += [0.0, 0.0, 0.0]
 
-    return np.array(feats, dtype=np.float32)
+    return np.array(feats_all, dtype=np.float32)
 
-def build_dataset(train_dir, target_hz=50, win_len=2.0, hop=1.0):
+
+def build_dataset(train_dir: str, hz: int = 50, win_len: float = 2.0, hop: float = 1.0) -> Tuple[np.ndarray, np.ndarray, List[str], List[str]]:
     X, y, paths = [], [], []
-    labels = sorted([d for d in os.listdir(train_dir) if os.path.isdir(os.path.join(train_dir,d))])
+    labels = sorted([d for d in os.listdir(train_dir) if os.path.isdir(os.path.join(train_dir, d))])
     label_to_id = {lab:i for i,lab in enumerate(labels)}
+
     for lab in labels:
         for f in list_imu_files(os.path.join(train_dir, lab)):
             df = read_imu_csv(f)
-            df = resample_to_hz(df, target_hz=target_hz)
-            # optional simple "activity VAD": keep only windows with enough variance
-            arr = df[["ax","ay","az","gx","gy","gz"]].values.astype(np.float32)
-            wins = segment_windows(arr, win_len=win_len, hop=hop, hz=target_hz)
+            arr = df.values.astype(np.float32)
+            wins = segment_windows(arr, win_len=win_len, hop=hop, hz=hz)
             for w in wins:
-                if w.std() < 1e-3:  # skip near-constant windows
+                if w.std() < 1e-6:
                     continue
-                X.append(feature_vector(w))
+                X.append(feature_vector_multi(w, hz=hz))
                 y.append(label_to_id[lab])
                 paths.append(f)
+    if not X:
+        raise RuntimeError("No training windows found. Check your data/train layout and CSV columns.")
     X = np.vstack(X)
     y = np.array(y, dtype=np.int64)
     return X, y, paths, labels
 
-def train(train_dir="data/train", model_out="models/imu_rf.joblib",
-          labels_out="models/labels.json", target_hz=50, win_len=2.0, hop=1.0,
-          model="rf"):
+
+def train(train_dir="data/train", model_out="models/imu_rf.joblib", labels_out="models/labels.json",
+          hz: int = 50, win_len: float = 2.0, hop: float = 1.0, algo: str = "rf"):
     os.makedirs(os.path.dirname(model_out), exist_ok=True)
-    X, y, _, labels = build_dataset(train_dir, target_hz, win_len, hop)
+    X, y, _, labels = build_dataset(train_dir, hz=hz, win_len=win_len, hop=hop)
 
     Xtr, Xva, ytr, yva = train_test_split(X, y, test_size=0.25, random_state=42, stratify=y)
 
-    if model == "knn":
+    if algo == "knn":
         clf = Pipeline([
             ("scaler", StandardScaler()),
-            ("knn", KNeighborsClassifier(n_neighbors=5, weights="distance"))
+            ("knn", KNeighborsClassifier(n_neighbors=7, weights="distance"))
         ])
     else:
-        # Random Forest (no scaling needed)
         clf = RandomForestClassifier(
-            n_estimators=300, max_depth=None, n_jobs=-1,
+            n_estimators=400, max_depth=None, n_jobs=-1,
             class_weight="balanced_subsample", random_state=42
         )
 
     clf.fit(Xtr, ytr)
     yhat = clf.predict(Xva)
-    print("\nValidation report:")
+    print("Validation report:")
     print(classification_report(yva, yhat, digits=4))
-    print("Confusion matrix:\n", confusion_matrix(yva, yhat))
+    print("Confusion matrix:", confusion_matrix(yva, yhat))
 
     dump(clf, model_out)
     with open(labels_out, "w") as f:
         json.dump({"labels": labels}, f, indent=2)
-    print(f"\nSaved model -> {model_out}\nSaved labels -> {labels_out}")
+    print(f"Saved model -> {model_out} Saved labels -> {labels_out}")
 
-def load_model(model_path, labels_path):
+
+def load_model(model_path: str, labels_path: str):
     clf = load(model_path)
     with open(labels_path, "r") as f:
         labels = json.load(f)["labels"]
     return clf, labels
 
-def predict_folder(folder="data/test", model_path="models/imu_rf.joblib",
-                   labels_path="models/labels.json", target_hz=50,
-                   win_len=2.0, hop=1.0, min_conf=0.0):
+
+def predict_folder(folder="data/test", model_path="models/imu_rf.joblib", labels_path="models/labels.json",
+                   hz: int = 50, win_len: float = 2.0, hop: float = 1.0, min_conf: float = 0.0):
     clf, labels = load_model(model_path, labels_path)
     files = list_imu_files(folder)
     if not files:
         print(f"No IMU files in {folder}")
         return
-    print(f"\nScoring {len(files)} file(s) in '{folder}'")
+    print(f"Scoring {len(files)} file(s) in '{folder}' (windowed majority)")
     for f in files:
         df = read_imu_csv(f)
-        df = resample_to_hz(df, target_hz=target_hz)
-        arr = df[["ax","ay","az","gx","gy","gz"]].values.astype(np.float32)
-        wins = segment_windows(arr, win_len=win_len, hop=hop, hz=target_hz)
+        arr = df.values.astype(np.float32)
+        wins = segment_windows(arr, win_len=win_len, hop=hop, hz=hz)
         if not wins:
             print(os.path.basename(f), "-> no windows")
             continue
-        X = np.vstack([feature_vector(w) for w in wins])
+        X = np.vstack([feature_vector_multi(w, hz=hz) for w in wins])
         if hasattr(clf, "predict_proba"):
-            probs = clf.predict_proba(X).mean(axis=0)
+            probs_win = clf.predict_proba(X)
+            probs = probs_win.mean(axis=0)
             top = int(np.argmax(probs))
             conf = float(probs[top])
             pred = labels[top] if conf >= min_conf else "unknown"
-            print(f"{os.path.basename(f):<32} -> {pred}  (conf={conf:.3f})")
+            print(f"{os.path.basename(f):<40} -> {pred}  (conf={conf:.3f})")
         else:
             preds = clf.predict(X)
-            # majority vote
-            top = np.bincount(preds).argmax()
-            print(f"{os.path.basename(f):<32} -> {labels[top]}")
+            top = int(np.bincount(preds).argmax())
+            print(f"{os.path.basename(f):<40} -> {labels[top]}")
+
+
+def predict_rows(file: str, model_path="models/imu_rf.joblib", labels_path="models/labels.json",
+                 hz: int = 50, row_window: int = 64, min_conf: float = 0.0, out: str = None):
+    """Per-row predictions: for each sample (row) in the CSV, build a centered window of length
+    `row_window` samples, extract features, and predict a label; write results to CSV."""
+    clf, labels = load_model(model_path, labels_path)
+    df = read_imu_csv(file)
+    arr = df.values.astype(np.float32)
+    n, d = arr.shape
+    W = max(1, int(row_window))
+    half = W // 2
+
+    preds, confs = [], []
+    if hasattr(clf, "predict_proba"):
+        for i in range(n):
+            s = max(0, i - half)
+            e = min(n, s + W)
+            s = max(0, e - W)
+            win = arr[s:e]
+            if len(win) < W:
+                pad = np.zeros((W - len(win), d), dtype=arr.dtype)
+                win = np.vstack([win, pad])
+            x = feature_vector_multi(win, hz=hz).reshape(1, -1)
+            p = clf.predict_proba(x)[0]
+            k = int(np.argmax(p))
+            preds.append(labels[k] if float(p[k]) >= min_conf else "unknown")
+            confs.append(float(p[k]))
+    else:
+        for i in range(n):
+            s = max(0, i - half)
+            e = min(n, s + W)
+            s = max(0, e - W)
+            win = arr[s:e]
+            if len(win) < W:
+                pad = np.zeros((W - len(win), d), dtype=arr.dtype)
+                win = np.vstack([win, pad])
+            x = feature_vector_multi(win, hz=hz).reshape(1, -1)
+            k = int(clf.predict(x)[0])
+            preds.append(labels[k])
+            confs.append(np.nan)
+
+    out_df = pd.DataFrame({"row_index": np.arange(n), "pred": preds, "conf": confs})
+    if out is None:
+        out = os.path.splitext(file)[0] + "_rowpreds.csv"
+    os.makedirs(os.path.dirname(out), exist_ok=True) if os.path.dirname(out) else None
+    out_df.to_csv(out, index=False)
+    print(f"Wrote per-row predictions -> {out}")
+
 
 def main():
-    ap = argparse.ArgumentParser(description="IMU-based human movement classification")
+    ap = argparse.ArgumentParser(description="IMU-based movement classification (Excel pipeline)")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     tr = sub.add_parser("train")
     tr.add_argument("--train_dir", default="data/train")
     tr.add_argument("--model", default="models/imu_rf.joblib")
     tr.add_argument("--labels", default="models/labels.json")
-    tr.add_argument("--target_hz", type=int, default=50)
+    tr.add_argument("--hz", type=int, default=50)
     tr.add_argument("--win_len", type=float, default=2.0)
     tr.add_argument("--hop", type=float, default=1.0)
     tr.add_argument("--algo", choices=["rf","knn"], default="rf")
@@ -242,18 +288,30 @@ def main():
     pr.add_argument("--folder", default="data/test")
     pr.add_argument("--model", default="models/imu_rf.joblib")
     pr.add_argument("--labels", default="models/labels.json")
-    pr.add_argument("--target_hz", type=int, default=50)
+    pr.add_argument("--hz", type=int, default=50)
     pr.add_argument("--win_len", type=float, default=2.0)
     pr.add_argument("--hop", type=float, default=1.0)
     pr.add_argument("--min_conf", type=float, default=0.0)
 
+    prr = sub.add_parser("predict_rows")
+    prr.add_argument("--file", required=True)
+    prr.add_argument("--model", default="models/imu_rf.joblib")
+    prr.add_argument("--labels", default="models/labels.json")
+    prr.add_argument("--hz", type=int, default=50)
+    prr.add_argument("--row_window", type=int, default=64)
+    prr.add_argument("--min_conf", type=float, default=0.0)
+    prr.add_argument("--out", default=None)
+
     args = ap.parse_args()
     if args.cmd == "train":
         train(train_dir=args.train_dir, model_out=args.model, labels_out=args.labels,
-              target_hz=args.target_hz, win_len=args.win_len, hop=args.hop, model=args.algo)
-    else:
+              hz=args.hz, win_len=args.win_len, hop=args.hop, algo=args.algo)
+    elif args.cmd == "predict":
         predict_folder(folder=args.folder, model_path=args.model, labels_path=args.labels,
-                       target_hz=args.target_hz, win_len=args.win_len, hop=args.hop, min_conf=args.min_conf)
+                       hz=args.hz, win_len=args.win_len, hop=args.hop, min_conf=args.min_conf)
+    else:
+        predict_rows(file=args.file, model_path=args.model, labels_path=args.labels,
+                     hz=args.hz, row_window=args.row_window, min_conf=args.min_conf, out=args.out)
 
 if __name__ == "__main__":
     main()
