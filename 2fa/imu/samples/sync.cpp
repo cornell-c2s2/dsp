@@ -187,9 +187,8 @@ int main()
     // outputFile << "x,y,z,ax,ay,az" << std::endl;
 
     int samples = 0;
-    while(samples < 10000) {
-        printf("x: %d y: %d  z:%d\n", acceleration[0], acceleration[1], acceleration[2]);
-        printf("ax: %d ay: %d  az:%d\n", gyro[0], gyro[1], gyro[2]);
+    while(samples < 5000) {
+        printf("%d, %d, %d, %d, %d, %d, %d\n", acceleration[0], acceleration[1], acceleration[2], gyro[0], gyro[1], gyro[2], temp);
         samples++;
 
         //outputFile << acceleration[0] << "," << acceleration[1] << "," << acceleration[2] << "," << gyro[0] << "," << gyro[1] << "," << gyro[2] << std::endl;
