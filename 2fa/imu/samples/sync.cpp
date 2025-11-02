@@ -9,6 +9,8 @@
 #include "pico/multicore.h"
 #include "hardware/dma.h"
 #include <string.h>
+#include <fstream>
+#include <iostream>
 
 #include "lib/mpu6050.h"
 #include "lib/ringbuffer.h"
@@ -351,9 +353,21 @@ int main()
     alarm_pool_add_repeating_timer_us(core0pool, -ADC_DELAY, adc_callback, NULL, &adc_sample);
     alarm_pool_add_repeating_timer_us(core0pool, -IMU_DELAY, IMU_callback, NULL, &imu_sample);
 
-    while(true) {
+    std::ofstream outputFile("newimudata.csv");
+    if (!outputFile.is_open()) {
+        std::cerr << "Error opening file!" << std::endl;
+        return 1;
+    }
+
+    outputFile << "x,y,z,ax,ay,az" << std::endl;
+
+    int samples = 0
+    while(samples < 10000) {
         printf("x: %d y: %d  z:%d\n", acceleration[0], acceleration[1], acceleration[2]);
         printf("ax: %d ay: %d  az:%d\n", gyro[0], gyro[1], gyro[2]);
+        samples++;
+
+        outputFile << acceleration[0] << "," << acceleration[1] << "," << acceleration[2] << "," << gyro[0] << "," << gyro[1] << "," << gyro[2] << std::endl;
         // if (print_imu)
         // {
         //     spin_lock_unsafe_blocking(spinlock_classification);
@@ -365,6 +379,6 @@ int main()
         // }
 
     };
-
+    outputFile.close();
     return 0;
 }
