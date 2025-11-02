@@ -54,3 +54,8 @@ dkms.conf
 
 # Build Folders
 build*
+
+# i am going to crash out if i see more ds stores
+.DS_Store
+
+2fa/audio/data/ubm/

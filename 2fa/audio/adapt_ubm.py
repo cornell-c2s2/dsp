@@ -11,6 +11,8 @@ import joblib
 # =====================================
 UBM_PATH = "models/ubm_gmm.joblib"
 TARGET_CLIP = "data/garfield2.wav"
+# number of seconds to use from the target clip (None = full clip)
+SECONDS_USED = None
 OUTPUT_PATH = "models/target_gmm.joblib"
 
 SAMPLE_RATE = 16000
@@ -54,6 +56,11 @@ def segment_and_extract(file_path):
     # Force mono
     if y.ndim > 1:
         y = np.mean(y, axis=1)
+
+    # ✅ Only take the first SECONDS_USED seconds (if specified)
+    if SECONDS_USED is not None:
+        max_samples = int(SECONDS_USED * sr)
+        y = y[:max_samples]
 
     seg_len = int(SEGMENT_DURATION * sr)
     hop = int((SEGMENT_DURATION - OVERLAP) * sr)
