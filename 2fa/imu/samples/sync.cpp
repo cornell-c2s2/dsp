@@ -34,8 +34,8 @@ int main()
         // Print in CSV format
         printf("%d,%d,%d,%d,%d,%d,%d\n", 
                acceleration[0], acceleration[1], acceleration[2],
-               gyro[0], gyro[1], gyro[2], 
-               temp);
+               gyro[0], gyro[1], gyro[2]); 
+               //temp);
         
         // Small delay to control sampling rate (~50Hz)
         sleep_ms(20);
