@@ -557,8 +557,8 @@ class AudioClassifier:
         axes[1].grid(True, alpha=0.3)
 
         plt.tight_layout()
-        plt.savefig("evaluation_results.png", dpi=150, bbox_inches="tight")
-        print(f"\n✓ Evaluation plots saved as 'evaluation_results.png'")
+        plt.savefig("results/evaluation_results.png", dpi=150, bbox_inches="tight")
+        print(f"\n✓ Evaluation plots saved as 'results/evaluation_results.png'")
         plt.close()
 
     def _save_evaluation_report(
@@ -573,7 +573,7 @@ class AudioClassifier:
             conf_matrix: Confusion matrix
             test_dir: Test directory name
         """
-        report_path = "evaluation_report.txt"
+        report_path = "results/evaluation_report.txt"
 
         with open(report_path, "w") as f:
             f.write("=" * 70 + "\n")
@@ -673,18 +673,18 @@ class AudioClassifier:
         plt.savefig("training_history.png")
         print("\nTraining history plot saved as 'training_history.png'")
 
-    def save_model(self, filepath="audio_classifier_model.keras"):
+    def save_model(self, filepath="models/audio_classifier_model.keras"):
         """Save the trained model."""
         self.model.save(filepath)
-        np.save("scaler_mean.npy", self.scaler.mean_)
-        np.save("scaler_scale.npy", self.scaler.scale_)
+        np.save("models/scaler_mean.npy", self.scaler.mean_)
+        np.save("models/scaler_scale.npy", self.scaler.scale_)
         print(f"\nModel saved to {filepath}")
 
-    def load_model(self, filepath="audio_classifier_model.keras"):
+    def load_model(self, filepath="models/audio_classifier_model.keras"):
         """Load a trained model."""
         self.model = keras.models.load_model(filepath)
-        self.scaler.mean_ = np.load("scaler_mean.npy")
-        self.scaler.scale_ = np.load("scaler_scale.npy")
+        self.scaler.mean_ = np.load("models/scaler_mean.npy")
+        self.scaler.scale_ = np.load("models/scaler_scale.npy")
         print(f"\nModel loaded from {filepath}")
 
 
@@ -731,8 +731,8 @@ def main():
             print(f"\n{'=' * 70}")
             print("EVALUATION COMPLETE")
             print(f"{'=' * 70}")
-            print(f"✓ Results saved to 'evaluation_results.png'")
-            print(f"✓ Detailed report saved to 'evaluation_report.txt'")
+            print(f"✓ Results saved to 'results/evaluation_results.png'")
+            print(f"✓ Detailed report saved to 'results/evaluation_report.txt'")
     else:
         print("\nNo 'data/testing' directory found. Skipping evaluation.")
 

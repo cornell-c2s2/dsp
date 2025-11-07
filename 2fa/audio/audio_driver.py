@@ -1,11 +1,11 @@
 import argparse
 import json
-from gmm.gmm_utils import load_model, predict_file
+from speaker.gmm_utils import load_model, predict_file
 from keyword_classifier import AudioClassifier
 
 DEFAULT_TARGET = "models/target_gmm.joblib"
 DEFAULT_UBM = "models/ubm_gmm.joblib"
-DEFAULT_KW_MODEL = "audio_classifier_model.keras"
+DEFAULT_KW_MODEL = "models/audio_classifier_model.keras"
 
 DEFAULT_SPEAKER_THRESHOLD = 1.1
 
