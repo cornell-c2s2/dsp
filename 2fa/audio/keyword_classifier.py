@@ -19,7 +19,7 @@ import seaborn as sns
 
 
 class AudioClassifier:
-    def __init__(self, sample_rate=22050, n_mfcc=13, max_length=100):
+    def __init__(self, sample_rate=16000, n_mfcc=13, max_length=100):
         """
         Initialize the audio classifier.
 

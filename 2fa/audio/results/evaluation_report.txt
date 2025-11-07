@@ -3,2174 +3,2177 @@ AUDIO CLASSIFIER EVALUATION REPORT
 ======================================================================
 
 Test Directory: data/testing
-Total Files: 716
+Total Files: 717
 Labeling Rule: Files with 'stop' in name = POSITIVE
 
 ======================================================================
 OVERALL METRICS
 ======================================================================
-Accuracy:  0.9372 (93.72%)
-Precision: 0.7324
-Recall:    0.9369
-F1 Score:  0.8221
+Accuracy:  0.9317 (93.17%)
+Precision: 0.7143
+Recall:    0.9375
+F1 Score:  0.8108
 
 ======================================================================
 CONFUSION MATRIX
 ======================================================================
-True Negatives:  567
-False Positives: 38
+True Negatives:  563
+False Positives: 42
 False Negatives: 7
-True Positives:  104
+True Positives:  105
 
 ======================================================================
 DETAILED RESULTS PER FILE
 ======================================================================
 
-✗ seven__common_voice_en_21181208.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 1.0000
+✗ seven__common_voice_en_20410155 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9995
 
-✗ seven__common_voice_en_21181208 2.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 1.0000
+✗ seven__common_voice_en_20410155.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9995
 
-✗ seven__common_voice_en_20410155.opus
+✗ seven__common_voice_en_21181208 2.wav
    True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9994
 
-✗ seven__common_voice_en_20410155 2.opus
+✗ seven__common_voice_en_21181208.wav
    True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9994
 
-✗ four__common_voice_en_605435.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9909
+✗ six__common_voice_en_621720 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9989
 
-✗ four__common_voice_en_20726027.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9892
+✗ six__common_voice_en_621720.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9989
 
-✗ seven__common_voice_en_221144.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9808
+✗ seven__common_voice_en_221144.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9966
 
-✗ four__common_voice_en_21181264.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9719
+✗ off__common_voice_en_683675.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9958
 
-✗ four__common_voice_en_22102474.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9647
+✗ four__common_voice_en_22102474.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9913
 
-✗ seven__common_voice_en_19976157 2.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9594
+✗ seven__common_voice_en_19976157.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9866
 
-✗ seven__common_voice_en_19976157.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9594
+✗ seven__common_voice_en_19976157 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9866
 
-✗ dog__common_voice_en_505703.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9540
+✗ four__common_voice_en_20726027.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9846
 
-✗ down__common_voice_en_20309600.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9429
+✗ two__common_voice_en_662880.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9815
 
-✗ follow__common_voice_en_99020 2.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8989
+✗ seven__common_voice_en_20795046.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9812
 
-✗ follow__common_voice_en_99020.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8989
+✗ four__common_voice_en_65078.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9778
 
-✗ five__common_voice_en_21876866.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8818
+✗ follow__common_voice_en_641525.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9746
 
-✗ down__common_voice_en_22147005.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8695
+✗ four__common_voice_en_605435.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9658
 
-✗ seven__common_voice_en_693224.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8430
+✗ one__common_voice_en_20829398.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9620
 
-✗ seven__common_voice_en_693224 2.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8430
+✗ follow__common_voice_en_99020.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9586
 
-✗ two__common_voice_en_662880.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8285
+✗ follow__common_voice_en_99020 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9586
 
-✗ off__common_voice_en_683675.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8124
+✗ left__common_voice_en_21786454.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9479
 
-✗ seven__common_voice_en_20795046.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8050
+✗ left__common_voice_en_21786454 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9479
 
-✗ four__common_voice_en_22238380.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7596
+✗ dog__common_voice_en_505703.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9453
 
-✗ one__common_voice_en_442654.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7579
+✗ four__common_voice_en_21692978.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9423
 
-✗ seven__common_voice_en_19744910 2.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7377
+✗ off__common_voice_en_20947144.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9401
 
-✗ seven__common_voice_en_19744910.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7377
+✗ four__common_voice_en_21484960.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9270
 
-✗ four__common_voice_en_65078.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7119
+✗ one__common_voice_en_442654.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.9199
 
-✗ four__common_voice_en_21338162.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7015
+✗ right__common_voice_en_502730 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8907
 
-✗ off__common_voice_en_20783635.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6713
+✗ right__common_voice_en_502730.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8907
 
-✗ left__common_voice_en_21786454 2.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6559
+✗ seven__common_voice_en_19744910 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8697
 
-✗ left__common_voice_en_21786454.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6559
+✗ seven__common_voice_en_19744910.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8697
 
-✗ one__common_voice_en_595616.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6328
+✗ five__common_voice_en_20205244.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8207
 
-✗ four__common_voice_en_22350547.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6215
+✗ four__common_voice_en_21181264.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.8021
 
-✗ four__common_voice_en_21692978.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6202
+✗ seven__common_voice_en_693224.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7833
 
-✗ four__common_voice_en_20909363.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.5912
+✗ seven__common_voice_en_693224 2.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7833
 
-✗ right__common_voice_en_502730 2.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.5319
+✗ down__common_voice_en_20309600.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7807
 
-✗ right__common_voice_en_502730.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.5319
+✗ four__common_voice_en_21338162.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7388
 
-✗ four__common_voice_en_565420.opus
-   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.5032
+✗ dog__common_voice_en_609425.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7126
 
-✗ stop_597593.opus
-   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.3490
+✗ four__common_voice_en_22238380.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.7061
 
-✗ stop_618694.opus
-   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.2393
+✗ four__common_voice_en_22350547.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6800
 
-✗ stop_606463.opus
-   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.2213
+✗ off__common_voice_en_42831.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.6067
 
-✗ stop_617805.opus
-   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.1817
+✗ one__common_voice_en_595616.wav
+   True: NEGATIVE | Predicted: POSITIVE | Confidence: 0.5501
 
-✗ stop_599877.opus
-   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.1234
+✗ stop_599877.wav
+   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.4573
 
-✗ stop_614773.opus
-   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.0137
+✗ stop_614773.wav
+   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.4014
 
-✗ stop_599884.opus
-   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.0123
+✗ stop_17391042.wav
+   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.3850
 
-✓ stop_30044.opus
+✗ stop_605360.wav
+   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.2737
+
+✗ stop_612594.wav
+   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.2008
+
+✗ stop_617805.wav
+   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.0572
+
+✗ stop_599884.wav
+   True: POSITIVE | Predicted: NEGATIVE | Confidence: 0.0212
+
+✓ stop_621891.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_30044 2.opus
+✓ stop_602451.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_621933.opus
+✓ pos_stop.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_602451.opus
+✓ stop_598995.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_621891.opus
+✓ stop_621933.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_620664.opus
+✓ stop_613943.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_613943.opus
+✓ stop_30044 2.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_608438.opus
+✓ stop_30044.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_610683.opus
+✓ stop_602763.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_623709.opus
+✓ stop_623709.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_18453976.opus
+✓ stop_610683.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_598995.opus
+✓ stop_595330.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_595330.opus
+✓ stop_602767.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
 
-✓ stop_621355.opus
+✓ stop_17841704.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
+
+✓ stop_18453976.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
+
+✓ stop_608438.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
+
+✓ stop_612232.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
+
+✓ stop_620664.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 1.0000
+
+✓ stop_595549.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_18125766 2.opus
+✓ stop_593363.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_18125766.opus
+✓ stop_597952.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_602767.opus
+✓ stop_18634385.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_602763.opus
+✓ stop_18634385 2.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_17841704.opus
+✓ stop_18125766.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_601717.opus
+✓ stop_18125766 2.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_595549.opus
+✓ stop_612695.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_609802.opus
+✓ stop_613859.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_593711.opus
+✓ stop_622609.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_595458.opus
+✓ stop_608874.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_610780.opus
+✓ stop_595458.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
 
-✓ stop_619604.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9999
-
-✓ stop_612232.opus
+✓ stop_62068.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9998
 
-✓ stop_603761.opus
+✓ stop_609802.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9998
 
-✓ stop_62068.opus
+✓ stop_598264.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9998
 
-✓ stop_608874.opus
+✓ stop_121417.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9998
 
-✓ stop_613859.opus
+✓ stop_121417 2.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9998
 
-✓ stop_86201.opus
+✓ stop_610780.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9998
+
+✓ stop_601717.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9998
+
+✓ stop_603761.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9997
 
-✓ stop_86201 2.opus
+✓ stop_604218.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9997
 
-✓ stop_612695.opus
+✓ stop_621355.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9997
 
-✓ stop_18634385.opus
+✓ stop_609003.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9997
+
+✓ stop_19187812.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9996
 
-✓ stop_18634385 2.opus
+✓ stop_604380.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9996
 
-✓ stop_620753.opus
+✓ stop_619644.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9996
 
-✓ stop_619644.opus
+✓ stop_606590.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9996
+
+✓ stop_609372.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9994
 
-✓ stop_595930.opus
+✓ stop_593711.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9993
 
-✓ stop_613516.opus
+✓ stop_595930.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9993
 
-✓ stop_597952.opus
+✓ stop_619604.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9993
 
-✓ stop_609003.opus
+✓ stop_687174.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9993
+
+✓ stop_687174 2.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9993
+
+✓ stop_610752.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9993
+
+✓ stop_604565.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9992
 
-✓ stop_19187812.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9991
-
-✓ stop_609372.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9991
-
-✓ stop_604218.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9990
-
-✓ stop_121417.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9990
-
-✓ stop_121417 2.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9990
-
-✓ stop_610752.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9990
-
-✓ stop_600389.opus
+✓ stop_17277143.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9988
 
-✓ stop_593363.opus
+✓ stop_17277143 2.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9988
 
-✓ stop_604565.opus
+✓ stop_605258.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9988
+
+✓ stop_613516.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9988
+
+✓ stop_148462.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9988
+
+✓ stop_600389.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9987
 
-✓ stop_605563.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9987
-
-✓ stop_604380.opus
+✓ stop_617251.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9986
 
-✓ stop_599478.opus
+✓ stop_604658.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9986
 
-✓ stop_622609.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9985
-
-✓ stop_604658.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9984
-
-✓ stop_599728.opus
+✓ stop_594138.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9980
 
-✓ stop_687174 2.opus
+✓ stop_599728.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9979
 
-✓ stop_687174.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9979
+✓ stop_619846.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9978
 
-✓ stop_598264.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9977
+✓ stop_611671.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9976
 
-✓ stop_596299.opus
+✓ stop_603788.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9975
+
+✓ stop_605032.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9974
 
-✓ stop_611854.opus
+✓ stop_620753.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9974
+
+✓ stop_86201.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9973
 
-✓ stop_594138.opus
+✓ stop_86201 2.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9973
+
+✓ stop_611854.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9971
 
-✓ stop_606590.opus
+✓ stop_21721787 2.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9970
+
+✓ stop_21721787.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9970
+
+✓ stop_605563.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9969
 
-✓ stop_609187.opus
+✓ stop_599478.wav
    True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9968
 
-✓ stop_17277143.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9963
+✓ stop_605539.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9968
 
-✓ stop_17277143 2.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9963
+✓ stop_655219.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9956
 
-✓ stop_601864.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9962
+✓ stop_596299.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9947
 
-✓ stop_601585.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9959
+✓ stop_593522.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9942
 
-✓ stop_605032.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9959
+✓ stop_613905.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9938
 
-✓ stop_17391042.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9951
+✓ stop_622990.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9935
 
-✓ stop_613776.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9948
+✓ stop_615681.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9929
 
-✓ stop_619846.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9948
+✓ stop_601864.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9898
 
-✓ stop_21721787 2.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9946
+✓ stop_602048.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9886
 
-✓ stop_21721787.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9946
+✓ stop_613776.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9879
 
-✓ stop_622990.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9943
+✓ stop_598572.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9867
 
-✓ stop_613905.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9937
+✓ stop_19746601.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9855
 
-✓ stop_611671.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9933
+✓ stop_20387088.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9843
 
-✓ stop_615681.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9930
+✓ stop_597275.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9842
 
-✓ stop_603788.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9921
+✓ stop_601585.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9828
 
-✓ stop_602048.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9917
+✓ stop_613423.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9805
 
-✓ stop_598572.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9915
+✓ stop_621530.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9775
 
-✓ stop_20387088.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9902
+✓ stop_614361.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9714
 
-✓ stop_593522.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9901
+✓ stop_610844.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9710
 
-✓ stop_597275.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9892
+✓ stop_605684.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9423
 
-✓ stop_605258.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9871
+✓ stop_605368.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9245
 
-✓ stop_19746601.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9866
+✓ stop_617173.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9217
 
-✓ stop_617251.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9829
+✓ stop_171493.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9101
 
-✓ stop_655219.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9819
+✓ stop_597593.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9094
 
-✓ stop_621530.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9786
+✓ stop_618694.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.8884
 
-✓ stop_605360.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9741
+✓ stop_606283.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.8641
 
-✓ stop_148462.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9701
+✓ stop_606463.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.7900
 
-✓ stop_601372.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9574
+✓ stop_601372.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.7775
 
-✓ stop_171493.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9491
+✓ stop_614569.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.6999
 
-✓ stop_613423.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9401
+✓ stop_609187.wav
+   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.5919
 
-✓ stop_605539.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9388
+✓ down__common_voice_en_676068.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4743
 
-✓ stop_614361.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.9386
+✓ one__common_voice_en_642912.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4420
 
-✓ stop_605684.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.8872
+✓ five__common_voice_en_21876866.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4228
 
-✓ stop_606283.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.8853
+✓ down__common_voice_en_22147005.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4221
 
-✓ stop_610844.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.8185
+✓ five__common_voice_en_22320770.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4167
 
-✓ stop_614569.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.7767
+✓ four__common_voice_en_20463900.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3718
 
-✓ stop_605368.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.7108
+✓ four__common_voice_en_565420.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3699
 
-✓ stop_612594.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.6211
+✓ one__common_voice_en_20417518.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2915
 
-✓ stop_617173.opus
-   True: POSITIVE | Predicted: POSITIVE | Confidence: 0.5959
+✓ three__common_voice_en_21087613 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2748
 
-✓ zero__common_voice_en_20739653.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4745
+✓ three__common_voice_en_21087613.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2748
 
-✓ off__common_voice_en_20947144.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4307
+✓ four__common_voice_en_48607.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2732
 
-✓ follow__common_voice_en_641525.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4106
+✓ down__common_voice_en_586707.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2276
 
-✓ five__common_voice_en_20205244.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.4003
+✓ four__common_voice_en_20833908.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2117
 
-✓ one__common_voice_en_665629.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3867
+✓ four__common_voice_en_218084.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2052
 
-✓ down__common_voice_en_643905.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3835
+✓ four__common_voice_en_519964.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1872
 
-✓ left__common_voice_en_212686.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3706
+✓ down__common_voice_en_624091.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1768
 
-✓ left__common_voice_en_212686 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3706
+✓ zero__common_voice_en_20739653.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1756
 
-✓ five__common_voice_en_20798319.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3435
+✓ down__common_voice_en_655384.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1636
 
-✓ down__common_voice_en_624091.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3296
+✓ one__common_voice_en_20161921.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1607
 
-✓ four__common_voice_en_519964.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3151
+✓ two__common_voice_en_212943.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1494
 
-✓ one__common_voice_en_580196 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3047
+✓ off__common_voice_en_609936.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1279
 
-✓ one__common_voice_en_580196.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.3047
+✓ four__common_voice_en_20150671.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1265
 
-✓ off__common_voice_en_42831.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2799
+✓ down__common_voice_en_695915.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1244
 
-✓ four__common_voice_en_21484960.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2598
+✓ four__common_voice_en_20993468.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1171
 
-✓ down__common_voice_en_655384.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2501
+✓ one__common_voice_en_665629.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1094
 
-✓ off__common_voice_en_572902.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2437
+✓ down__common_voice_en_643905.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0979
 
-✓ off__common_voice_en_585317 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2418
+✓ four__common_voice_en_20220296.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0959
 
-✓ off__common_voice_en_585317.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.2418
+✓ two__common_voice_en_591573.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0857
 
-✓ dog__common_voice_en_609425.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1934
+✓ two__common_voice_en_591573 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0857
 
-✓ four__common_voice_en_48607.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1868
+✓ one__common_voice_en_217167.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0847
 
-✓ four__common_voice_en_20150671.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1783
+✓ one__common_voice_en_22433864.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0796
 
-✓ one__common_voice_en_642912.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1600
+✓ seven__common_voice_en_515764.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0787
 
-✓ one__common_voice_en_217167.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1482
+✓ seven__common_voice_en_515764 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0787
 
-✓ one__common_voice_en_573233.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1477
+✓ off__common_voice_en_20783635.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0778
 
-✓ four__common_voice_en_218084.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1464
+✓ one__common_voice_en_573233.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0728
 
-✓ left__common_voice_en_496903.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1439
+✓ two__common_voice_en_21386741.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0695
 
-✓ three__common_voice_en_20088152.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1333
+✓ follow__common_voice_en_22445078.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0677
 
-✓ dog__common_voice_en_487615.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1189
+✓ follow__common_voice_en_22445078 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0677
 
-✓ dog__common_voice_en_487615 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1189
+✓ down__common_voice_en_576182.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0674
 
-✓ three__common_voice_en_671428.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1091
+✓ off__common_voice_en_572902.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0598
 
-✓ six__common_voice_en_621720.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1084
+✓ down__common_voice_en_510499.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0561
 
-✓ six__common_voice_en_621720 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1084
+✓ four__common_voice_en_6923150.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0549
 
-✓ right__common_voice_en_2687.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1079
+✓ dog__common_voice_en_20744334.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0543
 
-✓ four__common_voice_en_20833908.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1034
+✓ dog__common_voice_en_20744334 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0543
 
-✓ five__common_voice_en_22320770.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.1017
+✓ four__common_voice_en_24077.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0518
 
-✓ four__common_voice_en_20220296.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0949
+✓ five__common_voice_en_649847.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0507
 
-✓ down__common_voice_en_576182.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0932
+✓ four__common_voice_en_20909363.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0502
 
-✓ down__common_voice_en_510499.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0876
+✓ one__common_voice_en_630230.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0500
 
-✓ off__common_voice_en_21252598.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0870
+✓ one__common_voice_en_487693.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0481
 
-✓ off__common_voice_en_21252598 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0870
+✓ cat__common_voice_en_62004 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0451
 
-✓ seven__common_voice_en_515764.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0835
+✓ cat__common_voice_en_62004.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0451
 
-✓ seven__common_voice_en_515764 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0835
+✓ dog__common_voice_en_663487.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0432
 
-✓ two__common_voice_en_22210514.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0789
+✓ right__common_voice_en_2687.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0413
 
-✓ one__common_voice_en_38701.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0788
+✓ one__common_voice_en_580196.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0408
 
-✓ one__common_voice_en_38701 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0788
+✓ one__common_voice_en_580196 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0408
 
-✓ two__common_voice_en_22313680 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0774
+✓ down__common_voice_en_485439.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0390
 
-✓ two__common_voice_en_22313680.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0774
+✓ one__common_voice_en_38701 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0381
 
-✓ four__common_voice_en_6923150.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0747
+✓ one__common_voice_en_38701.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0381
 
-✓ two__common_voice_en_200520.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0721
+✓ left__common_voice_en_531100.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0356
 
-✓ off__common_voice_en_609936.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0690
+✓ off__common_voice_en_86523.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0349
 
-✓ dog__common_voice_en_20744334 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0657
+✓ three__common_voice_en_20449635.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0346
 
-✓ dog__common_voice_en_20744334.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0657
+✓ tree__common_voice_en_23265.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0345
 
-✓ down__common_voice_en_521592.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0647
+✓ down__common_voice_en_2910 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0336
 
-✓ four__common_voice_en_24077.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0631
+✓ down__common_voice_en_2910.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0336
 
-✓ one__common_voice_en_22433864.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0601
+✓ three__common_voice_en_671428.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0335
 
-✓ five__common_voice_en_541082.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0576
+✓ four__common_voice_en_20374334.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0329
 
-✓ five__common_voice_en_541082 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0576
+✓ two__common_voice_en_22210514.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0317
 
-✓ left__common_voice_en_531100.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0544
+✓ six__common_voice_en_21935062.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0304
 
-✓ one__common_voice_en_20276278.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0537
+✓ six__common_voice_en_20989674.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0303
 
-✓ down__common_voice_en_695915.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0530
+✓ learn__common_voice_en_669337 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0299
 
-✓ down__common_voice_en_85286.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0530
+✓ learn__common_voice_en_669337.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0299
 
-✓ four__common_voice_en_20463900.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0506
+✓ one__common_voice_en_20276278.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0285
 
-✓ six__common_voice_en_20989674.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0492
+✓ dog__common_voice_en_487615.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0283
 
-✓ one__common_voice_en_20417518.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0482
+✓ dog__common_voice_en_487615 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0283
 
-✓ off__common_voice_en_243894.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0482
-
-✓ four__common_voice_en_20283837.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0473
-
-✓ dog__common_voice_en_21799081.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0466
-
-✓ down__common_voice_en_634256.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0463
-
-✓ down__common_voice_en_20545290 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0454
-
-✓ down__common_voice_en_20545290.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0454
-
-✓ four__common_voice_en_20374334.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0449
-
-✓ five__common_voice_en_692265.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0443
-
-✓ forward__common_voice_en_594847 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0434
-
-✓ forward__common_voice_en_594847.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0434
-
-✓ one__common_voice_en_19981843.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0431
-
-✓ one__common_voice_en_20161921.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0416
-
-✓ cat__common_voice_en_18526904 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0404
-
-✓ cat__common_voice_en_18526904.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0404
-
-✓ one__common_voice_en_630230.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0399
-
-✓ down__common_voice_en_501514.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0388
-
-✓ down__common_voice_en_485439.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0380
-
-✓ two__common_voice_en_57481.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0373
-
-✓ one__common_voice_en_205955.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0371
-
-✓ off__common_voice_en_619900.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0348
-
-✓ three__common_voice_en_651492.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0333
-
-✓ three__common_voice_en_20837536.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0333
-
-✓ seven__common_voice_en_607066.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0327
-
-✓ one__common_voice_en_519811.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0326
-
-✓ one__common_voice_en_21566275.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0319
-
-✓ one__common_voice_en_19954744.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0312
-
-✓ four__common_voice_en_21935685.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0309
-
-✓ five__common_voice_en_21679847.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0307
-
-✓ cat__common_voice_en_62004 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0284
-
-✓ cat__common_voice_en_62004.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0284
-
-✓ two__common_voice_en_21690732.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0281
-
-✓ house__common_voice_en_578562.opus
+✓ three__common_voice_en_651492.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0279
 
-✓ dog__common_voice_en_79549.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0278
+✓ dog__common_voice_en_21799081.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0276
 
-✓ dog__common_voice_en_79549 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0278
+✓ four__common_voice_en_20283837.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0263
 
-✓ two__common_voice_en_212943.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0277
-
-✓ one__common_voice_en_487693.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0272
-
-✓ down__common_voice_en_676068.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0265
-
-✓ one__common_voice_en_20321776.opus
+✓ down__common_voice_en_95452.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0260
 
-✓ one__common_voice_en_21387867.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0258
+✓ down__common_voice_en_539055.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0249
 
-✓ down__common_voice_en_95452.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0252
+✓ left__common_voice_en_72608.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0243
 
-✓ off__common_voice_en_56213.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0246
+✓ off__common_voice_en_619900.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0239
 
-✓ left__common_voice_en_207976.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0245
+✓ down__common_voice_en_501514.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0227
 
-✓ two__common_voice_en_486664.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0244
+✓ off__common_voice_en_585317 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0222
 
-✓ dog__common_voice_en_663487.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0235
+✓ off__common_voice_en_585317.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0222
 
-✓ follow__common_voice_en_22445078 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0234
+✓ off__common_voice_en_22292484.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0215
 
-✓ follow__common_voice_en_22445078.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0234
-
-✓ five__common_voice_en_649847.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0232
-
-✓ one__common_voice_en_20513269.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0231
-
-✓ off__common_voice_en_86523.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0221
-
-✓ tree__common_voice_en_23265.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0210
-
-✓ down__common_voice_en_2910.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0208
-
-✓ down__common_voice_en_2910 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0208
-
-✓ off__common_voice_en_2202802.opus
+✓ dog__common_voice_en_79549.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0207
 
-✓ one__common_voice_en_337751.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0198
+✓ dog__common_voice_en_79549 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0207
 
-✓ one__common_voice_en_542622.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0197
+✓ tree__common_voice_en_541831.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0205
 
-✓ left__common_voice_en_600026.opus
+✓ two__common_voice_en_22313680 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0200
+
+✓ two__common_voice_en_22313680.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0200
+
+✓ nine__common_voice_en_20080332.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0192
+
+✓ nine__common_voice_en_20080332 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0192
+
+✓ off__common_voice_en_21252598 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0188
 
-✓ learn__common_voice_en_632750.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0184
+✓ off__common_voice_en_21252598.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0188
 
-✓ left__common_voice_en_72608.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0183
+✓ one__common_voice_en_20984479.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0188
 
-✓ right__common_voice_en_617110.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0183
+✓ down__common_voice_en_547184.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0185
 
-✓ four__common_voice_en_20579667.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0183
+✓ off__common_voice_en_56213.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0185
 
-✓ down__common_voice_en_547184.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0182
+✓ five__common_voice_en_541082 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0185
 
-✓ down__common_voice_en_665153.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0181
+✓ five__common_voice_en_541082.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0185
 
-✓ three__common_voice_en_522150.opus
+✓ two__common_voice_en_21976351.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0180
 
-✓ off__common_voice_en_628832.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0179
+✓ bed__common_voice_en_504965.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0175
 
-✓ cat__common_voice_en_22442314.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0176
+✓ five__common_voice_en_20798319.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0174
 
-✓ cat__common_voice_en_22442314 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0176
-
-✓ one__common_voice_en_20984479.opus
+✓ one__common_voice_en_20726346.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0172
 
-✓ nine__common_voice_en_20080332 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0172
-
-✓ nine__common_voice_en_20080332.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0172
-
-✓ off__common_voice_en_695256.opus
+✓ forward__common_voice_en_594847.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0170
 
-✓ four__common_voice_en_20993468.opus
+✓ forward__common_voice_en_594847 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0170
+
+✓ left__common_voice_en_22303969.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0167
 
-✓ left__common_voice_en_20643665.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0165
+✓ down__common_voice_en_74181.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0155
 
-✓ left__common_voice_en_20643665 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0165
+✓ five__common_voice_en_692265.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0151
 
-✓ left__common_voice_en_22303969.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0164
+✓ left__common_voice_en_212686.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0149
 
-✓ two__common_voice_en_20276075.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0163
+✓ left__common_voice_en_212686 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0149
 
-✓ one__common_voice_en_20726346.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0162
-
-✓ one__common_voice_en_587448 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0161
-
-✓ one__common_voice_en_587448.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0161
-
-✓ one__common_voice_en_21280625.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0160
-
-✓ down__common_voice_en_74181.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0157
-
-✓ off__common_voice_en_672817.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0157
-
-✓ two__common_voice_en_21854166.opus
+✓ one__common_voice_en_19981843.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0148
 
-✓ down__common_voice_en_21867718.opus
+✓ down__common_voice_en_85286.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0145
+
+✓ down__common_voice_en_521592.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0143
 
-✓ two__common_voice_en_21976351.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0138
+✓ down__common_voice_en_60474.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0139
 
-✓ dog__common_voice_en_582708.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0138
+✓ one__common_voice_en_95305.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0136
 
-✓ dog__common_voice_en_582708 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0138
+✓ six__common_voice_en_20183326.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0135
 
-✓ off__common_voice_en_22292484.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0134
+✓ six__common_voice_en_20183326 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0135
 
-✓ forward__common_voice_en_523018 2.opus
+✓ off__common_voice_en_628832.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0132
 
-✓ forward__common_voice_en_523018.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0132
+✓ three__common_voice_en_522150.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0130
 
-✓ five__common_voice_en_20586023.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0132
+✓ three__common_voice_en_582059.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0128
 
-✓ one__common_voice_en_95305.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0125
+✓ two__common_voice_en_20961784 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0126
 
-✓ two__common_voice_en_591573.opus
+✓ two__common_voice_en_20961784.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0126
+
+✓ one__common_voice_en_21566275.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0124
 
-✓ two__common_voice_en_591573 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0124
-
-✓ two__common_voice_en_498779.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0124
-
-✓ down__common_voice_en_35200.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0122
-
-✓ two__common_voice_en_221139.opus
+✓ down__common_voice_en_557363.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0121
 
-✓ down__common_voice_en_493041.opus
+✓ one__common_voice_en_511833.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0118
+
+✓ one__common_voice_en_511833 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0118
+
+✓ one__common_voice_en_21280625.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0117
+
+✓ two__common_voice_en_562211.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0116
+
+✓ four__common_voice_en_20579667.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0116
+
+✓ seven__common_voice_en_20174791__2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0116
+
+✓ two__common_voice_en_57481.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0112
 
-✓ left__common_voice_en_650850.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0111
+✓ left__common_voice_en_600026.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0108
 
-✓ one__common_voice_en_2672.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0110
+✓ one__common_voice_en_2672.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0106
 
-✓ bed__common_voice_en_504965.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0107
+✓ one__common_voice_en_19954744.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0099
 
-✓ cat__common_voice_en_501894.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0101
+✓ forward__common_voice_en_523018.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0099
 
-✓ cat__common_voice_en_501894 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0101
+✓ forward__common_voice_en_523018 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0099
 
-✓ five__common_voice_en_612178.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0098
+✓ three__common_voice_en_24390 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0097
 
-✓ five__common_voice_en_612178 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0098
+✓ three__common_voice_en_24390.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0097
 
-✓ off__common_voice_en_650343.opus
+✓ five__common_voice_en_505193.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0097
+
+✓ cat__common_voice_en_18526904.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0097
+
+✓ cat__common_voice_en_18526904 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0097
+
+✓ two__common_voice_en_20721807.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0096
 
-✓ five__common_voice_en_20092651.opus
+✓ left__common_voice_en_650850.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0094
 
-✓ two__common_voice_en_20721807.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0094
-
-✓ six__common_voice_en_20183326.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0093
-
-✓ six__common_voice_en_20183326 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0093
-
-✓ three__common_voice_en_24390 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0093
-
-✓ three__common_voice_en_24390.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0093
-
-✓ two__common_voice_en_51015.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0092
-
-✓ dog__common_voice_en_545775.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0092
-
-✓ learn__common_voice_en_32067.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0091
-
-✓ six__common_voice_en_559304.opus
+✓ right__common_voice_en_617110.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0089
 
-✓ six__common_voice_en_559304 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0089
+✓ two__common_voice_en_51015.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0087
 
-✓ left__common_voice_en_514698.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0088
+✓ four__common_voice_en_21935685.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0087
 
-✓ two__common_voice_en_20961784 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0086
+✓ bed__common_voice_en_82827.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0081
 
-✓ two__common_voice_en_20961784.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0086
+✓ cat__common_voice_en_19825677 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0080
 
-✓ one__common_voice_en_550236 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0085
+✓ cat__common_voice_en_19825677.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0080
 
-✓ one__common_voice_en_550236.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0085
+✓ off__common_voice_en_650343.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0078
 
-✓ two__common_voice_en_562211.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0082
+✓ learn__common_voice_en_559900.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0078
 
-✓ six__common_voice_en_20805835.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0076
+✓ learn__common_voice_en_559900 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0078
 
-✓ left__common_voice_en_549100.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0076
-
-✓ left__common_voice_en_632885.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0075
-
-✓ five__common_voice_en_20437286.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0074
-
-✓ left__common_voice_en_670877.opus
+✓ down__common_voice_en_21867718.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0073
 
-✓ left__common_voice_en_670877 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0073
+✓ one__common_voice_en_519811.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0072
 
-✓ down__common_voice_en_20784134 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0071
+✓ left__common_voice_en_20643665 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0072
 
-✓ down__common_voice_en_20784134.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0071
+✓ left__common_voice_en_20643665.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0072
 
-✓ down__common_voice_en_557363.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0071
+✓ one__common_voice_en_205955.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0072
 
-✓ cat__common_voice_en_19825677.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0070
-
-✓ cat__common_voice_en_19825677 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0070
-
-✓ down__common_voice_en_686060.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0070
-
-✓ three__common_voice_en_22274782.opus
+✓ left__common_voice_en_496903.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0069
 
-✓ one__common_voice_en_603052.opus
+✓ off__common_voice_en_2202802.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0068
 
-✓ nine__common_voice_en_3546711.opus
+✓ down__common_voice_en_665153.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0068
+
+✓ dog__common_voice_en_545775.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0067
 
-✓ nine__common_voice_en_3546711 2.opus
+✓ follow__common_voice_en_21129288 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0067
 
-✓ off__common_voice_en_637635.opus
+✓ follow__common_voice_en_21129288.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0067
 
-✓ down__common_voice_en_22708.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0066
+✓ right__common_voice_en_56778.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0064
 
-✓ house__common_voice_en_20397548.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0065
+✓ left__common_voice_en_566780 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0063
 
-✓ yes__common_voice_en_18668336 2.opus
+✓ left__common_voice_en_566780.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0063
+
+✓ left__common_voice_en_549100.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0062
 
-✓ yes__common_voice_en_18668336.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0062
-
-✓ two__common_voice_en_82831.opus
+✓ bird__common_voice_en_558279 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0061
 
-✓ two__common_voice_en_644136.opus
+✓ bird__common_voice_en_558279.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0061
 
-✓ two__common_voice_en_20391773.opus
+✓ three__common_voice_en_542652.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0060
+
+✓ five__common_voice_en_21679847.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0060
+
+✓ one__common_voice_en_21387867.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0059
 
-✓ left__common_voice_en_22062586.opus
+✓ one__common_voice_en_691064 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0059
 
-✓ left__common_voice_en_20315246.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0058
+✓ one__common_voice_en_691064.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0059
 
-✓ left__common_voice_en_20315246 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0058
-
-✓ down__common_voice_en_539055.opus
+✓ down__common_voice_en_20545290.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0057
 
-✓ off__common_voice_en_21773508.opus
+✓ down__common_voice_en_20545290 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0057
+
+✓ nine__common_voice_en_3546711 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0056
 
-✓ forward__common_voice_en_22280868.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0055
+✓ nine__common_voice_en_3546711.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0056
 
-✓ happy__common_voice_en_86279 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0055
+✓ learn__common_voice_en_32067.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0054
 
-✓ happy__common_voice_en_86279.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0055
+✓ off__common_voice_en_21773508.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0053
 
-✓ two__common_voice_en_678763.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0052
-
-✓ three__common_voice_en_582059.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0051
-
-✓ two__common_voice_en_20883352.opus
+✓ one__common_voice_en_337751.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0050
 
-✓ one__common_voice_en_20065789.opus
+✓ down__common_voice_en_20962990.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0050
 
-✓ bed__common_voice_en_82827.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0049
-
-✓ seven__common_voice_en_20174791__2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0049
-
-✓ bed__common_voice_en_642736.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0048
-
-✓ six__common_voice_en_317013.opus
+✓ five__common_voice_en_21379054.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0047
 
-✓ one__common_voice_en_20829398.opus
+✓ two__common_voice_en_678763.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0046
 
-✓ one__common_voice_en_71722.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0044
+✓ off__common_voice_en_660917.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0045
 
-✓ six__common_voice_en_20562823.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0044
-
-✓ six__common_voice_en_20562823 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0044
-
-✓ follow__common_voice_en_21129288 2.opus
+✓ left__common_voice_en_207976.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0043
 
-✓ follow__common_voice_en_21129288.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0043
-
-✓ two__common_voice_en_21181109.opus
+✓ seven__common_voice_en_607066.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0042
 
-✓ two__common_voice_en_21181109 2.opus
+✓ five__common_voice_en_91990.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0042
 
-✓ three__common_voice_en_20746165__2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0042
-
-✓ nine__common_voice_en_21873303 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0042
-
-✓ nine__common_voice_en_21873303.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0042
-
-✓ six__common_voice_en_673920.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0042
-
-✓ learn__common_voice_en_669337 2.opus
+✓ seven__common_voice_en_21670308 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0041
 
-✓ learn__common_voice_en_669337.opus
+✓ seven__common_voice_en_21670308.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0041
 
-✓ seven__common_voice_en_21670308.opus
+✓ off__common_voice_en_695256.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0041
 
-✓ seven__common_voice_en_21670308 2.opus
+✓ six__common_voice_en_673920.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0041
 
-✓ two__common_voice_en_19975156.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0040
-
-✓ one__common_voice_en_691064 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0040
-
-✓ one__common_voice_en_691064.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0040
-
-✓ two__common_voice_en_625536.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0040
-
-✓ off__common_voice_en_660917.opus
+✓ down__common_voice_en_493041.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0038
 
-✓ two__common_voice_en_547920.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0037
-
-✓ two__common_voice_en_20454147.opus
+✓ two__common_voice_en_21690732.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0036
 
-✓ five__common_voice_en_91990.opus
+✓ one__common_voice_en_20321776.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0036
+
+✓ forward__common_voice_en_660529.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0036
+
+✓ house__common_voice_en_20891389.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0035
 
-✓ two__common_voice_en_422561.opus
+✓ left__common_voice_en_632885.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0034
 
-✓ one__common_voice_en_21845946.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0033
-
-✓ house__common_voice_en_20891389.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0033
-
-✓ down__common_voice_en_60474.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0033
-
-✓ three__common_voice_en_20315392.opus
+✓ cat__common_voice_en_501894 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0032
 
-✓ six__common_voice_en_93266.opus
+✓ cat__common_voice_en_501894.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0032
 
-✓ learn__common_voice_en_597467.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0031
+✓ two__common_voice_en_82831.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0032
 
-✓ bed__common_voice_en_565917.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0031
+✓ dog__common_voice_en_582708 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0032
 
-✓ bed__common_voice_en_565917 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0031
+✓ dog__common_voice_en_582708.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0032
 
-✓ five__common_voice_en_505193.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0031
-
-✓ learn__common_voice_en_559900 2.opus
+✓ two__common_voice_en_200520.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0030
 
-✓ learn__common_voice_en_559900.opus
+✓ two__common_voice_en_422561.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0030
 
-✓ left__common_voice_en_20178067.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0030
-
-✓ left__common_voice_en_20178067 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0030
-
-✓ five__common_voice_en_21379054.opus
+✓ down__common_voice_en_634256.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0029
 
-✓ tree__common_voice_en_541831.opus
+✓ learn__common_voice_en_21429095 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0029
+
+✓ learn__common_voice_en_21429095.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0029
+
+✓ two__common_voice_en_19975156.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0029
+
+✓ one__common_voice_en_221829.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0029
+
+✓ off__common_voice_en_637635.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0028
 
-✓ right__common_voice_en_20744383__2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0028
-
-✓ two__common_voice_en_20523282.opus
+✓ one__common_voice_en_587448.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0027
 
-✓ off__common_voice_en_76850.opus
+✓ one__common_voice_en_587448 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0027
 
-✓ down__common_voice_en_586707.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0027
-
-✓ forward__common_voice_en_660529.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0027
-
-✓ off__common_voice_en_51779.opus
+✓ down__common_voice_en_22708.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0026
 
-✓ left__common_voice_en_20455791.opus
+✓ visual__common_voice_en_21312632.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0026
 
-✓ left__common_voice_en_566780 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0026
-
-✓ left__common_voice_en_566780.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0026
-
-✓ three__common_voice_en_21913516.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0026
-
-✓ two__common_voice_en_2993.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0026
-
-✓ left__common_voice_en_39557 2.opus
+✓ one__common_voice_en_20513269.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0025
 
-✓ left__common_voice_en_39557.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0025
-
-✓ follow__common_voice_en_533741.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0025
-
-✓ follow__common_voice_en_533741 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0025
-
-✓ learn__common_voice_en_74616.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0025
-
-✓ learn__common_voice_en_74616 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0025
-
-✓ left__common_voice_en_24738 2.opus
+✓ off__common_voice_en_243894.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0024
 
-✓ left__common_voice_en_24738.opus
+✓ cat__common_voice_en_22442314 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0024
 
-✓ bird__common_voice_en_558279.opus
+✓ cat__common_voice_en_22442314.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0024
 
-✓ bird__common_voice_en_558279 2.opus
+✓ one__common_voice_en_20918447.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0024
 
-✓ tree__common_voice_en_486909.opus
+✓ three__common_voice_en_22274782.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0024
 
-✓ tree__common_voice_en_486909 2.opus
+✓ learn__common_voice_en_597467.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0024
 
-✓ one__common_voice_en_511833 2.opus
+✓ one__common_voice_en_565150.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0024
+
+✓ one__common_voice_en_71722.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0023
 
-✓ one__common_voice_en_511833.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0023
-
-✓ six__common_voice_en_21935062.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0023
-
-✓ off__common_voice_en_32963.opus
+✓ two__common_voice_en_20883352.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0022
 
-✓ right__common_voice_en_56778.opus
+✓ one__common_voice_en_550236 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0022
 
-✓ off__common_voice_en_540651 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0021
+✓ one__common_voice_en_550236.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0022
 
-✓ off__common_voice_en_540651.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0021
-
-✓ one__common_voice_en_221829.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0021
-
-✓ left__common_voice_en_89554.opus
+✓ house__common_voice_en_20163130.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0020
 
-✓ two__common_voice_en_20008560.opus
+✓ seven__common_voice_en_281044.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0020
+
+✓ seven__common_voice_en_281044 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0020
+
+✓ learn__common_voice_en_632750.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0020
+
+✓ six__common_voice_en_559304.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0019
 
-✓ nine__common_voice_en_20520195.opus
+✓ six__common_voice_en_559304 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0019
 
-✓ nine__common_voice_en_20520195 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0019
-
-✓ happy__common_voice_en_568039.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0019
-
-✓ happy__common_voice_en_568039 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0019
-
-✓ house__common_voice_en_20163130.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0019
-
-✓ one__common_voice_en_557359.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0019
-
-✓ right__common_voice_en_671860.opus
+✓ two__common_voice_en_20523282.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0018
 
-✓ bird__common_voice_en_22180868.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0018
-
-✓ bird__common_voice_en_22180868 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0018
-
-✓ six__common_voice_en_20317594.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0018
-
-✓ one__common_voice_en_565150.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0018
-
-✓ two__common_voice_en_695124.opus
+✓ five__common_voice_en_20437286.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0017
 
-✓ down__common_voice_en_42184.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0017
-
-✓ right__common_voice_en_20424165.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0017
-
-✓ five__common_voice_en_19964478 2.opus
+✓ left__common_voice_en_514698.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
 
-✓ five__common_voice_en_19964478.opus
+✓ left__common_voice_en_480485.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
 
-✓ eight__common_voice_en_562368.opus
+✓ left__common_voice_en_480485 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
 
-✓ eight__common_voice_en_562368 2.opus
+✓ two__common_voice_en_644136.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
 
-✓ learn__common_voice_en_488058.opus
+✓ left__common_voice_en_670877.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
 
-✓ learn__common_voice_en_488058 2.opus
+✓ left__common_voice_en_670877 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
 
-✓ three__common_voice_en_20029699.opus
+✓ nine__common_voice_en_20520195 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
 
-✓ three__common_voice_en_542652.opus
+✓ nine__common_voice_en_20520195.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
+
+✓ two__common_voice_en_486664.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0016
+
+✓ house__common_voice_en_21162519.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0015
 
-✓ two__common_voice_en_604997.opus
+✓ five__common_voice_en_20586023.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0015
 
-✓ off__common_voice_en_597076.opus
+✓ three__common_voice_en_20837536.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0014
 
-✓ six__common_voice_en_21375075 2.opus
+✓ left__common_voice_en_20315246.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0014
 
-✓ six__common_voice_en_21375075.opus
+✓ left__common_voice_en_20315246 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0014
 
-✓ eight__common_voice_en_20912290.opus
+✓ off__common_voice_en_32963.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0014
 
-✓ eight__common_voice_en_20912290 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0014
-
-✓ one__common_voice_en_20233745.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0014
-
-✓ one__common_voice_en_536638.opus
+✓ house__common_voice_en_20397548.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
 
-✓ three__common_voice_en_22162944.opus
+✓ one__common_voice_en_557359.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
 
-✓ left__common_voice_en_687055.opus
+✓ two__common_voice_en_625536.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
 
-✓ house__common_voice_en_21388474.opus
+✓ one__common_voice_en_21845946.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
 
-✓ house__common_voice_en_21388474 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ happy__common_voice_en_630632.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ happy__common_voice_en_630632 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ five__common_voice_en_20293942 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ five__common_voice_en_20293942.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ off__common_voice_en_55068.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ off__common_voice_en_492869.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ house__common_voice_en_21162519.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0013
-
-✓ yes__common_voice_en_20575858 2.opus
+✓ off__common_voice_en_672817.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
 
-✓ yes__common_voice_en_20575858.opus
+✓ eight__common_voice_en_20912290 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
 
-✓ right__common_voice_en_511170 2.opus
+✓ eight__common_voice_en_20912290.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
 
-✓ right__common_voice_en_511170.opus
+✓ right__common_voice_en_671860.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
 
-✓ one__common_voice_en_22294593.opus
+✓ one__common_voice_en_21100229.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
 
-✓ left__common_voice_en_480485.opus
+✓ one__common_voice_en_21100229 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
 
-✓ left__common_voice_en_480485 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ two__common_voice_en_533080.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ left__common_voice_en_21487049.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ three__common_voice_en_20664326.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ three__common_voice_en_20664326 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ six__common_voice_en_22236390.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ eight__common_voice_en_20183579__2 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ eight__common_voice_en_20183579__2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0012
-
-✓ happy__common_voice_en_42128.opus
+✓ two__common_voice_en_498779.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0011
 
-✓ happy__common_voice_en_42128 2.opus
+✓ six__common_voice_en_20562823.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0011
 
-✓ one__common_voice_en_618038.opus
+✓ six__common_voice_en_20562823 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0011
 
-✓ happy__common_voice_en_596980.opus
+✓ one__common_voice_en_536638.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0011
 
-✓ eight__common_voice_en_22049096.opus
+✓ happy__common_voice_en_596980.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0011
+
+✓ one__common_voice_en_603052.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
 
-✓ eight__common_voice_en_22049096 2.opus
+✓ two__common_voice_en_21854166.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
 
-✓ three__common_voice_en_21383235 2.opus
+✓ right__common_voice_en_21305706.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
 
-✓ three__common_voice_en_21383235.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
-
-✓ two__common_voice_en_21518107.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
-
-✓ right__common_voice_en_653606.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
-
-✓ bed__common_voice_en_21986795 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
-
-✓ bed__common_voice_en_21986795.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
-
-✓ two__common_voice_en_93665.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
-
-✓ five__common_voice_en_261914.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0010
-
-✓ house__common_voice_en_20275290.opus
+✓ five__common_voice_en_261914.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
 
-✓ forward__common_voice_en_90504.opus
+✓ one__common_voice_en_20065789.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
 
-✓ learn__common_voice_en_21429095.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
-
-✓ learn__common_voice_en_21429095 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
-
-✓ three__common_voice_en_38921 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
-
-✓ three__common_voice_en_38921.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
-
-✓ right__common_voice_en_529438.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
-
-✓ five__common_voice_en_44507.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0009
-
-✓ two__common_voice_en_21386741.opus
+✓ follow__common_voice_en_533741.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ right__common_voice_en_22316359 2.opus
+✓ follow__common_voice_en_533741 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ right__common_voice_en_22316359.opus
+✓ left__common_voice_en_89554.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ six__common_voice_en_21686810.opus
+✓ one__common_voice_en_479370.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ down__common_voice_en_215564 2.opus
+✓ one__common_voice_en_479370 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ down__common_voice_en_215564.opus
+✓ left__common_voice_en_24738.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ five__common_voice_en_21138196.opus
+✓ left__common_voice_en_24738 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ house__common_voice_en_317626 2.opus
+✓ eight__common_voice_en_20183579__2 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ house__common_voice_en_317626.opus
+✓ eight__common_voice_en_20183579__2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ two__common_voice_en_21077436.opus
+✓ off__common_voice_en_597076.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ two__common_voice_en_20820902.opus
+✓ six__common_voice_en_317013.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ two__common_voice_en_20820902 2.opus
+✓ house__common_voice_en_578562.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
 
-✓ one__common_voice_en_20918447.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0008
-
-✓ five__common_voice_en_574123 2.opus
+✓ learn__common_voice_en_74616 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
 
-✓ five__common_voice_en_574123.opus
+✓ learn__common_voice_en_74616.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
 
-✓ five__common_voice_en_20931315 2.opus
+✓ two__common_voice_en_21077436.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
 
-✓ five__common_voice_en_20931315.opus
+✓ five__common_voice_en_612178.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
 
-✓ off__common_voice_en_482358.opus
+✓ five__common_voice_en_612178 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
 
-✓ off__common_voice_en_482358 2.opus
+✓ right__common_voice_en_682254.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
 
-✓ three__common_voice_en_21316115.opus
+✓ right__common_voice_en_682254 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
 
-✓ nine__common_voice_en_19711611 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
-
-✓ nine__common_voice_en_19711611.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
-
-✓ left__common_voice_en_58336 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
-
-✓ left__common_voice_en_58336.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
-
-✓ visual__common_voice_en_21312632.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
-
-✓ tree__common_voice_en_595573.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
-
-✓ tree__common_voice_en_595573 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0007
-
-✓ three__common_voice_en_20227302.opus
+✓ two__common_voice_en_21181109.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ three__common_voice_en_485468 2.opus
+✓ two__common_voice_en_21181109 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ three__common_voice_en_485468.opus
+✓ off__common_voice_en_540651.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ three__common_voice_en_22042524.opus
+✓ off__common_voice_en_540651 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ house__common_voice_en_442001.opus
+✓ two__common_voice_en_20276075.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ house__common_voice_en_442001 2.opus
+✓ off__common_voice_en_482358.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ right__common_voice_en_693001.opus
+✓ off__common_voice_en_482358 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ six__common_voice_en_503753.opus
+✓ one__common_voice_en_495841.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ three__common_voice_en_688923.opus
+✓ left__common_voice_en_22062586.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ three__common_voice_en_21087613.opus
+✓ two__common_voice_en_221139.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ three__common_voice_en_21087613 2.opus
+✓ bird__common_voice_en_22180868.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ eight__common_voice_en_21504308.opus
+✓ bird__common_voice_en_22180868 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
 
-✓ eight__common_voice_en_21504308 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
-
-✓ one__common_voice_en_22010450 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
-
-✓ one__common_voice_en_22010450.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
-
-✓ house__common_voice_en_536098.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
-
-✓ seven__common_voice_en_281044 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
-
-✓ seven__common_voice_en_281044.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0006
-
-✓ house__common_voice_en_657316.opus
+✓ eight__common_voice_en_562368 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ one__common_voice_en_678373__2.opus
+✓ eight__common_voice_en_562368.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ three__common_voice_en_218065.opus
+✓ off__common_voice_en_55068.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ right__common_voice_en_682254 2.opus
+✓ three__common_voice_en_21913516.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ right__common_voice_en_682254.opus
+✓ tree__common_voice_en_595573 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ happy__common_voice_en_53199__2 2.opus
+✓ tree__common_voice_en_595573.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ happy__common_voice_en_53199__2.opus
+✓ happy__common_voice_en_42128.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ tree__common_voice_en_21656846 2.opus
+✓ happy__common_voice_en_42128 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ tree__common_voice_en_21656846.opus
+✓ off__common_voice_en_76850.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
 
-✓ two__common_voice_en_21776916.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
-
-✓ two__common_voice_en_20176382.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
-
-✓ right__common_voice_en_548987.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
-
-✓ house__common_voice_en_22164106.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
-
-✓ house__common_voice_en_22164106 2.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
-
-✓ three__common_voice_en_20880868.opus
-   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0005
-
-✓ one__common_voice_en_479370 2.opus
+✓ two__common_voice_en_695124.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
 
-✓ one__common_voice_en_479370.opus
+✓ bird__common_voice_en_20523576 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
 
-✓ right__common_voice_en_92557.opus
+✓ bird__common_voice_en_20523576.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
 
-✓ three__common_voice_en_22354478.opus
+✓ three__common_voice_en_20746165__2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
 
-✓ off__common_voice_en_215036.opus
+✓ five__common_voice_en_19964478 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
 
-✓ right__common_voice_en_578023.opus
+✓ five__common_voice_en_19964478.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
 
-✓ two__common_voice_en_20238492.opus
+✓ right__common_voice_en_66350.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
+
+✓ two__common_voice_en_20008560.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0004
+
+✓ left__common_voice_en_21487049.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ tree__common_voice_en_84257.opus
+✓ tree__common_voice_en_486909.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ right__common_voice_en_587928.opus
+✓ tree__common_voice_en_486909 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ two__common_voice_en_20619572.opus
+✓ two__common_voice_en_547920.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ three__common_voice_en_8110 2.opus
+✓ right__common_voice_en_20424165.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ three__common_voice_en_8110.opus
+✓ six__common_voice_en_20805835.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ right__common_voice_en_32709.opus
+✓ two__common_voice_en_533080.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ down__common_voice_en_565899 2.opus
+✓ house__common_voice_en_20275290.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ down__common_voice_en_565899.opus
+✓ learn__common_voice_en_488058 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ down__common_voice_en_614321.opus
+✓ learn__common_voice_en_488058.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ learn__common_voice_en_518550 2.opus
+✓ six__common_voice_en_20317594.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ learn__common_voice_en_518550.opus
+✓ left__common_voice_en_20178067.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ eight__common_voice_en_92159.opus
+✓ left__common_voice_en_20178067 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ eight__common_voice_en_92159 2.opus
+✓ six__common_voice_en_22236390.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ yes__common_voice_en_18609977 2.opus
+✓ three__common_voice_en_22354478.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ yes__common_voice_en_18609977.opus
+✓ six__common_voice_en_93266.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
 
-✓ right__common_voice_en_493195.opus
+✓ eight__common_voice_en_22049096 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
+
+✓ eight__common_voice_en_22049096.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0003
+
+✓ two__common_voice_en_20454147.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ right__common_voice_en_636613.opus
+✓ two__common_voice_en_20176382.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ bird__common_voice_en_20523576.opus
+✓ left__common_voice_en_687055.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ bird__common_voice_en_20523576 2.opus
+✓ happy__common_voice_en_86279 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ one__common_voice_en_83879.opus
+✓ happy__common_voice_en_86279.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ house__common_voice_en_21686716.opus
+✓ three__common_voice_en_20029699.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ three__common_voice_en_624297.opus
+✓ dog__common_voice_en_3297 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ eight__common_voice_en_293913__2.opus
+✓ dog__common_voice_en_3297.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ eight__common_voice_en_293913__2 2.opus
+✓ off__common_voice_en_51779.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ right__common_voice_en_21305706.opus
+✓ house__common_voice_en_442001.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ off__common_voice_en_505879.opus
+✓ house__common_voice_en_442001 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ right__common_voice_en_66350.opus
+✓ eight__common_voice_en_21504308 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ one__common_voice_en_20023246.opus
+✓ eight__common_voice_en_21504308.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ one__common_voice_en_495841.opus
+✓ right__common_voice_en_578023.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
 
-✓ right__common_voice_en_39380.opus
+✓ five__common_voice_en_20092651.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ forward__common_voice_en_22280868.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ right__common_voice_en_39380.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ right__common_voice_en_693001.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ nine__common_voice_en_21873303.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ nine__common_voice_en_21873303 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ one__common_voice_en_618038.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ one__common_voice_en_22294593.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ three__common_voice_en_21383235.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ three__common_voice_en_21383235 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ one__common_voice_en_22010450 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ one__common_voice_en_22010450.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ three__common_voice_en_20315392.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ off__common_voice_en_215036.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ right__common_voice_en_20744383__2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0002
+
+✓ three__common_voice_en_22042524.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ three__common_voice_en_501542.opus
+✓ down__common_voice_en_20784134 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ off__common_voice_en_529469.opus
+✓ down__common_voice_en_20784134.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ three__common_voice_en_20383229.opus
+✓ forward__common_voice_en_90504.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ dog__common_voice_en_3297.opus
+✓ right__common_voice_en_32709.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ dog__common_voice_en_3297 2.opus
+✓ five__common_voice_en_574123.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ down__common_voice_en_20962990.opus
+✓ five__common_voice_en_574123 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ down__common_voice_en_212777 2.opus
+✓ two__common_voice_en_2993.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ down__common_voice_en_212777.opus
+✓ five__common_voice_en_44507.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ two__common_voice_en_20112966.opus
+✓ yes__common_voice_en_18609977 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ two__common_voice_en_22449523.opus
+✓ yes__common_voice_en_18609977.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ three__common_voice_en_560895.opus
+✓ six__common_voice_en_21686810.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ down__common_voice_en_473718.opus
+✓ three__common_voice_en_20880868.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ nine__common_voice_en_60422 2.opus
+✓ happy__common_voice_en_568039 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ nine__common_voice_en_60422.opus
+✓ happy__common_voice_en_568039.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ off__common_voice_en_97956.opus
+✓ two__common_voice_en_20391773.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ down__common_voice_en_59500.opus
+✓ learn__common_voice_en_518550.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ tree__common_voice_en_652993.opus
+✓ learn__common_voice_en_518550 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ two__common_voice_en_20315047.opus
+✓ down__common_voice_en_565899 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ three__common_voice_en_20162401.opus
+✓ down__common_voice_en_565899.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ right__common_voice_en_71080.opus
+✓ happy__common_voice_en_687024.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ house__common_voice_en_616695.opus
+✓ happy__common_voice_en_687024 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ house__common_voice_en_676661.opus
+✓ three__common_voice_en_20227302.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ down__common_voice_en_530766.opus
+✓ five__common_voice_en_21138196.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ right__common_voice_en_558365.opus
+✓ right__common_voice_en_587928.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ happy__common_voice_en_22316585.opus
+✓ two__common_voice_en_21776916.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ happy__common_voice_en_687024 2.opus
+✓ three__common_voice_en_20664326 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ happy__common_voice_en_687024.opus
+✓ three__common_voice_en_20664326.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ house__common_voice_en_513812 2.opus
+✓ three__common_voice_en_485468 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ house__common_voice_en_513812.opus
+✓ three__common_voice_en_485468.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ house__common_voice_en_89363.opus
+✓ two__common_voice_en_20820902 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ three__common_voice_en_21714073.opus
+✓ two__common_voice_en_20820902.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ eight__common_voice_en_20478898 2.opus
+✓ two__common_voice_en_93665.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ eight__common_voice_en_20478898.opus
+✓ right__common_voice_en_92557.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ right__common_voice_en_20971238.opus
+✓ three__common_voice_en_688923.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ house__common_voice_en_488599.opus
+✓ happy__common_voice_en_630632 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ house__common_voice_en_696122.opus
+✓ happy__common_voice_en_630632.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
 
-✓ right__common_voice_en_598284 2.opus
+✓ two__common_voice_en_20619572.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ house__common_voice_en_696122.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ right__common_voice_en_493195.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ one__common_voice_en_678373__2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ down__common_voice_en_530766.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_21316115.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ five__common_voice_en_20293942 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ five__common_voice_en_20293942.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ house__common_voice_en_22164106 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ house__common_voice_en_22164106.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_20088152.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ two__common_voice_en_21518107.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ bed__common_voice_en_21986795 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ bed__common_voice_en_21986795.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_22162944.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ left__common_voice_en_39557 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ left__common_voice_en_39557.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_624297.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ one__common_voice_en_20233745.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ eight__common_voice_en_293913__2 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ eight__common_voice_en_293913__2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ one__common_voice_en_83879.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ down__common_voice_en_35200.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ one__common_voice_en_20023246.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ five__common_voice_en_20931315.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ five__common_voice_en_20931315 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_20962822.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_38921.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_38921 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ eight__common_voice_en_92159.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ eight__common_voice_en_92159 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ off__common_voice_en_492869.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0001
+
+✓ three__common_voice_en_218065.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_598284.opus
+✓ down__common_voice_en_42184.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_60923 2.opus
+✓ house__common_voice_en_21686716.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_60923.opus
+✓ one__common_voice_en_529115.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ one__common_voice_en_529115 2.opus
+✓ one__common_voice_en_529115 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ one__common_voice_en_529115.opus
+✓ bed__common_voice_en_642736.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_639379.opus
+✓ left__common_voice_en_58336.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_554185.opus
+✓ left__common_voice_en_58336 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ left__common_voice_en_20961128.opus
+✓ right__common_voice_en_653606.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ one__common_voice_en_21100229 2.opus
+✓ down__common_voice_en_215564.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ one__common_voice_en_21100229.opus
+✓ down__common_voice_en_215564 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ five__common_voice_en_22163279.opus
+✓ house__common_voice_en_89363.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_21527861.opus
+✓ tree__common_voice_en_84257.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ wow__common_voice_en_17902777.opus
+✓ right__common_voice_en_636613.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_20962822.opus
+✓ six__common_voice_en_503753.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_645813.opus
+✓ down__common_voice_en_212777 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_539801.opus
+✓ down__common_voice_en_212777.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_539801 2.opus
+✓ right__common_voice_en_520220.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ one__common_voice_en_504276.opus
+✓ two__common_voice_en_20238492.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ happy__common_voice_en_660659.opus
+✓ left__common_voice_en_20455791.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ happy__common_voice_en_660659 2.opus
+✓ yes__common_voice_en_20575858 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ left__common_voice_en_616432.opus
+✓ yes__common_voice_en_20575858.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_20533169.opus
+✓ right__common_voice_en_484638.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_21901759.opus
+✓ two__common_voice_en_20112966.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ tree__common_voice_en_20683487.opus
+✓ down__common_voice_en_59500.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ tree__common_voice_en_20683487 2.opus
+✓ right__common_voice_en_20971238.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_600375.opus
+✓ three__common_voice_en_20274155 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_46680.opus
+✓ three__common_voice_en_20274155.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_20274155 2.opus
+✓ three__common_voice_en_560895.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_20274155.opus
+✓ house__common_voice_en_657316.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_20524997.opus
+✓ bed__common_voice_en_565917 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_20449635.opus
+✓ bed__common_voice_en_565917.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ yes__common_voice_en_458464.opus
+✓ six__common_voice_en_21375075 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ yes__common_voice_en_458464 2.opus
+✓ six__common_voice_en_21375075.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_219702.opus
+✓ yes__common_voice_en_18668336.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_22349931.opus
+✓ yes__common_voice_en_18668336 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ yes__common_voice_en_581218.opus
+✓ house__common_voice_en_536098.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ yes__common_voice_en_581218 2.opus
+✓ nine__common_voice_en_60422 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_484638.opus
+✓ nine__common_voice_en_60422.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ yes__common_voice_en_73391.opus
+✓ right__common_voice_en_60923.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_626258.opus
+✓ right__common_voice_en_60923 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_520220.opus
+✓ three__common_voice_en_20383229.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_215652.opus
+✓ off__common_voice_en_529469.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ one__common_voice_en_654447__2.opus
+✓ off__common_voice_en_505879.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ one__common_voice_en_654447__2 2.opus
+✓ happy__common_voice_en_660659 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ nine__common_voice_en_21162439.opus
+✓ happy__common_voice_en_660659.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ nine__common_voice_en_21162439 2.opus
+✓ right__common_voice_en_529438.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_212138.opus
+✓ three__common_voice_en_20162401.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ three__common_voice_en_602239.opus
+✓ wow__common_voice_en_17902777.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ right__common_voice_en_81358.opus
+✓ one__common_voice_en_504276.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ happy__common_voice_en_500152.opus
+✓ two__common_voice_en_604997.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ happy__common_voice_en_500152 2.opus
+✓ house__common_voice_en_676661.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_20727981.opus
+✓ two__common_voice_en_22449523.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_20053663.opus
+✓ right__common_voice_en_511170 2.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ house__common_voice_en_20053663 2.opus
+✓ right__common_voice_en_511170.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ yes__common_voice_en_18541052 2.opus
+✓ two__common_voice_en_20315047.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 
-✓ yes__common_voice_en_18541052.opus
+✓ right__common_voice_en_645813.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ tree__common_voice_en_21656846 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ tree__common_voice_en_21656846.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ nine__common_voice_en_19711611 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ nine__common_voice_en_19711611.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ tree__common_voice_en_20683487 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ tree__common_voice_en_20683487.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ eight__common_voice_en_20478898.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ eight__common_voice_en_20478898 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ tree__common_voice_en_652993.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_548987.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_639379.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ down__common_voice_en_614321.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_71080.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_8110.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_8110 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_539801.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_539801 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ down__common_voice_en_686060.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_488599.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ happy__common_voice_en_500152.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ happy__common_voice_en_500152 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ five__common_voice_en_22163279.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_20533169.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_21527861.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_626258.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_212138.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ happy__common_voice_en_22316585.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_616695.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ down__common_voice_en_473718.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_21388474 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_21388474.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ happy__common_voice_en_53199__2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ happy__common_voice_en_53199__2 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ one__common_voice_en_542622.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_21714073.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ one__common_voice_en_654447__2 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ one__common_voice_en_654447__2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ off__common_voice_en_97956.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_501542.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ left__common_voice_en_616432.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_219702.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ yes__common_voice_en_458464.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ yes__common_voice_en_458464 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_22316359.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_22316359 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_317626.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_317626 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_21901759.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_558365.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ left__common_voice_en_20961128.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_598284 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_598284.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_600375.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_22349931.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_215652.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ yes__common_voice_en_18541052.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ yes__common_voice_en_18541052 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_513812.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_513812 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_46680.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ nine__common_voice_en_21162439.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ nine__common_voice_en_21162439 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ yes__common_voice_en_73391.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_554185.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_20727981.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ right__common_voice_en_81358.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_20524997.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ yes__common_voice_en_581218.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ yes__common_voice_en_581218 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ three__common_voice_en_602239.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_20053663 2.wav
+   True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
+
+✓ house__common_voice_en_20053663.wav
    True: NEGATIVE | Predicted: NEGATIVE | Confidence: 0.0000
 

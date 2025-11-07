@@ -48,7 +48,7 @@ def main():
     elif out["gmm"]["pred"] and not out["keyword_classifier"]["pred"]:
         print("Access Denied: Correct speaker but keyword not stated")
     elif not out["gmm"]["pred"] and out["keyword_classifier"]["pred"]:
-        print("Access Denied: Incorrect speaker")
+        print("Access Denied: Incorrect speaker with keyword stated")
     else:
         print("Access Denied: Incorrect speaker and keyword not stated")
 
