@@ -45,9 +45,9 @@ def main():
     print(json.dumps(out, indent=2))
     if out["gmm"]["pred"] and out["keyword_classifier"]["pred"]:
         print("Access Granted")
-    elif out["gmm"]["pred"]:
-        print("Access Denied: Keyword not stated")
-    elif out["keyword_classifier"]["pred"]:
+    elif out["gmm"]["pred"] and not out["keyword_classifier"]["pred"]:
+        print("Access Denied: Correct speaker but keyword not stated")
+    elif not out["gmm"]["pred"] and out["keyword_classifier"]["pred"]:
         print("Access Denied: Incorrect speaker")
     else:
         print("Access Denied: Incorrect speaker and keyword not stated")
