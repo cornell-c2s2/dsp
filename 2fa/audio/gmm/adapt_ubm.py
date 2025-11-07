@@ -19,7 +19,7 @@ TARGET_CLIP = "data/garfield2.wav"
 OUTPUT_PATH = "models/target_gmm.joblib"
 
 # how much of target clip to use by default (None = full clip)
-DEFAULT_SECONDS_USED = 30
+DEFAULT_SECONDS_USED = None
 SEGMENT_DURATION = 3.0
 OVERLAP = 1.0
 RELEVANCE_FACTOR = 16
