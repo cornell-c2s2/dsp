@@ -59,4 +59,5 @@ build*
 .DS_Store
 
 2fa/audio/data/ubm/
-__pycache__/
+__pycache__/ 
+.vscode/

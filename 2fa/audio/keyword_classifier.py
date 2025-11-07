@@ -670,7 +670,7 @@ class AudioClassifier:
         axes[1, 1].grid(True)
 
         plt.tight_layout()
-        plt.savefig("training_history.png")
+        plt.savefig("models/training_history.png")
         print("\nTraining history plot saved as 'training_history.png'")
 
     def save_model(self, filepath="models/audio_classifier_model.keras"):
@@ -739,4 +739,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

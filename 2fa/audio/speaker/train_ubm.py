@@ -12,7 +12,7 @@ from gmm_utils import (
 )
 from sklearn.mixture import GaussianMixture
 
-# IF YOU'RE READING THIS, data isn't in the repo due to size, trained w/
+# data isn't in the repo due to size, trained w/
 # can get it here: https://commonvoice.mozilla.org/en/datasets
 # paths hardcoded because I'm lazy
 DATA_ROOT = "data/ubm/cv-corpus-22.0-delta-2025-06-20/en"
