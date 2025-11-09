@@ -11,6 +11,20 @@ FRAME_LEN = 0.025
 FRAME_STEP = 0.010
 
 
+def sliding_cmvn(feats, win_size=300, eps=1e-8):
+    """Apply sliding-window cepstral mean/variance normalization."""
+    n_frames, n_feats = feats.shape
+    out = np.empty_like(feats)
+    for t in range(n_frames):
+        start = max(0, t - win_size // 2)
+        end = min(n_frames, t + win_size // 2)
+        window = feats[start:end, :]
+        mu = window.mean(axis=0, keepdims=True)
+        sigma = window.std(axis=0, keepdims=True)
+        out[t : t + 1, :] = (feats[t : t + 1, :] - mu) / (sigma + eps)
+    return out
+
+
 def extract_features_from_array(
     audio,
     sample_rate=SAMPLE_RATE,
@@ -47,7 +61,7 @@ def extract_features_from_array(
     delta2 = librosa.feature.delta(mfcc, order=2)
 
     feats = np.vstack([mfcc, delta1, delta2]).T
-    feats -= np.mean(feats, axis=0, keepdims=True)
+    feats = sliding_cmvn(feats, win_size=300)
     return feats
 
 
@@ -94,13 +108,14 @@ def evaluate_dir(test_dir, target_model, ubm_model, threshold):
     """Evaluate all wav files in test_dir and return results list."""
     results = []
     for fname in sorted(os.listdir(test_dir)):
+        print(f"Scoring file: {fname}")
         if not fname.lower().endswith(".wav"):
             continue
         fpath = os.path.join(test_dir, fname)
         feats = extract_features(fpath)
         score_t, score_u = score_models(target_model, ubm_model, feats)
         llr = score_t - score_u
-        label = 1 if fname.startswith("pos_") else 0
+        label = 1 if fname.startswith("pos") else 0
         pred = 1 if llr > threshold else 0
         results.append(
             {
@@ -145,4 +160,3 @@ def predict_file(file_path, target_model, ubm_model, threshold=None):
     }
 
     return out
-

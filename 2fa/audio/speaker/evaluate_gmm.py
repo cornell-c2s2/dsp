@@ -7,12 +7,12 @@ import argparse
 # import shared gmm utilities
 from gmm_utils import load_model, evaluate_dir
 
-TEST_DIR = "data/gmm_test/"  # all positive should be named pos_*.wav, all else negative
+TEST_DIR = "data/gmm_test/"  # all positive should be named pos*.wav, all else negative
 TARGET_MODEL = "models/target_gmm.joblib"
 UBM_MODEL = "models/ubm_gmm.joblib"
 
 # will use this as default if not provided on command line
-DEFAULT_THRESHOLD = 1.1
+DEFAULT_THRESHOLD = 0.24
 
 
 def parse_args():
