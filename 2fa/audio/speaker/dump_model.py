@@ -52,7 +52,7 @@ def dump_gmms(filenames: list[str], outnames: list[str]):
 
     q_log_consts = max_shift_within_range(np.concatenate(log_consts_acc), bits=16)
     q_means = max_shift_within_range(np.concatenate(means_acc), bits=8)
-    q_inv_covs = max_shift_within_range(np.concatenate(inv_covs_acc), bits=8)
+    q_inv_covs = max_shift_within_range(np.concatenate(inv_covs_acc), bits=32)
 
     with open("models/gmm_params.inc", "w") as f:
         for i in range(len(filenames)):
@@ -61,7 +61,7 @@ def dump_gmms(filenames: list[str], outnames: list[str]):
             inv_covs = inv_covs_acc[i]
             means_quant = np.round(means * (2**q_means)).astype(np.int8)
             log_consts_quant = np.round(log_consts * (2**q_log_consts)).astype(np.int16)
-            inv_covs_quant = np.round(inv_covs * (2**q_inv_covs)).astype(np.int8)
+            inv_covs_quant = np.round(inv_covs * (2**q_inv_covs)).astype(np.int32)
 
             if i == 0:
                 f.write("#include <stdint.h>\n\n")
@@ -82,12 +82,30 @@ def dump_gmms(filenames: list[str], outnames: list[str]):
                     f.write(",\n")
             f.write("\n};\n\n")
 
-            f.write(f"double {outnames[i]}_inv_covs[K][D] = {{\n")
+            f.write(f"int32_t {outnames[i]}_inv_covs[K][D] = {{\n")
             for k in range(K):
                 f.write("{ " + ", ".join(map(str, inv_covs_quant[k])) + " }")
                 if k < K - 1:
                     f.write(",\n")
-            f.write("\n};\n")
+            f.write("\n};\n\n")
+
+            f.write(f"double {outnames[i]}_log_consts_d[K] = {{\n")
+            f.write(",\n".join(map(str, log_consts)))
+            f.write("\n};\n\n")
+
+            f.write(f"double {outnames[i]}_means_d[K][D] = {{\n")
+            for k in range(K):
+                f.write("{ " + ", ".join(map(str, means[k])) + " }")
+                if k < K - 1:
+                    f.write(",\n")
+            f.write("\n};\n\n")
+
+            f.write(f"double {outnames[i]}_inv_covs_d[K][D] = {{\n")
+            for k in range(K):
+                f.write("{ " + ", ".join(map(str, inv_covs[k])) + " }")
+                if k < K - 1:
+                    f.write(",\n")
+            f.write("\n};\n\n")
 
 
 if __name__ == "__main__":

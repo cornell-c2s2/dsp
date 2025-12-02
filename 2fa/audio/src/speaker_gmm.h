@@ -22,4 +22,7 @@ int64_t target_speaker_llr(int16_t *feature_vector);
 // hardcoded for now
 double int64_to_double_loglikelihood(int64_t ll_int);
 
+// debug
+double ubm_gmmd_log_likelihood(double *feature_vector);
+
 #endif
