@@ -29,7 +29,7 @@ def compute_likelihood(vector, gmms):
 
 
 if __name__ == "__main__":
-    custom_vector = np.full(39, 0.5)
+    custom_vector = np.arange(1 / 8, 1 / 8 * 40, 1 / 8)
 
     gmms = [gmm1, gmm2]
     compute_likelihood(custom_vector, gmms)
