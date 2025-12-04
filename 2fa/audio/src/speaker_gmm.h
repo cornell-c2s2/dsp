@@ -19,7 +19,6 @@ int64_t ubm_gmm_log_likelihood(int16_t *feature_vector);
 int64_t target_speaker_llr(int16_t *feature_vector);
 
 // debug for time being
-// hardcoded for now
 double int64_to_double_loglikelihood(int64_t ll_int);
 
 // debug

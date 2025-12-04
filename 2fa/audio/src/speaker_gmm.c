@@ -36,8 +36,7 @@ int64_t gmm_log_likelihood(GMM gmm, int16_t *x) {
       // diff is Q6, inv_covs is Q11, so output is Q23
     }
 
-    sum_sq >>= 16; // convert to Q7
-    sum_sq /= 2;   // divide by 2, still Q7
+    sum_sq >>= 17; // convert to Q7, plus one extra to divide by 2
     int64_t term = (int64_t)gmm.log_consts[k] - sum_sq;
     if (term > max_term)
       max_term = term; // approximate log-sum-exp

@@ -32,7 +32,7 @@ def extract_features_from_array(
     frame_len=FRAME_LEN,
     frame_step=FRAME_STEP,
 ):
-    """Extract MFCC + Δ + ΔΔ features (mean-normalized) from a numpy array.
+    """Extract MFCC + features (mean-normalized) from a numpy array.
 
     Parameters:
     - audio: 1-D or 2-D numpy array containing audio samples. If 2-D, channels
@@ -57,10 +57,7 @@ def extract_features_from_array(
         hop_length=int(frame_step * sample_rate),
     )
 
-    delta1 = librosa.feature.delta(mfcc)
-    delta2 = librosa.feature.delta(mfcc, order=2)
-
-    feats = np.vstack([mfcc, delta1, delta2]).T
+    feats = np.vstack([mfcc]).T
     feats = sliding_cmvn(feats, win_size=300)
     return feats
 
