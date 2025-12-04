@@ -36,7 +36,7 @@ set(PICO_BOARD pico CACHE STRING "Board type")
 
 include(pico_sdk_import.cmake)
 
-project(sync C CXX ASM)
+project(main C CXX ASM) # originally project(sync C CXX ASM)
 
 pico_sdk_init()
 
@@ -44,7 +44,8 @@ pico_sdk_init()
 add_subdirectory(lib)
 
 add_executable(sync
-    sync.cpp
+    main.cpp #originally sync.cpp
+    ../classifier/classifier.cpp
 )
 
 target_include_directories(sync PRIVATE
