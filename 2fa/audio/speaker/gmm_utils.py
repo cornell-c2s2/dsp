@@ -32,7 +32,7 @@ def extract_features_from_array(
     frame_len=FRAME_LEN,
     frame_step=FRAME_STEP,
 ):
-    """Extract MFCC + features (mean-normalized) from a numpy array.
+    """Extract MFCC features (mean-normalized) from a numpy array.
 
     Parameters:
     - audio: 1-D or 2-D numpy array containing audio samples. If 2-D, channels

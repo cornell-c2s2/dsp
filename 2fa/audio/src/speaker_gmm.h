@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define GMM_DIMENSION 39
+#define GMM_DIMENSION 13
 #define GMM_MIXTURES 32
 
 // calculates log likelihood of input frame based on target gmm
