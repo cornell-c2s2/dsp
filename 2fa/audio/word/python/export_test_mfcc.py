@@ -3,8 +3,8 @@ import librosa
 
 from keyword_classifier import AudioClassifier
 
-#AUDIO_PATH = "../../data/testing/stop_121417.wav" 
-AUDIO_PATH = "../../data/testing/bed__common_voice_en_82827.wav" 
+AUDIO_PATH = "../../data/testing/stop_121417.wav" 
+#AUDIO_PATH = "../../data/testing/bed__common_voice_en_82827.wav" 
 OUTPUT_HEADER = "../c/test_mfcc.h"
 
 def write_array(f, c_type, name, arr, per_line=8):
@@ -19,7 +19,7 @@ def write_array(f, c_type, name, arr, per_line=8):
     f.write("\n};\n\n")
 
 def main():
-    clf = AudioClassifier(n_mfcc=13, max_length=1000)
+    clf = AudioClassifier(n_mfcc=13, max_length=500)
     mfcc_flat = clf.extract_mfcc(AUDIO_PATH)
     if mfcc_flat is None:
         raise RuntimeError("Failed to extract MFCCs")

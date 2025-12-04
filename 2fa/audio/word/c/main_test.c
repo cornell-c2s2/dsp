@@ -1,38 +1,21 @@
-// #include <stdio.h>
-
-// #include "audio_classifier_inference.h"
-// #include "test_mfcc.h"
-
-// int INPUT_SIZE = 13000;
-// int main(void) {
-//     if (TEST_MFCC_SIZE != INPUT_SIZE) {
-//         printf("Error: TEST_MFCC_SIZE (%d) != INPUT_SIZE (%d)\n",
-//                TEST_MFCC_SIZE, INPUT_SIZE);
-//         return 1;
-//     }
-
-//     float prob = audio_classifier_predict(TEST_MFCC);
-//     int label = audio_classifier_is_stop(TEST_MFCC, 0.5f);
-
-//     printf("Probability of 'stop': %f\n", prob);
-//     printf("Predicted label: %d\n", label);
-
-//     return 0;
-// }
 // main_test.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
+#include <dirent.h>
 
 #include "stop_detector.h"
-#include "mfcc_params.h"   // for MFCC_SAMPLE_RATE
+#include "mfcc_params.h"   // MFCC_SAMPLE_RATE
 
-// Simple WAV reader for PCM 16-bit files
+// Directory containing test WAV files
+#define TEST_DIR "../../data/testing"
+
+// --- Simple WAV reader for PCM 16-bit files -----------------------------
 // - Supports mono or stereo
 // - Converts to float in [-1, 1]
-// - If stereo, averages channels to mono
+// - If stereo, averages L/R to mono
 // Returns 1 on success, 0 on failure
 static int read_wav_mono_f32(const char *filename,
                              float **out_signal,
@@ -65,10 +48,10 @@ static int read_wav_mono_f32(const char *filename,
         return 0;
     }
 
-    // We need to find the "fmt " chunk and the "data" chunk
+    // Chunks we care about
     uint16_t audioFormat = 0;
     uint16_t numChannels = 0;
-    uint32_t sampleRate = 0;
+    uint32_t sampleRate  = 0;
     uint16_t bitsPerSample = 0;
 
     uint32_t data_bytes = 0;
@@ -125,7 +108,7 @@ static int read_wav_mono_f32(const char *filename,
         else if (memcmp(chunk_id, "data", 4) == 0) {
             data_bytes = chunk_size;
             data_offset = ftell(f);
-            // Skip over data for now; we'll come back
+
             if (fseek(f, chunk_size, SEEK_CUR) != 0) {
                 fprintf(stderr, "Error: failed to skip data chunk\n");
                 fclose(f);
@@ -133,9 +116,10 @@ static int read_wav_mono_f32(const char *filename,
             }
         }
         else {
-            // Unknown chunk: just skip it
+            // Unknown chunk; skip it
             if (fseek(f, chunk_size, SEEK_CUR) != 0) {
-                fprintf(stderr, "Error: failed to skip unknown chunk '%c%c%c%c'\n",
+                fprintf(stderr,
+                        "Error: failed to skip unknown chunk '%c%c%c%c'\n",
                         chunk_id[0], chunk_id[1], chunk_id[2], chunk_id[3]);
                 fclose(f);
                 return 0;
@@ -147,7 +131,7 @@ static int read_wav_mono_f32(const char *filename,
             break;
         }
 
-        // If we reach end of file, break
+        // Stop if we've reached the end of RIFF
         if (ftell(f) >= (long)(riff_size + 8)) {
             break;
         }
@@ -173,7 +157,7 @@ static int read_wav_mono_f32(const char *filename,
         fprintf(stderr,
                 "Warning: WAV sampleRate=%u, expected=%d (MFCC_SAMPLE_RATE)\n",
                 sampleRate, expected_sample_rate);
-        // We can still proceed if you want; for now we just warn.
+        // Still proceed.
     }
 
     if (data_bytes == 0 || data_offset == 0) {
@@ -182,18 +166,18 @@ static int read_wav_mono_f32(const char *filename,
         return 0;
     }
 
-    // Go to data
+    // Seek to data
     if (fseek(f, data_offset, SEEK_SET) != 0) {
         fprintf(stderr, "Error: failed to seek to data chunk\n");
         fclose(f);
         return 0;
     }
 
-    // Number of samples per channel
+    // Number of frames and mono samples
     int bytes_per_sample = bitsPerSample / 8;
     int frame_size = bytes_per_sample * numChannels;
     int total_frames = data_bytes / frame_size;
-    int num_samples_mono = total_frames;  // one mono sample per frame
+    int num_samples_mono = total_frames;
 
     int16_t *tmp = (int16_t *)malloc(data_bytes);
     if (!tmp) {
@@ -211,7 +195,6 @@ static int read_wav_mono_f32(const char *filename,
 
     fclose(f);
 
-    // Allocate float buffer for mono signal
     float *signal = (float *)malloc(num_samples_mono * sizeof(float));
     if (!signal) {
         fprintf(stderr, "Error: out of memory for signal\n");
@@ -219,12 +202,11 @@ static int read_wav_mono_f32(const char *filename,
         return 0;
     }
 
-    // Convert to float [-1, 1]. If stereo, average L/R.
     if (numChannels == 1) {
         for (int i = 0; i < num_samples_mono; ++i) {
             signal[i] = tmp[i] / 32768.0f;
         }
-    } else { // stereo
+    } else { // stereo -> average
         for (int i = 0; i < num_samples_mono; ++i) {
             int16_t left  = tmp[2 * i];
             int16_t right = tmp[2 * i + 1];
@@ -241,32 +223,110 @@ static int read_wav_mono_f32(const char *filename,
     return 1;
 }
 
-int main(int argc, char **argv)
+// --- helpers for metrics ------------------------------------------------
+
+static int has_stop_in_name(const char *filename)
 {
-    if (argc < 2) {
-        fprintf(stderr, "Usage: %s <input.wav>\n", argv[0]);
+    // Simple case-insensitive substring search for "stop"
+    const char *p = filename;
+    while (*p) {
+        if ((p[0] == 's' || p[0] == 'S') &&
+            (p[1] == 't' || p[1] == 'T') &&
+            (p[2] == 'o' || p[2] == 'O') &&
+            (p[3] == 'p' || p[3] == 'P'))
+        {
+            return 1;
+        }
+        ++p;
+    }
+    return 0;
+}
+
+static int has_wav_extension(const char *name)
+{
+    const char *dot = strrchr(name, '.');
+    if (!dot) return 0;
+    return (strcasecmp(dot, ".wav") == 0);
+}
+
+// --- main: iterate over all files, classify, compute metrics -------------
+
+int main(void)
+{
+    DIR *dir = opendir(TEST_DIR);
+    if (!dir) {
+        perror("opendir");
+        fprintf(stderr, "Failed to open test dir: %s\n", TEST_DIR);
         return 1;
     }
 
-    const char *wav_path = argv[1];
-    float *signal = NULL;
-    int num_samples = 0;
+    int total = 0;
+    int tp = 0, tn = 0, fp = 0, fn = 0;
 
-    if (!read_wav_mono_f32(wav_path, &signal, &num_samples, MFCC_SAMPLE_RATE)) {
-        fprintf(stderr, "Failed to load WAV file '%s'\n", wav_path);
-        return 1;
+    struct dirent *ent;
+    printf("Scanning directory: %s\n\n", TEST_DIR);
+
+    while ((ent = readdir(dir)) != NULL) {
+        const char *name = ent->d_name;
+
+        // Skip "." and ".."
+        if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) {
+            continue;
+        }
+
+        // Only process .wav files
+        if (!has_wav_extension(name)) {
+            continue;
+        }
+
+        char path[512];
+        snprintf(path, sizeof(path), "%s/%s", TEST_DIR, name);
+
+        float *signal = NULL;
+        int num_samples = 0;
+
+        if (!read_wav_mono_f32(path, &signal, &num_samples, MFCC_SAMPLE_RATE)) {
+            fprintf(stderr, "Skipping file due to read error: %s\n", path);
+            continue;
+        }
+
+        int true_label = has_stop_in_name(name) ? 1 : 0;
+
+        float prob = classify_signal(signal, num_samples);
+        int pred_label = (prob > 0.5f) ? 1 : 0;
+
+        free(signal);
+
+        total++;
+
+        // Update confusion matrix
+        if (true_label == 1 && pred_label == 1) tp++;
+        else if (true_label == 0 && pred_label == 0) tn++;
+        else if (true_label == 0 && pred_label == 1) fp++;
+        else if (true_label == 1 && pred_label == 0) fn++;
+
+        printf("File: %-40s  True: %d  Pred: %d  Prob: %.4f\n",
+               name, true_label, pred_label, prob);
     }
 
-    printf("Loaded '%s': %d samples at ~%d Hz\n",
-           wav_path, num_samples, MFCC_SAMPLE_RATE);
+    closedir(dir);
 
-    // Run the full pipeline: MFCC -> neural net
-    float prob = classify_signal(signal, num_samples);
-    int is_stop = classify_signal_binary(signal, num_samples, 0.5f);
+    printf("\n=== SUMMARY METRICS ===\n");
+    printf("Total files: %d\n", total);
+    printf("TP: %d, TN: %d, FP: %d, FN: %d\n", tp, tn, fp, fn);
 
-    printf("Probability of 'stop': %f\n", prob);
-    printf("Predicted label (threshold 0.5): %d\n", is_stop);
+    if (total > 0) {
+        double accuracy = (double)(tp + tn) / (double)total;
+        double precision = (tp + fp) ? (double)tp / (double)(tp + fp) : 0.0;
+        double recall    = (tp + fn) ? (double)tp / (double)(tp + fn) : 0.0;
+        double f1        = (precision + recall) ?
+                           (2.0 * precision * recall) / (precision + recall) : 0.0;
 
-    free(signal);
+        printf("Accuracy:  %.4f\n", accuracy);
+        printf("Precision: %.4f\n", precision);
+        printf("Recall:    %.4f\n", recall);
+        printf("F1 score:  %.4f\n", f1);
+    }
+
     return 0;
 }

@@ -6,7 +6,7 @@
 #include "model_params.h"                // for INPUT_SIZE
 
 // Use the same max frames as in Python (max_length = 1000)
-#define MAX_FRAMES 1000
+#define MAX_FRAMES 500
 
 // This function takes a raw audio buffer and runs MFCC + neural net.
 float classify_signal(const float *signal, int num_samples)
