@@ -18,8 +18,8 @@ from sklearn.mixture import GaussianMixture
 DATA_ROOT = "data/ubm/cv-corpus-22.0-delta-2025-06-20/en"
 CLIPS_DIR = os.path.join(DATA_ROOT, "clips")
 TSV_FILE = os.path.join(DATA_ROOT, "clip_durations.tsv")  # update name if different
-N_MIXTURES = 16
-MAX_FILES = 3_000  # number of files to sample (3000 seems fine for now)
+N_MIXTURES = 32
+MAX_FILES = 5_000  # number of files to sample (3000 seems fine for now)
 
 df = pd.read_csv(TSV_FILE, sep="\t")
 file_list = (

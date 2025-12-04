@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define GMM_DIMENSION 39
+#define GMM_DIMENSION 13
 #define GMM_MIXTURES 32
 
 // calculates log likelihood of input frame based on target gmm
@@ -18,10 +18,14 @@ int64_t ubm_gmm_log_likelihood(int16_t *feature_vector);
 // calculates log likelihood ratio of input frame
 int64_t target_speaker_llr(int16_t *feature_vector);
 
+#ifdef DOUBLE_GMM
+
 // debug for time being
 double int64_to_double_loglikelihood(int64_t ll_int);
 
 // debug
 double ubm_gmmd_log_likelihood(double *feature_vector);
+
+#endif
 
 #endif

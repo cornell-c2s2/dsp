@@ -18,4 +18,8 @@ file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/src/*.c")
 
 add_executable(2FAudio ${SOURCES})
 
-target_link_libraries(2FAudio m)
+option(DOUBLE_GMM "Enables compilation of double GMMs for debugging." OFF)
+
+if(DOUBLE_GMM)
+  target_compile_definitions(2FAudio PRIVATE DOUBLE_GMM)
+endif()
