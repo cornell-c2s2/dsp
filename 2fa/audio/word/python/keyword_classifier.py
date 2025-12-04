@@ -19,7 +19,7 @@ import seaborn as sns
 
 
 class AudioClassifier:
-    def __init__(self, sample_rate=16000, n_mfcc=13, max_length=1000):
+    def __init__(self, sample_rate=16000, n_mfcc=13, max_length=500):
         """
         Initialize the audio classifier.
 
@@ -165,11 +165,11 @@ class AudioClassifier:
         model = keras.Sequential(
             [
                 layers.Input(shape=(input_shape,)),
-                layers.Dense(32, activation="relu"),
+                layers.Dense(4, activation="relu"),
                 layers.Dropout(0.3),
-                layers.Dense(16, activation="relu"),
+                layers.Dense(2, activation="relu"),
                 layers.Dropout(0.3),
-                layers.Dense(8, activation="relu"),
+                layers.Dense(2, activation="relu"),
                 layers.Dropout(0.2),
                 layers.Dense(1, activation="sigmoid"),
             ]
@@ -692,7 +692,7 @@ class AudioClassifier:
 
 def main():
     # Initialize classifier
-    classifier = AudioClassifier(n_mfcc=13, max_length=1000)
+    classifier = AudioClassifier(n_mfcc=13, max_length=500)
 
     # Load data
     X, y = classifier.load_data("../../data/pos", "../../data/neg")
