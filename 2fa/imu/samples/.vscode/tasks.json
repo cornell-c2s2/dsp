@@ -17,13 +17,31 @@
                 "command": "${env:USERPROFILE}/.pico-sdk/ninja/v1.12.1/ninja.exe"
             }
         },
+        // {
+        //     "label": "Run Project",
+        //     "type": "process",
+        //     "command": "${env:HOME}/.pico-sdk/picotool/2.1.1/picotool/picotool",
+        //     "args": [
+        //         "load",
+        //         "${command:raspberry-pi-pico.launchTargetPath}",
+        //         "-fx"
+        //     ],
+        //     "presentation": {
+        //         "reveal": "always",
+        //         "panel": "dedicated"
+        //     },
+        //     "problemMatcher": [],
+        //     "windows": {
+        //         "command": "${env:USERPROFILE}/.pico-sdk/picotool/2.1.1/picotool/picotool.exe"
+        //     }
+        // },
         {
             "label": "Run Project",
             "type": "process",
             "command": "${env:HOME}/.pico-sdk/picotool/2.1.1/picotool/picotool",
             "args": [
                 "load",
-                "${command:raspberry-pi-pico.launchTargetPath}",
+                "${workspaceFolder}/build/sync.elf",   // <-- replace with whatever `ls *.elf` shows
                 "-fx"
             ],
             "presentation": {
@@ -34,7 +52,7 @@
             "windows": {
                 "command": "${env:USERPROFILE}/.pico-sdk/picotool/2.1.1/picotool/picotool.exe"
             }
-        },
+            },
         {
             "label": "Flash",
             "type": "process",
