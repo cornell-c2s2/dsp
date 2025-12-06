@@ -168,14 +168,6 @@ int main() {
                 unknown_count++;
                 window_labels[w] = WL_OTHER;
             }
-
-            // printf("[Window %d] best=%s (%.3f) | totals so far: turn=%d, random=%d, other/unknown=%d\n",
-            //        w + 1,
-            //        best_label,
-            //        best_val,
-            //        turn_count,
-            //        random_count,
-            //        unknown_count);
         }
 
         // Helper lambda to print window list for a given label
