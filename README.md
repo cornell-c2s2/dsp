@@ -1,6 +1,7 @@
 # dsp
-Digital Signal Processing Library from C2S2's Software Subteam FA24
+C2S2 Software Subteam:
+- 2fa: FA25, audio and imu human classification
+- donut-classifier: FA24, audio scrub jay classification
+- scrub-jay-system: SP25, live audio classification, integrated system with imu
 
-This is the official DSP library for software. The goal is to create a general signal processing library for C2S2 that could be used across multiple projects.
-
-Last update: 9/20/24
+Last update: 12/06/25
