@@ -10,6 +10,7 @@ add_executable(pico_stop_detector
     src/mfcc.c
     src/audio_classifier_inference.c
     src/stop_detector.c
+    src/speaker_gmm.c
 )
 
 
