@@ -1,6 +1,8 @@
 #ifndef STOP_CLIP_H
 #define STOP_CLIP_H
 
+#include <stdint.h>
+
 #define STOP_CLIP_NUM_SAMPLES 16000
 
 static const int16_t STOP_CLIP[STOP_CLIP_NUM_SAMPLES] = {

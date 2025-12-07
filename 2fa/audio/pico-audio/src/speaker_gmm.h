@@ -20,6 +20,7 @@ int64_t target_speaker_llr(int16_t *feature_vector);
 
 // debug for time being
 double int64_to_double_loglikelihood(int64_t ll_int);
+float int64_to_float_loglikelihood(int64_t ll_int);
 
 #ifdef DOUBLE_GMM
 

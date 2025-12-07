@@ -1,7 +1,7 @@
 #include "speaker_gmm.h"
 
 // little bit scuffed but works for now :P
-#include "../models/gmm_params.inc"
+#include "gmm_params.inc"
 #include <stdint.h>
 
 #define Q_FEATURE Q_MEANS
@@ -109,6 +109,10 @@ int64_t target_speaker_llr(int16_t *feature_vector) {
 
 double int64_to_double_loglikelihood(int64_t ll_int) {
   return (double)ll_int / (1 << 8);
+}
+
+float int64_to_float_loglikelihood(int64_t ll_int) {
+  return (float)ll_int / (1 << 8);
 }
 
 void float_to_g6int16_arr(float *input, int16_t *output, int length) {

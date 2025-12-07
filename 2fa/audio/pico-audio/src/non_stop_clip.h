@@ -1,6 +1,8 @@
 #ifndef NON_STOP_CLIP_H
 #define NON_STOP_CLIP_H
 
+#include <stdint.h>
+
 #define NON_STOP_CLIP_NUM_SAMPLES 16000
 
 static const int16_t NON_STOP_CLIP[NON_STOP_CLIP_NUM_SAMPLES] = {
