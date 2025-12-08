@@ -121,7 +121,7 @@ void float_to_g6int16_arr(float *input, int16_t *output, int length) {
   }
 }
 
-#define THRESHOLD 0.4
+#define THRESHOLD -0.7
 #define THRESHOLD_INT (int64_t)(THRESHOLD * (1 << 8))
 
 int64_t mfcc_target_speaker_llr_mean(float *mfcc_feats, int num_frames) {
