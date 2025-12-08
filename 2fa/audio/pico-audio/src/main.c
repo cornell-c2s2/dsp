@@ -20,7 +20,7 @@ int main(void) {
   classifier_output_t class = classify_signal(STOP_CLIP, STOP_CLIP_NUM_SAMPLES);
   classifier_binary_output_t binary_class = {
     .stop = (class.stop_prob > 0.5f), 
-    .speaker = (class.speaker_llr > 0.4f)
+    .speaker = (class.speaker_llr > -0.7f)
   };
 
   printf("Stop clip, wrong voice\r\n");
@@ -37,7 +37,7 @@ int main(void) {
 
   class = classify_signal(NON_STOP_CLIP, NON_STOP_CLIP_NUM_SAMPLES);
   binary_class.stop = (class.stop_prob > 0.5f);
-  binary_class.speaker = (class.speaker_llr > 0.4f);
+  binary_class.speaker = (class.speaker_llr > -0.7f);
 
   printf("Not stop clip, wrong voice\r\n");
   printf("Probability of 'stop': %f\r\n", class.stop_prob);
@@ -53,7 +53,7 @@ int main(void) {
 
   class = classify_signal(VOICE_STOP_CLIP, VOICE_STOP_CLIP_NUM_SAMPLES);
   binary_class.stop = (class.stop_prob > 0.5f);
-  binary_class.speaker = (class.speaker_llr > 0.4f);
+  binary_class.speaker = (class.speaker_llr > -0.7f);
 
   printf("Stop clip, right voice\r\n");
   printf("Probability of 'stop': %f\r\n", class.stop_prob);
@@ -69,7 +69,7 @@ int main(void) {
 
   class = classify_signal(VOICE_NON_STOP_CLIP, VOICE_NON_STOP_CLIP_NUM_SAMPLES);
   binary_class.stop = (class.stop_prob > 0.5f);
-  binary_class.speaker = (class.speaker_llr > 0.4f);
+  binary_class.speaker = (class.speaker_llr > -0.7f);
 
   printf("Not stop clip, right voice\r\n");
   printf("Probability of 'stop': %f\r\n", class.stop_prob);
